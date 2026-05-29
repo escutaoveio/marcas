@@ -1,0 +1,40 @@
+# Claude Code — configurações locais do usuário (nunca versionar)
+.claude/settings.local.json
+
+# Dados sensíveis
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (caso seja usado futuramente)
+node_modules/
+dist/
+.next/
+
+# Python (caso seja usado futuramente)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs
+*.log
+logs/
+
+# Temporários
+*.tmp
+*.bak
