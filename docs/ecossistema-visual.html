@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVA Química — Síntese do Ecossistema</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #09090b;
+      --bg-card:     #111113;
+      --bg-card-2:   #18181b;
+      --border:      #27272a;
+      --border-h:    #3f3f46;
+      --text:        #fafafa;
+      --text-2:      #a1a1aa;
+      --text-3:      #52525b;
+      --orange:      #f97316;
+      --orange-d:    rgba(249,115,22,.12);
+      --orange-b:    rgba(249,115,22,.3);
+      --blue:        #3b82f6;
+      --blue-d:      rgba(59,130,246,.12);
+      --green:       #22c55e;
+      --green-d:     rgba(34,197,94,.12);
+      --purple:      #a855f7;
+      --purple-d:    rgba(168,85,247,.12);
+      --cyan:        #06b6d4;
+      --cyan-d:      rgba(6,182,212,.12);
+      --amber:       #f59e0b;
+      --amber-d:     rgba(245,158,11,.12);
+      --emerald:     #10b981;
+      --emerald-d:   rgba(16,185,129,.12);
+      --rose:        #f43f5e;
+      --rose-d:      rgba(244,63,94,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(9,9,11,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo { font-weight: 700; font-size: .95rem; color: var(--text); letter-spacing: -.01em; }
+    .nav-logo span { color: var(--orange); }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      font-size: .8rem; font-weight: 500; color: var(--text-2);
+      text-decoration: none; letter-spacing: .02em; text-transform: uppercase;
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ─── LAYOUT ──────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 6rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .section-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--orange); background: var(--orange-d);
+      border: 1px solid var(--orange-b);
+      padding: .3rem .8rem; border-radius: 99px; margin-bottom: 1.25rem;
+    }
+    .section-tag .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); }
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.15;
+      margin-bottom: .75rem;
+    }
+    .section-lead { font-size: 1.05rem; color: var(--text-2); max-width: 600px; line-height: 1.7; }
+
+    /* ─── HERO ────────────────────────────────── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,.18) 0%, transparent 70%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; padding: 6rem 0; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--orange); border: 1px solid var(--orange-b);
+      background: var(--orange-d); padding: .4rem 1rem; border-radius: 99px;
+    }
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 900; letter-spacing: -.04em; line-height: 1.05;
+    }
+    h1 .accent { color: var(--orange); }
+    .hero-sub {
+      font-size: 1.2rem; color: var(--text-2); max-width: 560px; line-height: 1.7;
+    }
+    .hero-stats {
+      display: flex; gap: 2.5rem; padding-top: 1rem;
+      border-top: 1px solid var(--border); width: 100%;
+    }
+    .stat { display: flex; flex-direction: column; gap: .25rem; }
+    .stat-n { font-size: 2rem; font-weight: 800; letter-spacing: -.04em; color: var(--orange); }
+    .stat-l { font-size: .78rem; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* ─── GRID HELPERS ────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+    /* ─── CARD BASE ───────────────────────────── */
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem;
+      transition: border-color .2s, background .2s;
+    }
+    .card:hover { border-color: var(--border-h); background: var(--bg-card-2); }
+
+    /* ─── DIAGNÓSTICO ─────────────────────────── */
+    .quote-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: border-color .2s;
+    }
+    .quote-card:hover { border-color: var(--border-h); }
+    .quote-icon { font-size: 1.8rem; line-height: 1; }
+    .quote-text {
+      font-size: 1rem; font-style: italic; color: var(--text);
+      line-height: 1.65; border-left: 3px solid var(--orange);
+      padding-left: 1rem;
+    }
+    .quote-insight {
+      font-size: .82rem; color: var(--text-2); line-height: 1.6;
+      padding-top: .5rem; border-top: 1px solid var(--border);
+    }
+    .quote-insight strong { color: var(--orange); }
+
+    /* ─── PRINCÍPIOS ──────────────────────────── */
+    .principle-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: .75rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .principle-card:hover { border-color: var(--orange-b); transform: translateY(-2px); }
+    .principle-num {
+      font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--orange);
+    }
+    .principle-title { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+    .principle-body { font-size: .83rem; color: var(--text-2); line-height: 1.6; }
+
+    /* ─── 3 PÚBLICOS ──────────────────────────── */
+    .publicos-wrap {
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 640px; margin: 0 auto;
+    }
+    .publico-row {
+      display: flex; align-items: stretch; gap: 0;
+    }
+    .publico-num-col {
+      display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0;
+    }
+    .publico-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 800; flex-shrink: 0;
+      border: 2px solid;
+    }
+    .publico-line { flex: 1; width: 2px; background: var(--border); margin: 4px auto; }
+    .publico-card {
+      flex: 1; margin-left: 1rem; margin-bottom: 1.25rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.25rem 1.5rem;
+    }
+    .publico-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+    .publico-card p { font-size: .83rem; color: var(--text-2); line-height: 1.55; }
+    .publico-card .badge {
+      display: inline-block; font-size: .68rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: .2rem .6rem; border-radius: 99px; margin-bottom: .5rem;
+    }
+    .p1 .publico-circle { border-color: var(--orange); color: var(--orange); background: var(--orange-d); }
+    .p1 .badge { background: var(--orange-d); color: var(--orange); }
+    .p1 .publico-card { border-color: rgba(249,115,22,.25); }
+    .p2 .publico-circle { border-color: var(--blue); color: var(--blue); background: var(--blue-d); }
+    .p2 .badge { background: var(--blue-d); color: var(--blue); }
+    .p2 .publico-card { border-color: rgba(59,130,246,.25); }
+    .p3 .publico-circle { border-color: var(--text-3); color: var(--text-3); background: rgba(82,82,91,.15); }
+    .p3 .badge { background: rgba(82,82,91,.2); color: var(--text-2); }
+    .publico-pull-note {
+      margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px;
+      background: var(--orange-d); border: 1px solid var(--orange-b);
+      font-size: .85rem; color: var(--text-2); line-height: 1.6;
+    }
+    .publico-pull-note strong { color: var(--orange); }
+
+    /* ─── MARCAS ──────────────────────────────── */
+    .marca-hub {
+      background: var(--bg-card); border: 1px solid var(--blue-d);
+      border-radius: 20px; padding: 1.75rem; margin-bottom: 1.25rem;
+      border-color: rgba(59,130,246,.3);
+    }
+    .marca-hub-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .marca-name { font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; }
+    .marca-tag {
+      font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+      padding: .25rem .7rem; border-radius: 99px;
+    }
+    .marca-desc { font-size: .85rem; color: var(--text-2); line-height: 1.6; margin-bottom: 1rem; }
+    .marca-meta { display: flex; gap: 1.5rem; }
+    .marca-meta-item { font-size: .78rem; }
+    .marca-meta-item .label { color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; font-size: .68rem; font-weight: 600; }
+    .marca-meta-item .value { color: var(--text-2); margin-top: .15rem; }
+    .sub-marcas { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+    .sub-marca-card {
+      border-radius: 12px; padding: 1rem 1.25rem;
+      background: rgba(59,130,246,.06); border: 1px solid rgba(59,130,246,.15);
+    }
+    .sub-marca-card h4 { font-size: .88rem; font-weight: 700; margin-bottom: .25rem; }
+    .sub-marca-card p { font-size: .78rem; color: var(--text-2); line-height: 1.5; }
+    .sub-marca-card .by { font-size: .68rem; color: var(--text-3); font-weight: 500; margin-bottom: .4rem; }
+
+    .marca-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .marca-card:hover { transform: translateY(-2px); }
+    .marca-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: .5rem; letter-spacing: -.01em; }
+    .marca-card .desc { font-size: .82rem; color: var(--text-2); line-height: 1.6; margin-bottom: 1rem; }
+    .marca-card .pills { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .pill {
+      font-size: .68rem; font-weight: 600; letter-spacing: .04em;
+      padding: .22rem .65rem; border-radius: 99px; border: 1px solid;
+    }
+
+    /* brand colors */
+    .c-blue   { border-color: rgba(59,130,246,.4);  color: var(--blue);   background: var(--blue-d); }
+    .c-green  { border-color: rgba(34,197,94,.4);   color: var(--green);  background: var(--green-d); }
+    .c-purple { border-color: rgba(168,85,247,.4);  color: var(--purple); background: var(--purple-d); }
+    .c-cyan   { border-color: rgba(6,182,212,.4);   color: var(--cyan);   background: var(--cyan-d); }
+    .c-amber  { border-color: rgba(245,158,11,.4);  color: var(--amber);  background: var(--amber-d); }
+    .c-emerald{ border-color: rgba(16,185,129,.4);  color: var(--emerald);background: var(--emerald-d); }
+    .c-orange { border-color: rgba(249,115,22,.4);  color: var(--orange); background: var(--orange-d); }
+    .c-rose   { border-color: rgba(244,63,94,.4);   color: var(--rose);   background: var(--rose-d); }
+
+    /* ─── PLATAFORMAS ─────────────────────────── */
+    .plat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      transition: border-color .2s;
+    }
+    .plat-header { display: flex; align-items: center; gap: 1rem; }
+    .plat-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .plat-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -.01em; }
+    .plat-slogan { font-size: .78rem; color: var(--text-3); font-style: italic; }
+    .plat-desc { font-size: .85rem; color: var(--text-2); line-height: 1.65; }
+    .plat-role {
+      padding: 1rem 1.25rem; border-radius: 12px;
+      font-size: .82rem; line-height: 1.6; color: var(--text-2);
+    }
+    .plat-role strong { font-weight: 600; }
+
+    /* ─── UNIDADES ────────────────────────────── */
+    .unidade-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .unidade-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+    .unidade-name { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .unidade-tagline { font-size: .75rem; color: var(--text-3); font-style: italic; margin-top: .15rem; }
+    .status-badge {
+      font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: .2rem .65rem; border-radius: 99px; flex-shrink: 0; margin-top: .15rem;
+    }
+    .status-ativo { background: var(--emerald-d); color: var(--emerald); border: 1px solid rgba(16,185,129,.3); }
+    .status-dev { background: var(--amber-d); color: var(--amber); border: 1px solid rgba(245,158,11,.3); }
+    .status-pausado { background: rgba(82,82,91,.15); color: var(--text-3); border: 1px solid var(--border); }
+    .frentes { display: flex; flex-direction: column; gap: .4rem; }
+    .frente {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .78rem; color: var(--text-2); padding: .4rem .6rem;
+      border-radius: 8px; background: var(--bg);
+    }
+    .frente-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .frente-label { color: var(--text-3); margin-left: auto; font-size: .68rem; }
+
+    /* ─── FLYWHEEL ────────────────────────────── */
+    .flywheel-wrap {
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem 0;
+    }
+    .flywheel-svg-wrap { position: relative; }
+    .flywheel-svg-wrap svg { display: block; }
+
+    /* ─── DEPARTAMENTOS ───────────────────────── */
+    .dept-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;
+    }
+    .dept-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.25rem 1.5rem;
+      display: flex; flex-direction: column; gap: .5rem;
+      transition: border-color .2s, transform .2s;
+      cursor: default;
+    }
+    .dept-card:hover { border-color: var(--border-h); transform: translateY(-1px); }
+    .dept-cmd {
+      font-size: .75rem; font-weight: 700; font-family: 'Courier New', monospace;
+      color: var(--orange); background: var(--orange-d);
+      padding: .2rem .55rem; border-radius: 6px; align-self: flex-start;
+      border: 1px solid var(--orange-b);
+    }
+    .dept-name { font-size: .9rem; font-weight: 700; }
+    .dept-desc { font-size: .78rem; color: var(--text-2); line-height: 1.5; }
+
+    /* ─── FOOTER ──────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0; text-align: center;
+    }
+    footer p { font-size: .8rem; color: var(--text-3); }
+    footer strong { color: var(--text-2); }
+
+    /* ─── ESCADA ──────────────────────────────── */
+    .escada {
+      display: flex; flex-direction: column; gap: .75rem;
+      padding: 1.25rem; border-radius: 12px;
+      background: rgba(82,82,91,.08); border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+    .escada-row {
+      display: flex; align-items: center; gap: .75rem;
+      font-size: .82rem;
+    }
+    .escada-label { font-weight: 700; min-width: 70px; }
+    .escada-arrow { color: var(--text-3); }
+    .escada-desc { color: var(--text-2); }
+
+    @media (max-width: 720px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .sub-marcas { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+      .nav-links { display: none; }
+      .dept-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">IVA <span>Química</span></div>
+  <div class="nav-links">
+    <a href="#diagnostico">Diagnóstico</a>
+    <a href="#principios">Princípios</a>
+    <a href="#publicos">Públicos</a>
+    <a href="#marcas">Marcas</a>
+    <a href="#plataformas">Plataformas</a>
+    <a href="#unidades">Unidades</a>
+    <a href="#flywheel">Flywheel</a>
+    <a href="#departamentos">Departamentos</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span>●</span> Síntese Estratégica do Ecossistema
+      </div>
+      <h1>Transformação<br>viraliza.<br><span class="accent">Produto não.</span></h1>
+      <p class="hero-sub">
+        IVA Química é uma indústria química brasileira independente de ponta a ponta — fabrica, distribui e vende diretamente ao cliente final. Este documento sintetiza os desafios, recursos e a arquitetura operacional do negócio.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-n">1.200+</span>
+          <span class="stat-l">Produtos ativos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">6</span>
+          <span class="stat-l">Marcas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">4</span>
+          <span class="stat-l">Unidades de negócio</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">2</span>
+          <span class="stat-l">Plataformas próprias</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">3</span>
+          <span class="stat-l">Públicos-alvo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNÓSTICO -->
+<section id="diagnostico">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Diagnóstico Estratégico</div>
+    <h2>Os desafios que<br>definem o projeto</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">Quatro frases que revelam a raiz do problema: uma indústria B2B tentando operar num mercado que exige conexão direta com o usuário final.</p>
+
+    <div class="grid-2">
+      <div class="quote-card">
+        <div class="quote-icon">📢</div>
+        <div class="quote-text">"Meu marketing não consegue viralizar um vídeo de produto."</div>
+        <div class="quote-insight">O erro está na premissa. <strong>Produto químico não viraliza — transformação viraliza.</strong> O marketing filmava o frasco quando deveria filmar o resultado na vida de quem aplicou.</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-icon">💎</div>
+        <div class="quote-text">"A IVA é uma empresa com produtos de alto valor agregado."</div>
+        <div class="quote-insight">Produto caro que o cliente não entende parece caro demais. Produto caro que o cliente entende profundamente parece um <strong>investimento</strong>. O desafio não é preço — é percepção de valor.</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-icon">🎯</div>
+        <div class="quote-text">"Os produtos são inovadores, porém caros e requerem conhecimento para aplicação — nosso maior desafio é chegar no Cliente Final."</div>
+        <div class="quote-insight">A IVA estava 2-3 camadas de distância do cliente que decide pela marca. A solução foi criar <strong>canais próprios de varejo</strong> e ativar o profissional como embaixador.</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-icon">🔀</div>
+        <div class="quote-text">"A IVA tem muitas marcas no mesmo segmento — isso causa desperdício de energia e confusão."</div>
+        <div class="quote-insight">A resposta foi uma arquitetura de portfólio com regra clara: <strong>mesmo público, nunca no mesmo canal no mesmo momento</strong>. Cada marca tem posicionamento e canal distintos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCÍPIOS -->
+<section id="principios">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Resposta Estratégica</div>
+    <h2>Os quatro princípios<br>que guiam tudo</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">Do diagnóstico nasceu uma estratégia clara. Esses princípios devem ser consultados antes de qualquer decisão de marketing, vendas ou produto.</p>
+
+    <div class="grid-4">
+      <div class="principle-card">
+        <div class="principle-num">01</div>
+        <div class="principle-title">Transformação viraliza. Produto não.</div>
+        <div class="principle-body">O conteúdo sempre parte do resultado — o que muda na vida de quem usa. Nunca do frasco ou da fórmula.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">02</div>
+        <div class="principle-title">O produto é um meio, não um fim.</div>
+        <div class="principle-body">O que se vende é a transformação. O produto é o veículo para chegar ao resultado que o cliente deseja.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Pull, não push.</div>
+        <div class="principle-body">A estratégia começa no cliente final e sobe. Nunca parte do distribuidor para baixo. O canal é ativado por demanda, não convencido por vendedor.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">04</div>
+        <div class="principle-title">Independência vertical completa.</div>
+        <div class="principle-body">A IVA fabrica, distribui e vende diretamente. Sem depender de lojista, homecenter ou distribuidor terceiro.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 PÚBLICOS -->
+<section id="publicos">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Estratégia de Mercado</div>
+    <h2>Os três públicos<br>em cascata</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">A ordem importa. A estratégia começa no cliente final e sobe — não parte do distribuidor para baixo. O B2B deixa de ser cliente e vira canal ativado por pressão de baixo.</p>
+
+    <div class="publicos-wrap">
+      <div class="publico-row p1">
+        <div class="publico-num-col">
+          <div class="publico-circle">1</div>
+          <div class="publico-line"></div>
+        </div>
+        <div class="publico-card">
+          <div class="badge">Prioridade máxima</div>
+          <h3>Cliente Final</h3>
+          <p>Deseja a transformação — o resultado estético ou funcional. Se ele quer algo, o profissional precisará entregar. <strong>É o ponto de partida de toda a estratégia.</strong></p>
+        </div>
+      </div>
+
+      <div class="publico-row p2">
+        <div class="publico-num-col">
+          <div class="publico-circle">2</div>
+          <div class="publico-line"></div>
+        </div>
+        <div class="publico-card">
+          <div class="badge">Público + Canal</div>
+          <h3>Profissional</h3>
+          <p>Pintor, marceneiro, decorador, engenheiro. Executa a transformação e, quando convencido tecnicamente, <strong>vira o melhor vendedor da IVA no ponto de venda</strong> — sem custo extra.</p>
+        </div>
+      </div>
+
+      <div class="publico-row p3">
+        <div class="publico-num-col">
+          <div class="publico-circle">3</div>
+        </div>
+        <div class="publico-card">
+          <div class="badge">Canal ativado</div>
+          <h3>B2B — Lojistas e Homecenters</h3>
+          <p>Abastece quem executa. Quando há demanda vinda dos dois públicos acima, <strong>o lojista busca a IVA — não precisa ser convencido</strong>. A venda vira pull, não push.</p>
+        </div>
+      </div>
+
+      <div class="publico-pull-note">
+        <strong>O profissional tem papel duplo:</strong> como <em>público</em>, precisa ser convencido tecnicamente — testa, confia e adota. Como <em>canal</em>, quando convencido, recomenda ativamente no balcão e nas obras. Isso torna o investimento em capacitação profissional um ativo de vendas, não apenas de marketing.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARCAS -->
+<section id="marcas">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Arquitetura de Marcas</div>
+    <h2>Seis marcas, um<br>portfólio coerente</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">Modelo híbrido: Drylevis é uma <em>branded house</em> com sub-marcas por assinatura. Hold Stone, LT Shine e Cristal são marcas independentes. Uma pode conversar com o mesmo público que outra — mas nunca no mesmo canal, no mesmo momento.</p>
+
+    <!-- Drylevis Hub -->
+    <div class="marca-hub" style="border-color: rgba(59,130,246,.3);">
+      <div class="marca-hub-header">
+        <div>
+          <div class="marca-name" style="color: var(--blue);">Drylevis</div>
+          <div style="font-size:.8rem; color:var(--text-3); margin-top:.25rem;">drylevis.com.br</div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:flex-end;">
+          <span class="pill c-blue">Branded House</span>
+          <span class="pill c-blue">Construção Civil</span>
+        </div>
+      </div>
+      <p class="marca-desc">Nossa marca mais antiga e principal. Sinônimo de inovação tecnológica aplicada à construção civil. Soluções de alta performance para novas tecnologias construtivas — steel frame, drywall e ICF.</p>
+      <div class="marca-meta">
+        <div class="marca-meta-item">
+          <div class="label">Público</div>
+          <div class="value">Engenheiros, mestres de obra, profissionais da construção</div>
+        </div>
+        <div class="marca-meta-item">
+          <div class="label">Canal</div>
+          <div class="value">Home centers, construtoras, plataformas digitais</div>
+        </div>
+      </div>
+      <div class="sub-marcas">
+        <div class="sub-marca-card">
+          <div class="by">by Drylevis</div>
+          <h4 style="color:var(--blue);">Elastment</h4>
+          <p>Impermeabilização com cimento elástico pioneiro. Referência de mercado em proteção e confiança.</p>
+        </div>
+        <div class="sub-marca-card">
+          <div class="by">by Drylevis</div>
+          <h4 style="color:var(--blue);">Smart</h4>
+          <p>Linha premium de tintas e resinas respiráveis. Alta performance, qualidade e praticidade para ambientes saudáveis.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid das outras marcas -->
+    <div class="grid-3">
+      <div class="marca-card" style="border-color: rgba(34,197,94,.2);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;">
+          <h3 style="color:var(--green);">Hold Stone</h3>
+          <span class="pill c-green" style="font-size:.62rem;">Pioneira</span>
+        </div>
+        <p class="desc">Tecnologia, performance e estética para paisagismo e jardinagem. Primeiro fixador de pedras do Brasil.</p>
+        <div class="pills">
+          <span class="pill c-green">Garden · viral</span>
+          <span class="pill c-green">PRO · alto tráfego</span>
+          <span class="pill c-green">Revest · fachadas</span>
+        </div>
+        <div style="margin-top:.75rem;font-size:.75rem;color:var(--text-3);">holdstone.com.br</div>
+        <div style="margin-top:.5rem;font-size:.78rem;color:var(--text-2);">
+          <span style="color:var(--text-3);">Público:</span> Consumidor final, arquitetos, designers, jardineiros
+        </div>
+      </div>
+
+      <div class="marca-card" style="border-color: rgba(168,85,247,.2);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;">
+          <h3 style="color:var(--purple);">LT Shine</h3>
+          <span class="pill c-purple" style="font-size:.62rem;">Premium</span>
+        </div>
+        <p class="desc">Acabamento, sofisticação e elegância. Transforma ambientes com pintura decorativa e revestimentos de design desde 2022.</p>
+        <div class="pills">
+          <span class="pill c-purple">Efeitos</span>
+          <span class="pill c-purple">Cimento Queimado</span>
+          <span class="pill c-purple">Marmorite</span>
+          <span class="pill c-purple">Pisos</span>
+        </div>
+        <div style="margin-top:.75rem;font-size:.75rem;color:var(--text-3);">ltshine.com.br · via Fácil Decor</div>
+        <div style="margin-top:.5rem;font-size:.78rem;color:var(--text-2);">
+          <span style="color:var(--text-3);">Público:</span> Consumidor final, arquitetos, designers de interiores
+        </div>
+      </div>
+
+      <div class="marca-card" style="border-color: rgba(6,182,212,.2);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;">
+          <h3 style="color:var(--cyan);">Cristal</h3>
+          <span class="pill c-cyan" style="font-size:.62rem;">Entrada</span>
+        </div>
+        <p class="desc">Marca de entrada da IVA. Alto giro, versatilidade e embalagens que se destacam no PDV. Criada para ser reconhecida, não desejada.</p>
+        <div class="pills">
+          <span class="pill c-cyan">Alto giro</span>
+          <span class="pill c-cyan">PDV forte</span>
+          <span class="pill c-cyan">Versatilidade</span>
+        </div>
+        <div style="margin-top:.75rem;font-size:.75rem;color:var(--text-3);">linhacristal.com.br</div>
+        <div style="margin-top:.5rem;font-size:.78rem;color:var(--text-2);">
+          <span style="color:var(--text-3);">Público:</span> Pintores, aplicadores, varejo de materiais
+        </div>
+      </div>
+    </div>
+
+    <!-- Escada Cristal → LT Shine -->
+    <div class="escada" style="margin-top:1.25rem;">
+      <div style="font-size:.75rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;">Escada de Marca</div>
+      <div class="escada-row">
+        <span class="escada-label" style="color:var(--cyan);">Cristal</span>
+        <span class="escada-arrow">→</span>
+        <span class="escada-desc">Reconhecida — o lojista tem, o pintor pede, o cliente aceita</span>
+      </div>
+      <div class="escada-row">
+        <span class="escada-label" style="color:var(--purple);">LT Shine</span>
+        <span class="escada-arrow">→</span>
+        <span class="escada-desc">Desejada — o cliente pede, o pintor recomenda, o lojista precisa ter</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATAFORMAS -->
+<section id="plataformas">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Produtos e Plataformas</div>
+    <h2>A infraestrutura<br>da estratégia de pull</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">Não são itens do catálogo. São as soluções que conectam a indústria ao cliente final — ativando o profissional como educado, como afiliado e como embaixador.</p>
+
+    <div class="grid-2">
+      <div class="plat-card" style="border-color: rgba(245,158,11,.25);">
+        <div class="plat-header">
+          <div class="plat-icon" style="background: var(--amber-d); font-size:1.6rem;">🎓</div>
+          <div>
+            <div class="plat-title" style="color:var(--amber);">Qualifica PRO</div>
+            <div class="plat-slogan">"Quem Faz Aprende, Quem Aprende Cresce!"</div>
+          </div>
+        </div>
+        <p class="plat-desc">Plataforma de cursos online e eventos presenciais de qualificação profissional. Cobre construção civil, marcenaria, pintura decorativa, gesso & drywall e paisagismo — do básico ao avançado.</p>
+        <div class="plat-role" style="background: var(--amber-d); border: 1px solid rgba(245,158,11,.25);">
+          <strong style="color:var(--amber);">Papel estratégico:</strong> É o mecanismo de conversão do profissional. Ao ensinar, a IVA assume o papel de quem investe na carreira — não de quem quer vender. Isso gera autoridade e lealdade que nenhum desconto compra. Profissionais formados são candidatos naturais ao Confia!.
+        </div>
+        <div class="pills" style="gap:.5rem;">
+          <span class="pill c-amber">Cursos online</span>
+          <span class="pill c-amber">Eventos presenciais</span>
+          <span class="pill c-amber">Construção · Marcenaria · Pintura</span>
+        </div>
+      </div>
+
+      <div class="plat-card" style="border-color: rgba(16,185,129,.25);">
+        <div class="plat-header">
+          <div class="plat-icon" style="background: var(--emerald-d); font-size:1.6rem;">🤝</div>
+          <div>
+            <div class="plat-title" style="color:var(--emerald);">Confia!</div>
+            <div class="plat-slogan">Programa de afiliados IVA Química</div>
+          </div>
+        </div>
+        <p class="plat-desc">Qualquer pessoa — especialmente profissionais — pode gerar renda extra recomendando e divulgando os produtos da IVA. O nome não é acidental: a recomendação funciona porque vem de quem o cliente já confia.</p>
+        <div class="plat-role" style="background: var(--emerald-d); border: 1px solid rgba(16,185,129,.25);">
+          <strong style="color:var(--emerald);">Papel estratégico:</strong> É o mecanismo de alcance ao cliente final. Dissolve a distância criada pelo canal B2B transformando o profissional — que já tem a confiança do consumidor — num embaixador remunerado com interesse real no resultado.
+        </div>
+        <div class="pills" style="gap:.5rem;">
+          <span class="pill c-emerald">Afiliados</span>
+          <span class="pill c-emerald">Renda extra</span>
+          <span class="pill c-emerald">Profissional + Qualquer pessoa</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIDADES -->
+<section id="unidades">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Unidades de Negócio</div>
+    <h2>Varejo próprio:<br>independência total</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">A solução para chegar ao cliente final foi criar unidades de negócio no varejo próprio. Sem depender de lojista terceiro, homecenter ou distribuidor. A IVA fabrica, distribui e vende diretamente.</p>
+
+    <div class="grid-2">
+      <!-- Escuta o Véio -->
+      <div class="unidade-card" style="border-color: rgba(249,115,22,.25);">
+        <div class="unidade-header">
+          <div>
+            <div class="unidade-name" style="color:var(--orange);">Escuta o Véio!</div>
+            <div class="unidade-tagline">"Novas Soluções para Velhos Problemas"</div>
+          </div>
+          <span class="status-badge status-ativo">Ativo</span>
+        </div>
+        <p style="font-size:.82rem;color:var(--text-2);line-height:1.6;">E-commerce principal do grupo. Opera com o catálogo completo da IVA Química mais fornecedores terceiros. O nome carrega autoridade implícita — "o véio sabe o que está falando" — tom ideal para produto técnico.</p>
+        <div class="frentes">
+          <div class="frente"><span class="frente-dot" style="background:var(--orange)"></span>Loja Virtual <span class="frente-label">Site próprio</span></div>
+          <div class="frente"><span class="frente-dot" style="background:var(--orange)"></span>Marketplaces <span class="frente-label">Onde o cliente já está</span></div>
+          <div class="frente"><span class="frente-dot" style="background:var(--orange)"></span>Time de Vendas <span class="frente-label">WhatsApp · venda consultiva</span></div>
+        </div>
+      </div>
+
+      <!-- Fácil Decor -->
+      <div class="unidade-card" style="border-color: rgba(168,85,247,.25);">
+        <div class="unidade-header">
+          <div>
+            <div class="unidade-name" style="color:var(--purple);">Fácil Decor</div>
+            <div class="unidade-tagline">"A Etiqueta da Sua Casa"</div>
+          </div>
+          <span class="status-badge status-dev">Em desenvolvimento</span>
+        </div>
+        <p style="font-size:.82rem;color:var(--text-2);line-height:1.6;">Loja física + e-commerce especializado em LT Shine (decoração, pintura decorativa, acabamento). Modelo de franquia com OMS — compra online, retirada na franquia mais próxima. Fecha o ciclo do ecossistema.</p>
+        <div class="frentes">
+          <div class="frente"><span class="frente-dot" style="background:var(--purple)"></span>Loja Física <span class="frente-label">Ativa</span></div>
+          <div class="frente"><span class="frente-dot" style="background:var(--purple)"></span>Loja Virtual + Marketplaces <span class="frente-label">Em desenvolvimento</span></div>
+          <div class="frente"><span class="frente-dot" style="background:var(--purple)"></span>Time de Vendas <span class="frente-label">WhatsApp</span></div>
+          <div class="frente"><span class="frente-dot" style="background:var(--purple)"></span>Franquia + OMS <span class="frente-label">Modelo de expansão</span></div>
+        </div>
+      </div>
+
+      <!-- ConstruLivre -->
+      <div class="unidade-card" style="opacity:.55;">
+        <div class="unidade-header">
+          <div>
+            <div class="unidade-name">ConstruLivre</div>
+            <div class="unidade-tagline">"Construção Livre de Dor de Cabeça"</div>
+          </div>
+          <span class="status-badge status-pausado">Pausado</span>
+        </div>
+        <p style="font-size:.82rem;color:var(--text-3);line-height:1.6;">E-commerce focado em construção civil. Aguardando reformulação estratégica para reativação.</p>
+      </div>
+
+      <!-- ObraMil -->
+      <div class="unidade-card" style="opacity:.55;">
+        <div class="unidade-header">
+          <div>
+            <div class="unidade-name">ObraMil</div>
+            <div class="unidade-tagline">"Sua Obra a Mil"</div>
+          </div>
+          <span class="status-badge status-pausado">Pausado</span>
+        </div>
+        <p style="font-size:.82rem;color:var(--text-3);line-height:1.6;">E-commerce para o segmento de obras. Aguardando reformulação estratégica para reativação.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLYWHEEL -->
+<section id="flywheel">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Sistema Integrado</div>
+    <h2>O flywheel do<br>ecossistema</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">Como todas as peças se conectam para criar um sistema autossustentável. Cada etapa alimenta a próxima — e quanto mais o ciclo gira, mais difícil é para um concorrente replicar.</p>
+
+    <div class="flywheel-wrap">
+      <svg viewBox="0 0 700 620" width="100%" style="max-width:700px;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#3f3f46"/>
+          </marker>
+          <marker id="arr-o" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
+          </marker>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Center: IVA Química -->
+        <circle cx="350" cy="310" r="62" fill="#18181b" stroke="#f97316" stroke-width="1.5" opacity=".9"/>
+        <circle cx="350" cy="310" r="56" fill="none" stroke="#f97316" stroke-width=".5" stroke-dasharray="3 3" opacity=".3"/>
+        <text x="350" y="303" text-anchor="middle" fill="#f97316" font-size="11" font-weight="800" font-family="system-ui,sans-serif" letter-spacing="1">IVA</text>
+        <text x="350" y="317" text-anchor="middle" fill="#f97316" font-size="11" font-weight="800" font-family="system-ui,sans-serif" letter-spacing="1">QUÍMICA</text>
+        <text x="350" y="330" text-anchor="middle" fill="#52525b" font-size="8" font-family="system-ui,sans-serif">Indústria</text>
+
+        <!-- Arrows between nodes (curved, subtle) -->
+        <!-- QualificaPRO → Confia -->
+        <path d="M 440,128 Q 530,160 530,218" stroke="#3f3f46" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <!-- Confia → Cliente Final -->
+        <path d="M 530,282 Q 530,340 490,380" stroke="#3f3f46" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <!-- Cliente Final → Canais -->
+        <path d="M 440,428 Q 400,470 350,472" stroke="#3f3f46" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <!-- Canais → B2B -->
+        <path d="M 258,428 Q 208,380 175,316" stroke="#3f3f46" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <!-- B2B → QualificaPRO -->
+        <path d="M 170,252 Q 200,160 272,128" stroke="#3f3f46" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+        <!-- QualificaPRO center connection -->
+        <line x1="350" y1="248" x2="350" y2="158" stroke="#f97316" stroke-width="1" stroke-dasharray="4 4" opacity=".3"/>
+
+        <!-- Node 1: Qualifica PRO (top) -->
+        <rect x="256" y="68" width="188" height="80" rx="14" fill="#18181b" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+        <rect x="256" y="68" width="188" height="80" rx="14" fill="rgba(245,158,11,.05)"/>
+        <text x="350" y="96" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="800" font-family="system-ui,sans-serif">Qualifica PRO</text>
+        <text x="350" y="112" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">Profissional aprende e ganha</text>
+        <text x="350" y="124" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">confiança técnica com produtos IVA</text>
+
+        <!-- Node 2: Confia! (right-top) -->
+        <rect x="492" y="218" width="166" height="72" rx="14" fill="#18181b" stroke="rgba(16,185,129,.5)" stroke-width="1.5"/>
+        <rect x="492" y="218" width="166" height="72" rx="14" fill="rgba(16,185,129,.05)"/>
+        <text x="575" y="246" text-anchor="middle" fill="#10b981" font-size="12" font-weight="800" font-family="system-ui,sans-serif">Confia!</text>
+        <text x="575" y="262" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">Profissional entra no programa</text>
+        <text x="575" y="274" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">e recomenda ativamente</text>
+
+        <!-- Node 3: Cliente Final (right-bottom) -->
+        <rect x="460" y="372" width="182" height="72" rx="14" fill="#18181b" stroke="rgba(249,115,22,.5)" stroke-width="1.5"/>
+        <rect x="460" y="372" width="182" height="72" rx="14" fill="rgba(249,115,22,.05)"/>
+        <text x="551" y="400" text-anchor="middle" fill="#f97316" font-size="12" font-weight="800" font-family="system-ui,sans-serif">Cliente Final</text>
+        <text x="551" y="416" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">Recebe indicação confiável →</text>
+        <text x="551" y="428" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">deseja → procura o produto</text>
+
+        <!-- Node 4: Canais Próprios (bottom) -->
+        <rect x="224" y="452" width="252" height="72" rx="14" fill="#18181b" stroke="rgba(168,85,247,.5)" stroke-width="1.5"/>
+        <rect x="224" y="452" width="252" height="72" rx="14" fill="rgba(168,85,247,.05)"/>
+        <text x="350" y="478" text-anchor="middle" fill="#a855f7" font-size="11" font-weight="800" font-family="system-ui,sans-serif">Escuta o Véio! · Fácil Decor</text>
+        <text x="350" y="494" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">Canal próprio captura a venda</text>
+        <text x="350" y="506" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">com margem completa</text>
+
+        <!-- Node 5: B2B (left) -->
+        <rect x="42" y="252" width="164" height="72" rx="14" fill="#18181b" stroke="rgba(82,82,91,.5)" stroke-width="1.5"/>
+        <text x="124" y="280" text-anchor="middle" fill="#a1a1aa" font-size="12" font-weight="800" font-family="system-ui,sans-serif">B2B</text>
+        <text x="124" y="296" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">Buscam a IVA — não são</text>
+        <text x="124" y="308" text-anchor="middle" fill="#71717a" font-size="9" font-family="system-ui,sans-serif">convencidos por ela</text>
+
+        <!-- Rotating indicator (small arc at center) -->
+        <circle cx="350" cy="310" r="80" fill="none" stroke="#f97316" stroke-width=".5" stroke-dasharray="6 20" opacity=".2">
+          <animateTransform attributeName="transform" type="rotate" from="0 350 310" to="360 350 310" dur="20s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- DEPARTAMENTOS -->
+<section id="departamentos">
+  <div class="container">
+    <div class="section-tag"><span class="dot"></span> Departamentos Operacionais</div>
+    <h2>Dez especialidades,<br>dez comandos</h2>
+    <p class="section-lead" style="margin-bottom: 3rem;">Cada frente operacional tem um especialista dedicado. Ao usar qualquer comando, o contexto completo do ecossistema — marcas, públicos, canais e princípios — já está carregado.</p>
+
+    <div class="dept-grid">
+      <div class="dept-card">
+        <div class="dept-cmd">/marketing</div>
+        <div class="dept-name">Marketing</div>
+        <div class="dept-desc">Campanhas, briefings e calendário editorial por marca e canal.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/social</div>
+        <div class="dept-name">Redes Sociais</div>
+        <div class="dept-desc">Conteúdo por plataforma e marca. Roteiros, legendas, calendários.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/marca</div>
+        <div class="dept-name">Marca</div>
+        <div class="dept-desc">Posicionamento, narrativa e identidade verbal de cada marca.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/sales</div>
+        <div class="dept-name">Vendas</div>
+        <div class="dept-desc">Scripts, playbooks e estratégia de funil por público.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/crm</div>
+        <div class="dept-name">CRM</div>
+        <div class="dept-desc">Segmentação, réguas de relacionamento e templates por canal.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/ecommerce</div>
+        <div class="dept-name">E-commerce</div>
+        <div class="dept-desc">Operações de Escuta o Véio! e Fácil Decor por frente.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/qualifica</div>
+        <div class="dept-name">Qualifica PRO</div>
+        <div class="dept-desc">Estrutura de cursos, eventos e conteúdo educacional.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/confia</div>
+        <div class="dept-name">Confia!</div>
+        <div class="dept-desc">Programa de afiliados, réguas de onboarding e materiais.</div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-cmd">/intel</div>
+        <div class="dept-name">Inteligência</div>
+        <div class="dept-desc">Pesquisa de mercado, concorrentes e tendências do setor.</div>
+      </div>
+      <div class="dept-card" style="border-color: rgba(249,115,22,.25); background: var(--orange-d);">
+        <div class="dept-cmd">/report</div>
+        <div class="dept-name">Relatório Executivo</div>
+        <div class="dept-desc">Consolidado de todas as frentes. Visão semanal do ecossistema.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><strong>IVA Química</strong> · Síntese Estratégica do Ecossistema · Gerado em 2026-05-30</p>
+    <p style="margin-top:.5rem;">Repositório de Inteligência Operacional · <span style="color:var(--orange);">docs/ecossistema-iva-quimica.md</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
