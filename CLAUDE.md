@@ -40,7 +40,7 @@ IVA Química é uma indústria química brasileira focada em inovação para con
 - **Qualifica PRO** — qualificação profissional (cursos + eventos). *"Quem Faz Aprende, Quem Aprende Cresce!"*
 - **Confia!** — programa de afiliados para profissionais e qualquer pessoa
 
-### Unidades de Negócio
+### Canais de Venda
 - **Escuta o Véio!** *(ativo)* — e-commerce principal, catálogo completo + terceiros. *"Novas Soluções para Velhos Problemas"*
 - **Fácil Decor** *(ativo/em desenvolvimento)* — loja física + e-commerce + franquia OMS, catálogo LT Shine. *"A Etiqueta da Sua Casa"*
 - **ConstruLivre** *(pausado)* · **ObraMil** *(pausado)*
@@ -50,29 +50,33 @@ IVA Química é uma indústria química brasileira focada em inovação para con
 ## Estrutura do Repositório
 
 ```
-marcas/                        → identidade, voz e ativos por marca
-  drylevis/ (elastment/ smart/)
-  hold-stone/ · lt-shine/ · cristal/
+index.md                       → ponto de entrada do repositório (comece aqui)
 
-marketing/                     → campanhas, briefings, calendário editorial
-redes-sociais/                 → conteúdo por plataforma (instagram/ tiktok/ youtube/ linkedin/ whatsapp-broadcast/)
-vendas/                        → por público (cliente-final/ profissional/ b2b/)
-crm/                           → segmentos/ reguas/ templates/
-  segmentos/ (cliente-final/ profissional/ b2b/)
+marketing/                     → estratégia e execução de marketing
+  marcas/ (drylevis/ elastment/ smart/ hold-stone/ lt-shine/ cristal/)
+  campanhas/
 
-unidades-de-negocio/
-  escuta-o-veio/ (loja-virtual/ marketplaces/ time-de-vendas/)
-  facil-decor/   (loja-fisica/ loja-virtual/ marketplaces/ time-de-vendas/ franquia/)
+canais-de-vendas/              → operação dos canais de venda diretos
+  escuta-o-veio/ (identidade/ loja-virtual/ marketplaces/)
+  facil-decor/   (identidade/ loja-fisica/ loja-virtual/ marketplaces/ franquia/)
+  atendimento-comercial/
 
-qualifica-pro/                 → cursos/ eventos/
-confia/                        → programa/ materiais/
+base-de-dados/                 → dados operacionais vivos
+  planilhas/ (vendas/ clientes/ produtos/ marketing/)
+  dashboards/                  → HTML público via GitHub Pages
+  relatorios/                  → consolidações prontas para envio (HTML/PDF)
 
-docs/
-  ecossistema-iva-quimica.md
+arquivos/                      → documentação, conhecimento e relatórios
+  iva-quimica.md · iva-quimica.html
+  ecossistema-iva-quimica.md · ecossistema-visual.html
+  catalogo/ · personas/ · mercado/ (concorrentes/ tendencias/ pesquisas/)
   reports/
-  inteligencia-de-mercado/ (concorrentes/ tendencias/ pesquisas/)
 
-playbooks/                     → SOPs cross-funcionais
+.claude/
+  commands/                    → slash commands (/marketing, /ecommerce, /report…)
+  workflows/                   → contextos de trabalho (lidos com "Retome o contexto de X")
+  agents/                      → definições de agentes
+  skills/                      → skills adicionais
 ```
 
 ---
@@ -80,12 +84,10 @@ playbooks/                     → SOPs cross-funcionais
 ## Interconexões Chave
 
 ```
-marcas/[marca]/identidade/   → alimenta → marketing/ e redes-sociais/
-redes-sociais/               → gera leads → crm/segmentos/
-qualifica-pro/               → forma profissionais → crm/segmentos/profissional/
-confia/                      → afiliados → crm/segmentos/profissional/
-unidades-de-negocio/         → dados de venda → crm/ e docs/reports/
-vendas/[público]/            → espelha → crm/segmentos/[público]/
+arquivos/                       → alimenta → todos os briefings e campanhas
+marketing/marcas/               → define posicionamento → marketing/campanhas/ e anúncios pagos
+marketing/redes-sociais/        → gera alcance e leads → canais-de-vendas/
+canais-de-vendas/               → dados de venda → arquivos/reports/
 ```
 
 ---
@@ -111,4 +113,6 @@ vendas/[público]/            → espelha → crm/segmentos/[público]/
 - Documentos em português (pt-BR)
 - Nomes de arquivo em `kebab-case`
 - Datas no formato `YYYY-MM-DD`
+- Templates prefixados com `_template-` para se destacar de documentos reais
 - Dados sensíveis de clientes nunca vão para o repositório
+- Ponto de entrada: `index.md`

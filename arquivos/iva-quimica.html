@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVA Química — Quem Somos</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.5px; }
+    header p { margin-top: 12px; font-size: 1.1rem; color: #a0a8c0; max-width: 600px; margin-inline: auto; }
+    header .tagline {
+      margin-top: 24px;
+      display: inline-block;
+      background: #e8b600;
+      color: #1a1a2e;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    main { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+
+    section { margin-bottom: 48px; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid #e8b600; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      border-left: 4px solid #e8b600;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card h3 { font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .card .sub { font-size: 0.8rem; color: #666; font-style: italic; margin-bottom: 8px; }
+    .card p { font-size: 0.88rem; color: #444; line-height: 1.5; }
+
+    .canal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .canal {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .canal h3 { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .canal .slogan { font-size: 0.85rem; color: #888; font-style: italic; }
+    .canal .desc { margin-top: 10px; font-size: 0.88rem; color: #555; }
+
+    .principios { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .principio {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .principio strong { display: block; color: #e8b600; margin-bottom: 6px; font-size: 0.95rem; }
+
+    footer { text-align: center; padding: 32px; color: #888; font-size: 0.8rem; }
+
+    @media (max-width: 600px) {
+      .canal-grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>IVA Química</h1>
+  <p>Indústria química brasileira com mais de 1.200 produtos ativos para construção civil, decoração, marcenaria, limpeza e artesanato.</p>
+  <span class="tagline">Fabricamos · Distribuímos · Vendemos Direto</span>
+</header>
+
+<main>
+
+  <section>
+    <h2>Nossas Marcas</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Drylevis</h3>
+        <p class="sub">Engenheiro · Mestre de obra</p>
+        <p>Alta performance em construção tecnológica. O hub de inovação da IVA Química.</p>
+      </div>
+      <div class="card">
+        <h3>Elastment <span style="font-weight:400;font-size:0.85rem">by Drylevis</span></h3>
+        <p class="sub">Profissional de obra</p>
+        <p>Impermeabilização de referência. Solução técnica para quem não aceita vazamento.</p>
+      </div>
+      <div class="card">
+        <h3>Smart <span style="font-weight:400;font-size:0.85rem">by Drylevis</span></h3>
+        <p class="sub">Arquiteto · Acabamento premium</p>
+        <p>Qualidade e praticidade em uma só linha. Para projetos que exigem mais.</p>
+      </div>
+      <div class="card">
+        <h3>Hold Stone</h3>
+        <p class="sub">Consumidor final · Designer</p>
+        <p>Pioneiro no fixador de pedras. A marca de referência em paisagismo e revestimento.</p>
+      </div>
+      <div class="card">
+        <h3>LT Shine</h3>
+        <p class="sub">Consumidor final · Arquiteto</p>
+        <p>Acabamento com sofisticação e elegância. Para quem sabe o que quer na decoração.</p>
+      </div>
+      <div class="card">
+        <h3>Cristal</h3>
+        <p class="sub">Pintor · Aplicador</p>
+        <p>Alta qualidade, alto giro. A escolha do profissional que precisa de resultado no dia a dia.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Canais de Venda</h2>
+    <div class="canal-grid">
+      <div class="canal">
+        <h3>Escuta o Véio!</h3>
+        <div class="slogan">"Novas Soluções para Velhos Problemas"</div>
+        <div class="desc">E-commerce principal com catálogo completo. Venda direta ao cliente final e ao profissional.</div>
+      </div>
+      <div class="canal">
+        <h3>Fácil Decor</h3>
+        <div class="slogan">"A Etiqueta da Sua Casa"</div>
+        <div class="desc">Loja física + e-commerce + franquia OMS. Catálogo LT Shine. Para quem quer elegância em casa.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Princípios</h2>
+    <div class="principios">
+      <div class="principio">
+        <strong>Transformação viraliza. Produto não.</strong>
+        Conteúdo sempre parte do resultado — o que muda na vida de quem usa.
+      </div>
+      <div class="principio">
+        <strong>Pull, não push.</strong>
+        A estratégia começa no cliente final e sobe. Nunca parte do distribuidor para baixo.
+      </div>
+      <div class="principio">
+        <strong>Independência vertical.</strong>
+        Fabricamos, distribuímos e vendemos direto. Sem intermediários obrigatórios.
+      </div>
+      <div class="principio">
+        <strong>O produto é um meio.</strong>
+        O que se vende é a transformação. O produto é o caminho, não o destino.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>IVA Química · Inteligência Operacional</footer>
+
+</body>
+</html>
