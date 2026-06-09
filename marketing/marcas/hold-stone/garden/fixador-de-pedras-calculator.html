@@ -1,0 +1,893 @@
+<div class="product-calc">
+<style type="text/css">@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+    .product-calc .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    .product-calc {
+      box-sizing: border-box;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 32px 24px 40px;
+    }
+
+    .product-calc *,
+    .product-calc *::before,
+    .product-calc *::after {
+      box-sizing: border-box;
+    }
+
+    .calc-card {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .calc-panel {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 40px 32px;
+    }
+
+    .calc-context-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      margin-bottom: 6px;
+    }
+
+    .calc-select-wrap {
+      position: relative;
+    }
+
+    .calc-select {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      padding: 10px 36px 10px 14px;
+      border: 1.5px solid #e6e6e6;
+      border-radius: 8px;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .calc-select:focus {
+      border-color: #999999;
+      outline: none;
+    }
+
+    .calc-select-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 18px !important;
+      color: #8c8c8c;
+    }
+
+    .calc-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .calc-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #1a1a1a;
+    }
+
+    .calc-subtitle {
+      margin: 0 0 28px;
+      font-size: 0.8125rem;
+      color: #8c8c8c;
+      text-align: center;
+    }
+
+    .calc-divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 28px 0;
+    }
+
+    .calc-layout {
+      display: flex;
+      gap: 0;
+    }
+
+    .calc-col-left {
+      flex: 1;
+      min-width: 0;
+      padding-right: 28px;
+      border-right: 1px solid #f0f0f0;
+    }
+
+    .calc-col-right {
+      flex: 1;
+      min-width: 0;
+      padding-left: 28px;
+    }
+
+    .calc-step-group {
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-step-group:first-child { padding-top: 0; }
+    .calc-step-group:last-child  { padding-bottom: 0; }
+
+    .calc-step-group + .calc-step-group {
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .calc-step-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      color: #8c8c8c;
+      font-size: 0.625rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-step-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .calc-toggle-group input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .calc-toggle-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #e6e6e6;
+      background: #ffffff;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+      user-select: none;
+    }
+
+    .calc-toggle-group label:hover {
+      border-color: #999999;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label {
+      border-color: #4d4d4d;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label:hover {
+      border-color: #333333;
+      background: #e8e8e8;
+    }
+
+    .calc-toggle-group input[type="radio"]:focus-visible + label {
+      outline: 2px solid #4d4d4d;
+      outline-offset: 2px;
+    }
+
+    .calc-toggle-group--mode {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--mode label {
+      flex: 1;
+      justify-content: center;
+      padding: 11px 12px;
+      font-size: 0.875rem;
+    }
+
+    .calc-input-area {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-dim-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+
+    .calc-dim-field {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .calc-dim-input {
+      width: 110px;
+      font-family: inherit;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      border: none;
+      border-bottom: 2px solid #e6e6e6;
+      border-radius: 0;
+      padding: 2px 0 6px;
+      background: transparent;
+      outline: none;
+      text-align: center;
+      transition: border-color 0.15s ease;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .calc-dim-input::-webkit-outer-spin-button,
+    .calc-dim-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .calc-dim-input::placeholder { color: #d9d9d9; }
+    .calc-dim-input:focus { border-bottom-color: #999999; }
+
+    .calc-dim-unit {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+
+    .calc-dim-sep {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #cccccc;
+      line-height: 1;
+      padding-bottom: 4px;
+    }
+
+    .calc-area-total {
+      margin: 14px 0 0;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #cccccc;
+      text-align: center;
+      transition: color 0.2s ease;
+      min-height: 1.4em;
+    }
+
+    .calc-area-total.has-value { color: #4d4d4d; }
+
+    .calc-rend-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      min-height: 1.2em;
+      text-align: center;
+      width: 100%;
+    }
+
+    .calc-field-tip {
+      margin: 10px 0 0;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: #8c8c8c;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .calc-result { display: none; }
+    .calc-result.is-visible { display: block; }
+
+    .calc-result-main {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 24px 22px;
+      text-align: center;
+    }
+
+    .calc-result-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.15;
+    }
+
+    .calc-result-breakdown {
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .calc-alerts {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .calc-alert {
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .calc-alert-required {
+      background: #f7f7f7;
+    }
+
+    .calc-alert-info {
+      background: #f5f5f5;
+      border: 1px solid #e6e6e6;
+    }
+
+    .calc-alert-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 1px;
+      color: #6a5b16;
+    }
+
+    .calc-alert-info .calc-alert-icon { color: #8c8c8c; }
+
+    .calc-alert-body { flex: 1; min-width: 0; }
+
+    .calc-alert-title {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #6a5b16;
+      margin: 0 0 8px;
+    }
+
+    .calc-alert-info .calc-alert-title { color: #4d4d4d; }
+
+    .calc-alert-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .calc-alert-items li {
+      font-size: 0.8125rem;
+      color: #4d4d4d;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.4;
+    }
+
+    .calc-alert-items li::before {
+      content: "•";
+      color: #6a5b16;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    .calc-alert-info .calc-alert-items li::before { color: #8c8c8c; }
+
+    .calc-safety-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .calc-support {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      background: #f9f9f9;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+    }
+
+    .calc-support-icon {
+      flex-shrink: 0;
+      font-size: 22px;
+      color: #8c8c8c;
+      line-height: 1;
+    }
+
+    .calc-support-text { flex: 1; min-width: 0; }
+
+    .calc-support-title {
+      margin: 0 0 2px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .calc-support-sub {
+      margin: 0;
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      line-height: 1.4;
+    }
+
+    .calc-support-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: none;
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .calc-support-btn:hover { background: #20b858; }
+
+    .calc-support-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    @media (max-width: 640px) {
+      .product-calc { padding: 24px 16px 32px; }
+      .calc-panel { padding: 28px 20px; }
+      .calc-dim-input { width: 90px; font-size: 2.5rem; }
+      .calc-layout { flex-direction: column; }
+      .calc-col-left {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+      }
+      .calc-col-right {
+        padding-left: 0;
+        padding-top: 24px;
+        width: 100%;
+      }
+    }
+</style>
+<div class="calc-card">
+<div class="calc-panel">
+
+  <!-- Header -->
+  <div class="calc-header">
+    <h2>Calculadora de Rendimento</h2>
+  </div>
+  <p class="calc-subtitle">Fixador de Pedras Hold Stone Garden</p>
+
+  <div class="calc-divider">&nbsp;</div>
+
+  <!-- Contexto: Modo de Aplicação -->
+  <div>
+    <label class="calc-context-label" for="gd-metodo">Modo de Aplicação</label>
+    <div class="calc-select-wrap">
+      <select class="calc-select" id="gd-metodo">
+        <option value="">Selecione o modo de aplicação</option>
+        <option value="spray">Borrifador — revestimento superficial de pedras</option>
+        <option value="mix">Mistura com pedras — fixação de pedras soltas</option>
+      </select>
+      <span aria-hidden="true" class="material-symbols-outlined calc-select-arrow">expand_more</span>
+    </div>
+  </div>
+
+  <div class="calc-divider">&nbsp;</div>
+
+  <!-- Formulário -->
+  <form id="calc-gd-form" novalidate="">
+    <div class="calc-layout">
+
+      <!-- Coluna esquerda: Passo 1 -->
+      <div class="calc-col-left">
+
+        <!-- Passo 1 — Borrifador: Área -->
+        <div id="gd-spray-fields" style="display:none;">
+          <div class="calc-step-group">
+            <div class="calc-step-header">
+              <span aria-hidden="true" class="calc-step-num">1</span>
+              <span class="calc-step-title">Área a revestir</span>
+            </div>
+            <div aria-label="Modo de cálculo" class="calc-toggle-group calc-toggle-group--mode" role="radiogroup">
+              <input checked="checked" id="gd-modo-ambiente" name="gd-modo" type="radio" value="ambiente">
+              <label for="gd-modo-ambiente">
+                <span aria-hidden="true" class="material-symbols-outlined" style="font-size:16px;line-height:1">straighten</span>
+                Tamanho do Ambiente
+              </label>
+              <input id="gd-modo-m2" name="gd-modo" type="radio" value="m2">
+              <label for="gd-modo-m2">
+                <span aria-hidden="true" class="material-symbols-outlined" style="font-size:16px;line-height:1">square_foot</span>
+                Metros Quadrados
+              </label>
+            </div>
+            <div class="calc-input-area" id="gd-field-dims">
+              <div class="calc-dim-row">
+                <div class="calc-dim-field">
+                  <input aria-label="Comprimento em metros" autocomplete="off" class="calc-dim-input" id="gd-comprimento" inputmode="decimal" min="0.1" placeholder="5" step="0.1" type="number">
+                  <span class="calc-dim-unit">m</span>
+                </div>
+                <span aria-hidden="true" class="calc-dim-sep">&times;</span>
+                <div class="calc-dim-field">
+                  <input aria-label="Largura em metros" autocomplete="off" class="calc-dim-input" id="gd-largura" inputmode="decimal" min="0.1" placeholder="4" step="0.1" type="number">
+                  <span class="calc-dim-unit">m</span>
+                </div>
+              </div>
+              <p aria-live="polite" class="calc-area-total" id="gd-area-display">= &mdash; m&sup2;</p>
+            </div>
+            <div class="calc-input-area" id="gd-field-m2" style="display:none;">
+              <div class="calc-dim-field">
+                <input aria-label="Área em metros quadrados" autocomplete="off" class="calc-dim-input" id="gd-m2-input" inputmode="decimal" min="0.1" placeholder="20" step="0.1" type="number">
+                <span class="calc-dim-unit">m&sup2;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 1 — Mistura: Quantidade de pedras -->
+        <div id="gd-mix-fields" style="display:none;">
+          <div class="calc-step-group">
+            <div class="calc-step-header">
+              <span aria-hidden="true" class="calc-step-num">1</span>
+              <span class="calc-step-title">Quantidade de pedras</span>
+            </div>
+            <div class="calc-input-area">
+              <div class="calc-dim-field">
+                <input aria-label="Quantidade de pedras em kg" autocomplete="off" class="calc-dim-input" id="gd-kg-input" inputmode="decimal" min="1" placeholder="25" step="1" type="number">
+                <span class="calc-dim-unit">kg</span>
+              </div>
+            </div>
+            <p class="calc-field-tip">Informe o total de pedras a serem fixadas</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Coluna direita: Passo 2 -->
+      <div class="calc-col-right">
+
+        <!-- Passo 2 — Borrifador: Número de demãos -->
+        <div id="gd-step2-spray" class="calc-step-group" style="display:none;">
+          <div class="calc-step-header">
+            <span aria-hidden="true" class="calc-step-num">2</span>
+            <span class="calc-step-title">Número de demãos</span>
+          </div>
+          <div class="calc-toggle-group">
+            <input id="gd-demaos-1" name="gd-demaos" type="radio" value="1">
+            <label for="gd-demaos-1">1 demão</label>
+            <input checked="checked" id="gd-demaos-2" name="gd-demaos" type="radio" value="2">
+            <label for="gd-demaos-2">2 demãos</label>
+          </div>
+          <p class="calc-rend-note">2 demãos recomendadas para proteção completa</p>
+        </div>
+
+        <!-- Passo 2 — Mistura: Concentração -->
+        <div id="gd-step2-mix" class="calc-step-group" style="display:none;">
+          <div class="calc-step-header">
+            <span aria-hidden="true" class="calc-step-num">2</span>
+            <span class="calc-step-title">Concentração</span>
+          </div>
+          <div class="calc-toggle-group">
+            <input id="gd-conc-eco" name="gd-conc" type="radio" value="eco">
+            <label for="gd-conc-eco">Econômica<br><small style="font-weight:400;font-size:0.6875rem;">1 L / 25 kg</small></label>
+            <input checked="checked" id="gd-conc-padrao" name="gd-conc" type="radio" value="padrao">
+            <label for="gd-conc-padrao">Padrão<br><small style="font-weight:400;font-size:0.6875rem;">1,3 L / 25 kg</small></label>
+            <input id="gd-conc-max" name="gd-conc" type="radio" value="max">
+            <label for="gd-conc-max">Máxima<br><small style="font-weight:400;font-size:0.6875rem;">1,6 L / 25 kg</small></label>
+          </div>
+          <p class="calc-rend-note">Use concentração máxima em pedras de alta porosidade</p>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <!-- Resultado -->
+  <div aria-label="Resultado do cálculo" aria-live="polite" class="calc-result" id="calc-gd-result">
+    <div class="calc-divider">&nbsp;</div>
+    <div class="calc-result-main">
+      <div class="calc-result-count" id="gd-result-count">&nbsp;</div>
+      <div class="calc-result-breakdown" id="gd-result-breakdown">&nbsp;</div>
+    </div>
+    <div class="calc-alerts">
+
+      <!-- Quantidade por embalagem -->
+      <div class="calc-alert calc-alert-required">
+        <span aria-hidden="true" class="material-symbols-outlined calc-alert-icon">inventory_2</span>
+        <div class="calc-alert-body">
+          <p class="calc-alert-title">Quantidade por embalagem</p>
+          <ul class="calc-alert-items" id="gd-variant-list">&nbsp;</ul>
+        </div>
+      </div>
+
+      <!-- Ferramentas -->
+      <div class="calc-alert calc-alert-info">
+        <span aria-hidden="true" class="material-symbols-outlined calc-alert-icon">handyman</span>
+        <div class="calc-alert-body">
+          <p class="calc-alert-title">O que você vai precisar para aplicar</p>
+          <ul class="calc-alert-items" id="gd-tools-list">&nbsp;</ul>
+        </div>
+      </div>
+
+    </div>
+    <p class="calc-safety-note">* Margem de segurança de 10% já incluída no resultado. Rendimento pode variar conforme porosidade e absorção das pedras.</p>
+  </div>
+
+  <div class="calc-divider">&nbsp;</div>
+
+  <!-- Atendimento -->
+  <div class="calc-support">
+    <span aria-hidden="true" class="material-symbols-outlined calc-support-icon">support_agent</span>
+    <div class="calc-support-text">
+      <p class="calc-support-title">Ainda com dúvidas?</p>
+      <p class="calc-support-sub">Nossa equipe pode ajudar você a calcular a quantidade certa para o seu projeto.</p>
+    </div>
+    <a aria-label="Chamar atendimento pelo WhatsApp" class="calc-support-btn" href="https://wa.me/5511999999999?text=Ol%C3%A1!%20Tenho%20d%C3%BAvidas%20sobre%20o%20Fixador%20de%20Pedras%20Hold%20Stone%20Garden." rel="noopener" target="_blank">
+      <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+  </div>
+
+  <p style="margin:20px 0 0;font-size:0.6875rem;color:#cccccc;text-align:center;">Versão 1.0.0</p>
+
+</div>
+</div>
+</div>
+
+<script>
+(function () {
+  var SAFETY = 1.10;
+  var ML_PER_M2_PER_DEMAO = 250;
+  var ML_PER_KG = { eco: 40, padrao: 52, max: 64 };
+
+  var VARIANTS = [
+    { vol: 500,   label: '500 mL',  methods: ['spray'] },
+    { vol: 1000,  label: '1 L',     methods: ['spray', 'mix'] },
+    { vol: 5000,  label: '5 L',     methods: ['spray', 'mix'] },
+    { vol: 20000, label: '20 L',    methods: ['spray', 'mix'] }
+  ];
+
+  var TOOLS = {
+    spray: [
+      'Borrifador (incluso no frasco de 500 mL; adquirir separado para outros volumes)',
+      'Luvas de proteção para aplicação'
+    ],
+    mix: [
+      'Misturador mecânico',
+      'Desempenadeira de aço para compactar e nivelar',
+      'Recipiente impermeável sem trincas ou furos',
+      'EPI: botas, luvas, máscara, óculos de proteção'
+    ]
+  };
+
+  function getMethod() {
+    var el = document.getElementById('gd-metodo');
+    return el ? el.value : '';
+  }
+
+  function getArea() {
+    var modoEl = document.querySelector('input[name="gd-modo"]:checked');
+    var modo = modoEl ? modoEl.value : 'ambiente';
+    if (modo === 'ambiente') {
+      var c = parseFloat(document.getElementById('gd-comprimento').value) || 0;
+      var l = parseFloat(document.getElementById('gd-largura').value) || 0;
+      return c * l;
+    }
+    return parseFloat(document.getElementById('gd-m2-input').value) || 0;
+  }
+
+  function getKg() {
+    return parseFloat(document.getElementById('gd-kg-input').value) || 0;
+  }
+
+  function getDemaos() {
+    var el = document.querySelector('input[name="gd-demaos"]:checked');
+    return el ? parseInt(el.value) : 2;
+  }
+
+  function getConc() {
+    var el = document.querySelector('input[name="gd-conc"]:checked');
+    return el ? el.value : 'padrao';
+  }
+
+  function updateAreaDisplay() {
+    var modoEl = document.querySelector('input[name="gd-modo"]:checked');
+    var modo = modoEl ? modoEl.value : 'ambiente';
+    if (modo !== 'ambiente') return;
+    var c = parseFloat(document.getElementById('gd-comprimento').value) || 0;
+    var l = parseFloat(document.getElementById('gd-largura').value) || 0;
+    var areaEl = document.getElementById('gd-area-display');
+    if (!areaEl) return;
+    if (c > 0 && l > 0) {
+      areaEl.textContent = '= ' + (c * l).toFixed(1) + ' m²';
+      areaEl.classList.add('has-value');
+    } else {
+      areaEl.innerHTML = '= &mdash; m²';
+      areaEl.classList.remove('has-value');
+    }
+  }
+
+  function calc() {
+    var method = getMethod();
+    if (!method) return;
+
+    var totalML = 0;
+    var inputLabel = '';
+
+    if (method === 'spray') {
+      var area = getArea();
+      if (area <= 0) {
+        hideResult();
+        return;
+      }
+      var demaos = getDemaos();
+      totalML = area * ML_PER_M2_PER_DEMAO * demaos * SAFETY;
+      inputLabel = area.toFixed(1) + ' m² · ' + demaos + ' ' + (demaos === 1 ? 'demão' : 'demãos');
+    } else {
+      var kg = getKg();
+      if (kg <= 0) {
+        hideResult();
+        return;
+      }
+      var conc = getConc();
+      totalML = kg * ML_PER_KG[conc] * SAFETY;
+      inputLabel = kg + ' kg de pedras';
+    }
+
+    var totalL = totalML / 1000;
+
+    var countEl = document.getElementById('gd-result-count');
+    var breakdownEl = document.getElementById('gd-result-breakdown');
+    var variantListEl = document.getElementById('gd-variant-list');
+    var toolsEl = document.getElementById('gd-tools-list');
+
+    countEl.textContent = totalL.toFixed(2).replace('.', ',') + ' L necessários';
+    breakdownEl.textContent = 'Com 10% de margem de segurança · ' + inputLabel;
+
+    var available = VARIANTS.filter(function (v) {
+      return v.methods.indexOf(method) !== -1;
+    });
+
+    var variantHTML = '';
+    available.forEach(function (v) {
+      var units = Math.ceil(totalML / v.vol);
+      variantHTML += '<li>' + units + ' ' + (units === 1 ? 'frasco' : 'frascos') + ' de ' + v.label + '</li>';
+    });
+    variantListEl.innerHTML = variantHTML;
+
+    var toolList = TOOLS[method] || [];
+    var toolsHTML = '';
+    toolList.forEach(function (t) { toolsHTML += '<li>' + t + '</li>'; });
+    toolsEl.innerHTML = toolsHTML;
+
+    document.getElementById('calc-gd-result').classList.add('is-visible');
+  }
+
+  function hideResult() {
+    var el = document.getElementById('calc-gd-result');
+    if (el) el.classList.remove('is-visible');
+  }
+
+  function toggleMode() {
+    var modoEl = document.querySelector('input[name="gd-modo"]:checked');
+    var modo = modoEl ? modoEl.value : 'ambiente';
+    var dims = document.getElementById('gd-field-dims');
+    var m2 = document.getElementById('gd-field-m2');
+    if (dims) dims.style.display = modo === 'ambiente' ? 'flex' : 'none';
+    if (m2) m2.style.display = modo === 'm2' ? 'flex' : 'none';
+    updateAreaDisplay();
+    calc();
+  }
+
+  function toggleMethod() {
+    var method = getMethod();
+    var sprayFields = document.getElementById('gd-spray-fields');
+    var mixFields = document.getElementById('gd-mix-fields');
+    var step2Spray = document.getElementById('gd-step2-spray');
+    var step2Mix = document.getElementById('gd-step2-mix');
+
+    if (sprayFields) sprayFields.style.display = method === 'spray' ? 'block' : 'none';
+    if (mixFields) mixFields.style.display = method === 'mix' ? 'block' : 'none';
+    if (step2Spray) step2Spray.style.display = method === 'spray' ? 'flex' : 'none';
+    if (step2Mix) step2Mix.style.display = method === 'mix' ? 'flex' : 'none';
+
+    hideResult();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var metodoEl = document.getElementById('gd-metodo');
+    if (metodoEl) metodoEl.addEventListener('change', toggleMethod);
+
+    document.querySelectorAll('input[name="gd-modo"]').forEach(function (el) {
+      el.addEventListener('change', toggleMode);
+    });
+
+    ['gd-comprimento', 'gd-largura'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', function () { updateAreaDisplay(); calc(); });
+    });
+
+    var m2El = document.getElementById('gd-m2-input');
+    if (m2El) m2El.addEventListener('input', calc);
+
+    var kgEl = document.getElementById('gd-kg-input');
+    if (kgEl) kgEl.addEventListener('input', calc);
+
+    document.querySelectorAll('input[name="gd-demaos"]').forEach(function (el) {
+      el.addEventListener('change', calc);
+    });
+    document.querySelectorAll('input[name="gd-conc"]').forEach(function (el) {
+      el.addEventListener('change', calc);
+    });
+  });
+})();
+</script>
