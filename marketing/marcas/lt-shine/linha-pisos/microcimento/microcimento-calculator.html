@@ -1,0 +1,848 @@
+<!--
+  microcimento-calculator.html — Microcimento LT Shine
+  v1.0 (2026-06-08)
+    - Rendimento fixo: 1 kg/m² (duas demãos)
+    - Embalagem: 4,5 kg ou 18 kg
+    - Compre junto dinâmico por substrato e local de aplicação
+-->
+<div class="product-calc">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+    .product-calc .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    .product-calc {
+      box-sizing: border-box;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 32px 24px 40px;
+    }
+
+    .product-calc *,
+    .product-calc *::before,
+    .product-calc *::after {
+      box-sizing: border-box;
+    }
+
+    .calc-card {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .calc-panel {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 40px 32px;
+    }
+
+    .calc-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .calc-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #1a1a1a;
+    }
+
+    .calc-subtitle {
+      margin: 0 0 28px;
+      font-size: 0.8125rem;
+      color: #8c8c8c;
+      text-align: center;
+    }
+
+    .calc-divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 28px 0;
+    }
+
+    .calc-layout {
+      display: flex;
+      gap: 0;
+    }
+
+    .calc-col-left {
+      flex: 1;
+      min-width: 0;
+      padding-right: 28px;
+      border-right: 1px solid #f0f0f0;
+    }
+
+    .calc-col-right {
+      flex: 1;
+      min-width: 0;
+      padding-left: 28px;
+    }
+
+    .calc-step-group {
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-step-group:first-child { padding-top: 0; }
+    .calc-step-group:last-child  { padding-bottom: 0; }
+
+    .calc-step-group + .calc-step-group {
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-full {
+      margin-top: 24px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .calc-step-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      color: #8c8c8c;
+      font-size: 0.625rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-step-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .calc-toggle-group input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .calc-toggle-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #e6e6e6;
+      background: #ffffff;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+      user-select: none;
+    }
+
+    .calc-toggle-group label:hover {
+      border-color: #999999;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label {
+      border-color: #4d4d4d;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:focus-visible + label {
+      outline: 2px solid #4d4d4d;
+      outline-offset: 2px;
+    }
+
+    .calc-toggle-group--mode {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--mode label {
+      flex: 1;
+      justify-content: center;
+      padding: 11px 12px;
+      font-size: 0.875rem;
+    }
+
+    .calc-toggle-group--two {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--two label {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .calc-input-area {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-dim-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+
+    .calc-dim-field {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .calc-dim-input {
+      width: 110px;
+      font-family: inherit;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      border: none;
+      border-bottom: 2px solid #e6e6e6;
+      border-radius: 0;
+      padding: 2px 0 6px;
+      background: transparent;
+      outline: none;
+      text-align: center;
+      transition: border-color 0.15s ease;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .calc-dim-input::-webkit-outer-spin-button,
+    .calc-dim-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .calc-dim-input::placeholder { color: #d9d9d9; }
+    .calc-dim-input:focus { border-bottom-color: #999999; }
+
+    .calc-dim-unit {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+
+    .calc-dim-sep {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #cccccc;
+      line-height: 1;
+      padding-bottom: 4px;
+    }
+
+    .calc-area-total {
+      margin: 14px 0 0;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #cccccc;
+      text-align: center;
+      transition: color 0.2s ease;
+      min-height: 1.4em;
+    }
+
+    .calc-area-total.has-value { color: #4d4d4d; }
+
+    .calc-rend-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      text-align: center;
+      width: 100%;
+    }
+
+    .calc-result { display: none; }
+    .calc-result.is-visible { display: block; }
+
+    .calc-result-main {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 24px 22px;
+      text-align: center;
+    }
+
+    .calc-result-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.15;
+    }
+
+    .calc-result-breakdown {
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .calc-alerts {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .calc-alert {
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .calc-alert-required {
+      background: #fffbea;
+      border: 1px solid #e8c84a;
+    }
+
+    .calc-alert-info {
+      background: #f5f5f5;
+      border: 1px solid #e6e6e6;
+    }
+
+    .calc-alert-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 1px;
+      color: #6a5b16;
+    }
+
+    .calc-alert-info .calc-alert-icon { color: #8c8c8c; }
+
+    .calc-alert-body { flex: 1; min-width: 0; }
+
+    .calc-alert-title {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #6a5b16;
+      margin: 0 0 8px;
+    }
+
+    .calc-alert-info .calc-alert-title { color: #4d4d4d; }
+
+    .calc-alert-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .calc-alert-items li {
+      font-size: 0.8125rem;
+      color: #4d4d4d;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.4;
+    }
+
+    .calc-alert-items li::before {
+      content: "→";
+      color: #6a5b16;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    .calc-alert-info .calc-alert-items li::before { color: #8c8c8c; }
+
+    .calc-safety-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .calc-support {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      background: #f9f9f9;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+    }
+
+    .calc-support-icon {
+      flex-shrink: 0;
+      font-size: 22px;
+      color: #8c8c8c;
+      line-height: 1;
+    }
+
+    .calc-support-text { flex: 1; min-width: 0; }
+
+    .calc-support-title {
+      margin: 0 0 2px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .calc-support-sub {
+      margin: 0;
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      line-height: 1.4;
+    }
+
+    .calc-support-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: none;
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .calc-support-btn:hover { background: #20b858; }
+
+    .calc-support-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    @media (max-width: 640px) {
+      .product-calc { padding: 24px 16px 32px; }
+      .calc-panel { padding: 28px 20px; }
+      .calc-dim-input { width: 90px; font-size: 2.5rem; }
+      .calc-layout { flex-direction: column; }
+      .calc-col-left {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+      }
+      .calc-col-right {
+        padding-left: 0;
+        padding-top: 24px;
+        width: 100%;
+      }
+    }
+  </style>
+
+  <div class="calc-card">
+    <div class="calc-panel">
+
+      <!-- Header -->
+      <div class="calc-header">
+        <h2>Calculadora de Rendimento</h2>
+      </div>
+      <p class="calc-subtitle">Microcimento LT Shine · 1 kg/m² (duas demãos)</p>
+
+      <div class="calc-divider"></div>
+
+      <!-- Formulário em 3 passos -->
+      <form id="calc-micro-form" novalidate>
+        <div class="calc-layout">
+
+          <!-- Coluna esquerda: Passo 1 — Área -->
+          <div class="calc-col-left">
+            <div class="calc-step-group">
+              <div class="calc-step-header">
+                <span class="calc-step-num" aria-hidden="true">1</span>
+                <span class="calc-step-title">Área do ambiente</span>
+              </div>
+
+              <div class="calc-toggle-group calc-toggle-group--mode" role="radiogroup" aria-label="Modo de cálculo">
+                <input type="radio" name="micro-modo" id="modo-ambiente" value="ambiente" checked>
+                <label for="modo-ambiente">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">straighten</span>
+                  Tamanho do Ambiente
+                </label>
+                <input type="radio" name="micro-modo" id="modo-m2" value="m2">
+                <label for="modo-m2">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">square_foot</span>
+                  Metros Quadrados
+                </label>
+              </div>
+
+              <!-- Input: Comprimento × Largura -->
+              <div class="calc-input-area" id="calc-field-dims">
+                <div class="calc-dim-row">
+                  <div class="calc-dim-field">
+                    <input
+                      class="calc-dim-input"
+                      id="calc-comprimento"
+                      type="number"
+                      min="0.1"
+                      step="0.1"
+                      placeholder="5"
+                      inputmode="decimal"
+                      autocomplete="off"
+                      aria-label="Comprimento em metros"
+                    />
+                    <span class="calc-dim-unit">m</span>
+                  </div>
+                  <span class="calc-dim-sep" aria-hidden="true">×</span>
+                  <div class="calc-dim-field">
+                    <input
+                      class="calc-dim-input"
+                      id="calc-largura"
+                      type="number"
+                      min="0.1"
+                      step="0.1"
+                      placeholder="4"
+                      inputmode="decimal"
+                      autocomplete="off"
+                      aria-label="Largura em metros"
+                    />
+                    <span class="calc-dim-unit">m</span>
+                  </div>
+                </div>
+                <p class="calc-area-total" id="calc-area-display" aria-live="polite">= — m²</p>
+              </div>
+
+              <!-- Input: m² direto -->
+              <div class="calc-input-area" id="calc-field-m2" style="display: none;">
+                <div class="calc-dim-field">
+                  <input
+                    class="calc-dim-input"
+                    id="calc-m2-input"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="20"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    aria-label="Área em metros quadrados"
+                  />
+                  <span class="calc-dim-unit">m²</span>
+                </div>
+              </div>
+
+              <p class="calc-rend-note" id="calc-rend-note" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <!-- Coluna direita: Passo 2 — Embalagem -->
+          <div class="calc-col-right">
+            <div class="calc-step-group">
+              <div class="calc-step-header">
+                <span class="calc-step-num" aria-hidden="true">2</span>
+                <span class="calc-step-title">Embalagem</span>
+              </div>
+              <div class="calc-toggle-group calc-toggle-group--two" role="radiogroup" aria-label="Embalagem">
+                <input type="radio" name="micro-embalagem" id="emb-45" value="4.5" checked>
+                <label for="emb-45">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">water_bucket</span>
+                  4,5 kg
+                </label>
+                <input type="radio" name="micro-embalagem" id="emb-18" value="18">
+                <label for="emb-18">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">propane_tank</span>
+                  18 kg
+                </label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Passo 3 — Substrato + Local (largura total) -->
+        <div class="calc-step-group calc-step-full">
+          <div class="calc-step-header">
+            <span class="calc-step-num" aria-hidden="true">3</span>
+            <span class="calc-step-title" id="label-substrato">Onde vai aplicar?</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; width: 100%;">
+            <div>
+              <p style="text-align: center; font-size: 0.75rem; font-weight: 600; color: #8c8c8c; margin: 0 0 10px;">Superfície</p>
+              <div class="calc-toggle-group calc-toggle-group--two" role="radiogroup" aria-labelledby="label-substrato">
+                <input type="radio" name="micro-substrato" id="sub-concreto" value="concreto" checked>
+                <label for="sub-concreto">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">foundation</span>
+                  Reboco / Concreto
+                </label>
+                <input type="radio" name="micro-substrato" id="sub-ceramica" value="ceramica">
+                <label for="sub-ceramica">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">grid_4x4</span>
+                  Cerâmica / Azulejo
+                </label>
+              </div>
+            </div>
+            <div>
+              <p style="text-align: center; font-size: 0.75rem; font-weight: 600; color: #8c8c8c; margin: 0 0 10px;">Local</p>
+              <div class="calc-toggle-group calc-toggle-group--two" role="radiogroup" aria-label="Local de aplicação">
+                <input type="radio" name="micro-local" id="local-piso" value="piso" checked>
+                <label for="local-piso">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">floor</span>
+                  Piso
+                </label>
+                <input type="radio" name="micro-local" id="local-parede" value="parede">
+                <label for="local-parede">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">wall</span>
+                  Parede
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Resultado -->
+      <div class="calc-result" id="calc-micro-result" aria-live="polite" aria-label="Resultado do cálculo">
+
+        <div class="calc-divider"></div>
+
+        <div class="calc-result-main">
+          <div class="calc-result-count" id="result-count"></div>
+          <div class="calc-result-breakdown" id="result-breakdown"></div>
+        </div>
+
+        <div class="calc-alerts">
+
+          <div class="calc-alert calc-alert-required">
+            <span class="material-symbols-outlined calc-alert-icon" aria-hidden="true">priority_high</span>
+            <div class="calc-alert-body">
+              <p class="calc-alert-title">Compre também para essa aplicação</p>
+              <ul class="calc-alert-items" id="compre-junto-list"></ul>
+            </div>
+          </div>
+
+          <div class="calc-alert calc-alert-info">
+            <span class="material-symbols-outlined calc-alert-icon" aria-hidden="true">handyman</span>
+            <div class="calc-alert-body">
+              <p class="calc-alert-title">Ferramentas necessárias</p>
+              <ul class="calc-alert-items">
+                <li>Misturador mecânico (obrigatório — não adicionar água)</li>
+                <li>Desempenadeira de aço carbono lisa (1ª demão)</li>
+                <li>Desempenadeira metálica lisa (2ª demão)</li>
+                <li>Lixa d'água 120/150 (entre demãos) e 150/180 (após 2ª demão)</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="calc-safety-note">* Margem de segurança de 10% já incluída no resultado. Adquira material do mesmo lote para evitar variação de tonalidade.</p>
+
+      </div>
+
+      <!-- Atendimento comercial -->
+      <div class="calc-divider"></div>
+      <div class="calc-support">
+        <span class="material-symbols-outlined calc-support-icon" aria-hidden="true">support_agent</span>
+        <div class="calc-support-text">
+          <p class="calc-support-title">Ainda com dúvidas?</p>
+          <p class="calc-support-sub">Nossa equipe pode ajudar você a escolher os produtos certos para o seu projeto.</p>
+        </div>
+        <a href="https://api.whatsapp.com/send/?phone=5511933118787&text=Ol%C3%A1%2C+tenho+d%C3%BAvidas+sobre+a+aplica%C3%A7%C3%A3o+do+Microcimento+LT+Shine&type=phone_number&app_absent=0" class="calc-support-btn" target="_blank" rel="noopener" aria-label="Chamar atendimento pelo WhatsApp">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </a>
+      </div>
+
+      <p style="margin: 20px 0 0; font-size: 0.6875rem; color: #cccccc; text-align: center;">Versão 1.0</p>
+
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* Consumo fixo: 1 kg/m² para 2 demãos */
+      var CONSUMO_KG_M2 = 1;
+      var SAFETY_MARGIN = 1.10;
+
+      var comprInput  = document.getElementById('calc-comprimento');
+      var largInput   = document.getElementById('calc-largura');
+      var m2Input     = document.getElementById('calc-m2-input');
+      var fieldDims   = document.getElementById('calc-field-dims');
+      var fieldM2     = document.getElementById('calc-field-m2');
+      var areaDisplay = document.getElementById('calc-area-display');
+      var rendNote    = document.getElementById('calc-rend-note');
+      var resultEl    = document.getElementById('calc-micro-result');
+      var countEl     = document.getElementById('result-count');
+      var breakdownEl = document.getElementById('result-breakdown');
+      var comprJuntoList = document.getElementById('compre-junto-list');
+
+      function getRadio(name) {
+        var el = document.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : null;
+      }
+
+      function fmt(n) {
+        return n.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+      }
+
+      function buildCompreJunto(substrato, local) {
+        var items = [];
+
+        if (substrato === 'ceramica') {
+          items.push('Primer Universal LT Shine — 1 demão sobre a cerâmica antes do microcimento');
+        }
+
+        items.push('LT Shine Resina 5 em 1 Incolor — mínimo 3 demãos após o microcimento (preparo e acabamento)');
+
+        if (local === 'piso') {
+          items.push('LT300 LT Shine — 2 a 3 demãos de verniz protetor para finalização do piso');
+          items.push('LT Shine Piso Líquido — nivelamento da base antes da aplicação do microcimento');
+        }
+
+        return items;
+      }
+
+      function setMode(modo) {
+        if (modo === 'm2') {
+          fieldDims.style.display = 'none';
+          fieldM2.style.display   = '';
+        } else {
+          fieldDims.style.display = '';
+          fieldM2.style.display   = 'none';
+        }
+        resultEl.classList.remove('is-visible');
+        areaDisplay.textContent = '= — m²';
+        areaDisplay.classList.remove('has-value');
+        rendNote.textContent = '';
+      }
+
+      function update() {
+        var modo      = getRadio('micro-modo');
+        var embalagem = parseFloat(getRadio('micro-embalagem') || '4.5');
+        var substrato = getRadio('micro-substrato');
+        var local     = getRadio('micro-local');
+        var area;
+
+        if (modo === 'm2') {
+          var m2 = parseFloat(m2Input.value);
+          if (!m2 || m2 <= 0) {
+            resultEl.classList.remove('is-visible');
+            rendNote.textContent = '';
+            return;
+          }
+          area = m2;
+        } else {
+          var comp = parseFloat(comprInput.value);
+          var larg = parseFloat(largInput.value);
+          if (!comp || comp <= 0 || !larg || larg <= 0) {
+            areaDisplay.textContent = '= — m²';
+            areaDisplay.classList.remove('has-value');
+            resultEl.classList.remove('is-visible');
+            rendNote.textContent = '';
+            return;
+          }
+          area = comp * larg;
+          areaDisplay.textContent = '= ' + fmt(area) + ' m²';
+          areaDisplay.classList.add('has-value');
+        }
+
+        var rendPorEmb = embalagem / CONSUMO_KG_M2;
+        rendNote.textContent =
+          '1 balde de ' + fmt(embalagem) + ' kg cobre aprox. ' + fmt(rendPorEmb) + ' m² (duas demãos).';
+
+        var qtd = Math.ceil(area * CONSUMO_KG_M2 * SAFETY_MARGIN / embalagem);
+        var embLabel = embalagem === 4.5 ? 'balde de 4,5 kg' : 'balde de 18 kg';
+        var embLabelPlural = embalagem === 4.5 ? 'baldes de 4,5 kg' : 'baldes de 18 kg';
+
+        countEl.textContent = qtd + ' ' + (qtd === 1 ? embLabel : embLabelPlural);
+
+        var breakdownArea = modo === 'm2'
+          ? fmt(area) + ' m²'
+          : fmt(parseFloat(comprInput.value)) + ' × ' + fmt(parseFloat(largInput.value)) + ' m = ' + fmt(area) + ' m²';
+
+        breakdownEl.textContent =
+          breakdownArea + ' · ' + fmt(CONSUMO_KG_M2) + ' kg/m² · +10% de segurança';
+
+        comprJuntoList.innerHTML = '';
+        buildCompreJunto(substrato, local).forEach(function (text) {
+          var li = document.createElement('li');
+          li.textContent = text;
+          comprJuntoList.appendChild(li);
+        });
+
+        resultEl.classList.add('is-visible');
+      }
+
+      comprInput.addEventListener('input', update);
+      largInput.addEventListener('input', update);
+      m2Input.addEventListener('input', update);
+
+      document.querySelectorAll('#calc-micro-form input[name="micro-modo"]').forEach(function (radio) {
+        radio.addEventListener('change', function () { setMode(this.value); update(); });
+      });
+
+      document.querySelectorAll('#calc-micro-form input[name="micro-embalagem"]').forEach(function (radio) {
+        radio.addEventListener('change', update);
+      });
+
+      document.querySelectorAll('#calc-micro-form input[name="micro-substrato"]').forEach(function (radio) {
+        radio.addEventListener('change', update);
+      });
+
+      document.querySelectorAll('#calc-micro-form input[name="micro-local"]').forEach(function (radio) {
+        radio.addEventListener('change', update);
+      });
+
+      update();
+    }());
+  </script>
+
+</div>

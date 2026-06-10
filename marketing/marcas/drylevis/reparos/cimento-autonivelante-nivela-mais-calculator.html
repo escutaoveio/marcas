@@ -1,0 +1,1468 @@
+<!--
+  cimento-autonivelante-nivela-mais-calculator.html
+  Cimento Autonivelante Nivela+ DryLevis · v2.1
+-->
+<div class="product-calc">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+    .product-calc .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    .product-calc {
+      box-sizing: border-box;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 32px 24px 40px;
+    }
+
+    .product-calc *,
+    .product-calc *::before,
+    .product-calc *::after {
+      box-sizing: border-box;
+    }
+
+    .calc-card {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .calc-panel {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 40px 32px;
+    }
+
+    /* ── Context row (selects + checkboxes) ── */
+    .calc-context-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .calc-context-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      margin-bottom: 6px;
+    }
+
+    .calc-select-wrap {
+      position: relative;
+    }
+
+    .calc-select {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      padding: 10px 36px 10px 14px;
+      border: 1.5px solid #e6e6e6;
+      border-radius: 8px;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .calc-select:focus {
+      border-color: #999999;
+      outline: none;
+    }
+
+    .calc-select-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 18px !important;
+      color: #8c8c8c;
+    }
+
+    .calc-checks-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .calc-check-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      user-select: none;
+    }
+
+    .calc-check-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      accent-color: #4d4d4d;
+      flex-shrink: 0;
+    }
+
+    /* ── Header ── */
+    .calc-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .calc-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #1a1a1a;
+    }
+
+    .calc-subtitle {
+      margin: 0 0 28px;
+      font-size: 0.8125rem;
+      color: #8c8c8c;
+      text-align: center;
+    }
+
+    /* ── Divider ── */
+    .calc-divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 28px 0;
+    }
+
+    /* ── Two-column form layout (desktop) ── */
+    .calc-layout {
+      display: flex;
+      gap: 0;
+    }
+
+    .calc-col-left {
+      flex: 1;
+      min-width: 0;
+      padding-right: 28px;
+      border-right: 1px solid #f0f0f0;
+    }
+
+    .calc-col-right {
+      flex: 1;
+      min-width: 0;
+      padding-left: 28px;
+    }
+
+    /* ── Step groups ── */
+    .calc-step-group {
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-step-group:first-child { padding-top: 0; }
+    .calc-step-group:last-child  { padding-bottom: 0; }
+
+    .calc-step-group + .calc-step-group {
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-full {
+      margin-top: 24px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .calc-step-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      color: #8c8c8c;
+      font-size: 0.625rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-step-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    /* ── Toggle pills (base) ── */
+    .calc-toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .calc-toggle-group input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .calc-toggle-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #e6e6e6;
+      background: #ffffff;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+      user-select: none;
+    }
+
+    .calc-toggle-group label:hover {
+      border-color: #999999;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label {
+      border-color: #4d4d4d;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label:hover {
+      border-color: #333333;
+      background: #e8e8e8;
+    }
+
+    .calc-toggle-group input[type="radio"]:focus-visible + label {
+      outline: 2px solid #4d4d4d;
+      outline-offset: 2px;
+    }
+
+    /* ── Mode buttons ── */
+    .calc-toggle-group--mode {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--mode label {
+      flex: 1;
+      justify-content: center;
+      padding: 11px 12px;
+      font-size: 0.875rem;
+    }
+
+    /* ── Input area ── */
+    .calc-input-area {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Dimension inputs ── */
+    .calc-dim-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+
+    .calc-dim-field {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .calc-dim-input {
+      width: 110px;
+      font-family: inherit;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      border: none;
+      border-bottom: 2px solid #e6e6e6;
+      border-radius: 0;
+      padding: 2px 0 6px;
+      background: transparent;
+      outline: none;
+      text-align: center;
+      transition: border-color 0.15s ease;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .calc-dim-input::-webkit-outer-spin-button,
+    .calc-dim-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .calc-dim-input::placeholder { color: #d9d9d9; }
+    .calc-dim-input:focus { border-bottom-color: #999999; }
+
+    .calc-dim-unit {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+
+    .calc-dim-sep {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #cccccc;
+      line-height: 1;
+      padding-bottom: 4px;
+    }
+
+    .calc-area-total {
+      margin: 14px 0 0;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #cccccc;
+      text-align: center;
+      transition: color 0.2s ease;
+      min-height: 1.4em;
+    }
+
+    .calc-area-total.has-value { color: #4d4d4d; }
+
+    /* Dynamic rendimento note */
+    .calc-rend-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      min-height: 1.2em;
+      text-align: center;
+      width: 100%;
+    }
+
+    .calc-rend-note.is-warning {
+      color: #b45309;
+    }
+
+    /* Dica de escolha */
+    .calc-field-tip {
+      margin: 10px 0 0;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: #8c8c8c;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    /* ── Substrato — sempre lado a lado ── */
+    .calc-toggle-group--substrato {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--substrato label {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* ── Result ── */
+    .calc-result { display: none; }
+    .calc-result.is-visible { display: block; }
+
+    .calc-result-main {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 24px 22px;
+      text-align: center;
+    }
+
+    .calc-result-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.15;
+    }
+
+    .calc-result-breakdown {
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ── Alerts ── */
+    .calc-alerts {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .calc-alert {
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .calc-alert-required {
+      background: #fffbea;
+      border: 1px solid #e8c84a;
+    }
+
+    .calc-alert-info {
+      background: #f5f5f5;
+      border: 1px solid #e6e6e6;
+    }
+
+    .calc-alert-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 1px;
+      color: #6a5b16;
+    }
+
+    .calc-alert-info .calc-alert-icon { color: #8c8c8c; }
+
+    .calc-alert-body { flex: 1; min-width: 0; }
+
+    .calc-alert-title {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #6a5b16;
+      margin: 0 0 8px;
+    }
+
+    .calc-alert-info .calc-alert-title { color: #4d4d4d; }
+
+    .calc-alert-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .calc-alert-items li {
+      font-size: 0.8125rem;
+      color: #4d4d4d;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.4;
+    }
+
+    .calc-alert-items li::before {
+      content: "→";
+      color: #6a5b16;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    .calc-alert-info .calc-alert-items li::before { color: #8c8c8c; }
+
+    .calc-safety-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* ── Support CTA ── */
+    .calc-support {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      background: #f9f9f9;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+    }
+
+    .calc-support-icon {
+      flex-shrink: 0;
+      font-size: 22px;
+      color: #8c8c8c;
+      line-height: 1;
+    }
+
+    .calc-support-text { flex: 1; min-width: 0; }
+
+    .calc-support-title {
+      margin: 0 0 2px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .calc-support-sub {
+      margin: 0;
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      line-height: 1.4;
+    }
+
+    .calc-support-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: none;
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .calc-support-btn:hover { background: #20b858; }
+
+    .calc-support-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* ── Product cards (Compre Junto) ── */
+    .calc-alert--cards {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .calc-alert--cards .calc-alert-body {
+      width: 100%;
+    }
+
+    .calc-products-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .calc-product-or {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #b5a060;
+    }
+
+    .calc-product-or::before,
+    .calc-product-or::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e8c84a;
+      opacity: 0.4;
+    }
+
+    .calc-product-card {
+      background: #ffffff;
+      border: 1px solid #e6e6e6;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .calc-product-thumb {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      border: 1px solid #f0f0f0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-product-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .calc-product-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .calc-product-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: block;
+      line-height: 1.3;
+    }
+
+    .calc-product-hint {
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      display: block;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .calc-product-price {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.2;
+      min-height: 1.1em;
+    }
+
+    .calc-product-price-from {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: #b0b0b0;
+      text-decoration: line-through;
+      margin-right: 4px;
+    }
+
+    .calc-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .calc-swatches-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8c8c8c;
+    }
+
+    .calc-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px 4px 5px;
+      border-radius: 6px;
+      border: 1.5px solid #d9d9d9;
+      background: #ffffff;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      transition: border-color 0.12s ease;
+      user-select: none;
+    }
+
+    .calc-swatch.is-active {
+      border-color: #4d4d4d;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-swatch__chip {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+    }
+
+    .calc-product-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .calc-btn-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #d9b800;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #6a5b16;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .calc-btn-view:hover {
+      background: #fef9e0;
+      border-color: #b89900;
+    }
+
+    .calc-btn-cart {
+      flex: 1;
+      min-width: 140px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #1a1a1a;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .calc-btn-cart:hover { background: #333333; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .product-calc { padding: 24px 16px 32px; }
+      .calc-panel { padding: 28px 20px; }
+      .calc-dim-input { width: 90px; font-size: 2.5rem; }
+
+      .calc-context-row { grid-template-columns: 1fr; }
+      .calc-checks-col { flex-direction: row; flex-wrap: wrap; gap: 10px 20px; }
+
+      .calc-layout { flex-direction: column; }
+
+      .calc-col-left {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+      }
+
+      .calc-col-right {
+        padding-left: 0;
+        padding-top: 24px;
+        width: 100%;
+      }
+    }
+  </style>
+
+  <div class="calc-card">
+    <div class="calc-panel">
+
+      <!-- Header -->
+      <div class="calc-header">
+        <h2>Calculadora de Rendimento</h2>
+      </div>
+      <p class="calc-subtitle">Cimento Autonivelante Nivela+ DryLevis · Saco 20 kg</p>
+
+      <div class="calc-divider"></div>
+
+      <!-- Contexto da aplicação -->
+      <div class="calc-context-row">
+        <div>
+          <label class="calc-context-label" for="nivela-revestimento">Revestimento Final</label>
+          <div class="calc-select-wrap">
+            <select id="nivela-revestimento" class="calc-select">
+              <option value="">O que vai por cima?</option>
+              <option value="porcelanato">Porcelanato / Cerâmica</option>
+              <option value="vinil">Piso Vinílico / SPC</option>
+              <option value="madeira">Madeira / Laminado</option>
+              <option value="microcimento">Microcimento / Decorativo</option>
+            </select>
+            <span class="material-symbols-outlined calc-select-arrow" aria-hidden="true">expand_more</span>
+          </div>
+        </div>
+        <div>
+          <label class="calc-context-label" for="nivela-uso">Área de Uso</label>
+          <div class="calc-select-wrap">
+            <select id="nivela-uso" class="calc-select">
+              <option value="">Tipo de obra</option>
+              <option value="residencial">Residencial</option>
+              <option value="comercial">Comercial</option>
+              <option value="industrial">Industrial / Obra</option>
+            </select>
+            <span class="material-symbols-outlined calc-select-arrow" aria-hidden="true">expand_more</span>
+          </div>
+        </div>
+        <div>
+          <div class="calc-checks-col" style="margin-top: 22px;">
+            <label class="calc-check-item">
+              <input type="checkbox" id="nivela-sobreposicao">
+              Piso sobre piso
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-divider"></div>
+
+      <!-- Formulário em 3 passos -->
+      <form id="calc-nivela-form" novalidate>
+        <div class="calc-layout">
+
+          <!-- Coluna esquerda: Passo 1 — Área -->
+          <div class="calc-col-left">
+            <div class="calc-step-group">
+              <div class="calc-step-header">
+                <span class="calc-step-num" aria-hidden="true">1</span>
+                <span class="calc-step-title">Área do ambiente</span>
+              </div>
+
+              <div class="calc-toggle-group calc-toggle-group--mode" role="radiogroup" aria-label="Modo de cálculo">
+                <input type="radio" name="calc-modo" id="modo-ambiente" value="ambiente" checked>
+                <label for="modo-ambiente">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">straighten</span>
+                  Tamanho do Ambiente
+                </label>
+                <input type="radio" name="calc-modo" id="modo-m2" value="m2">
+                <label for="modo-m2">
+                  <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">square_foot</span>
+                  Metros Quadrados
+                </label>
+              </div>
+
+              <!-- Input: Comprimento × Largura -->
+              <div class="calc-input-area" id="calc-field-dims">
+                <div class="calc-dim-row">
+                  <div class="calc-dim-field">
+                    <input
+                      class="calc-dim-input"
+                      id="calc-comprimento"
+                      type="number"
+                      min="0.1"
+                      step="0.1"
+                      placeholder="5"
+                      inputmode="decimal"
+                      autocomplete="off"
+                      aria-label="Comprimento em metros"
+                    />
+                    <span class="calc-dim-unit">m</span>
+                  </div>
+                  <span class="calc-dim-sep" aria-hidden="true">×</span>
+                  <div class="calc-dim-field">
+                    <input
+                      class="calc-dim-input"
+                      id="calc-largura"
+                      type="number"
+                      min="0.1"
+                      step="0.1"
+                      placeholder="6"
+                      inputmode="decimal"
+                      autocomplete="off"
+                      aria-label="Largura em metros"
+                    />
+                    <span class="calc-dim-unit">m</span>
+                  </div>
+                </div>
+                <p class="calc-area-total" id="calc-area-display" aria-live="polite">= — m²</p>
+              </div>
+
+              <!-- Input: m² direto -->
+              <div class="calc-input-area" id="calc-field-m2" style="display: none;">
+                <div class="calc-dim-field">
+                  <input
+                    class="calc-dim-input"
+                    id="calc-m2-input"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="30"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    aria-label="Área em metros quadrados"
+                  />
+                  <span class="calc-dim-unit">m²</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coluna direita: Passo 2 — Espessura numérica (mín. 3 mm) -->
+          <div class="calc-col-right">
+            <div class="calc-step-group">
+              <div class="calc-step-header">
+                <span class="calc-step-num" aria-hidden="true">2</span>
+                <span class="calc-step-title">Espessura da camada</span>
+              </div>
+              <div class="calc-input-area">
+                <div class="calc-dim-field">
+                  <input
+                    class="calc-dim-input"
+                    id="calc-espessura-mm"
+                    type="number"
+                    min="3"
+                    max="10"
+                    step="0.5"
+                    placeholder="3"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    aria-label="Espessura da camada em milímetros"
+                  />
+                  <span class="calc-dim-unit">mm</span>
+                </div>
+                <p class="calc-rend-note" id="calc-rend-note" aria-live="polite"></p>
+                <p class="calc-field-tip">Meça a diferença de nível no ponto mais baixo do piso. Mínimo recomendado: 3 mm. Para desníveis acima de 10 mm, entre em contato com nossa equipe.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Passo 3 — Substrato (largura total) -->
+        <div class="calc-step-group calc-step-full">
+          <div class="calc-step-header">
+            <span class="calc-step-num" aria-hidden="true">3</span>
+            <span class="calc-step-title" id="label-substrato">O que tem no chão hoje?</span>
+          </div>
+          <div class="calc-toggle-group calc-toggle-group--substrato" role="radiogroup" aria-labelledby="label-substrato">
+            <input type="radio" name="calc-substrato" id="sub-concreto" value="concreto" checked>
+            <label for="sub-concreto">
+              <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">foundation</span>
+              Cimento ou concreto
+            </label>
+            <input type="radio" name="calc-substrato" id="sub-ceramica" value="ceramica">
+            <label for="sub-ceramica">
+              <span class="material-symbols-outlined" style="font-size: 16px; line-height: 1" aria-hidden="true">grid_4x4</span>
+              Cerâmica ou azulejo
+            </label>
+          </div>
+        </div>
+      </form>
+
+      <!-- Resultado — aparece ao preencher os dados -->
+      <div class="calc-result" id="calc-nivela-result" aria-live="polite" aria-label="Resultado do cálculo">
+
+        <div class="calc-divider"></div>
+
+        <div class="calc-result-main">
+          <div class="calc-result-count" id="result-count"></div>
+          <div class="calc-result-breakdown" id="result-breakdown"></div>
+        </div>
+
+        <div class="calc-alerts">
+
+          <div class="calc-alert calc-alert-required calc-alert--cards">
+            <div class="calc-alert-body">
+              <p class="calc-alert-title">Compre também para essa aplicação</p>
+              <div id="primer-list" class="calc-products-grid"></div>
+            </div>
+          </div>
+
+          <div class="calc-alert calc-alert-info">
+            <span class="material-symbols-outlined calc-alert-icon" aria-hidden="true">handyman</span>
+            <div class="calc-alert-body">
+              <p class="calc-alert-title">O que você vai precisar para aplicar</p>
+              <ul class="calc-alert-items">
+                <li>Misturador elétrico de baixa rotação</li>
+                <li>Balde com marcação de litros para medir a água</li>
+                <li>Rodo dentado para espalhar o cimento</li>
+                <li>Rolo dentado para nivelar e eliminar bolhas de ar</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="calc-safety-note">* Margem de segurança de 10% já incluída no resultado. O rendimento real pode variar conforme a absorção do piso.</p>
+
+      </div>
+
+      <!-- Atendimento comercial -->
+      <div class="calc-divider"></div>
+      <div class="calc-support">
+        <span class="material-symbols-outlined calc-support-icon" aria-hidden="true">support_agent</span>
+        <div class="calc-support-text">
+          <p class="calc-support-title">Ainda com dúvidas?</p>
+          <p class="calc-support-sub">Nossa equipe pode ajudar você a escolher os produtos certos para o seu projeto.</p>
+        </div>
+        <a href="https://api.whatsapp.com/send/?phone=5511933118787&text=Ainda+tenho+d%C3%BAvidas+sobre+a+aplica%C3%A7%C3%A3o+do+Cimento+Autonivelante+Nivela%2B+DryLevis&type=phone_number&app_absent=0" class="calc-support-btn" target="_blank" rel="noopener" aria-label="Chamar atendimento pelo WhatsApp">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </a>
+      </div>
+
+      <p style="margin: 20px 0 0; font-size: 0.6875rem; color: #cccccc; text-align: center;">Versão 2.1</p>
+
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* Consumo linear: 2 kg/m²/mm de espessura.
+         Derivado da ficha técnica: 20 kg ÷ 5 m² ÷ 2 mm = 2 kg/m²/mm.
+         Fórmula: rendimento = 10 / espessura_mm m²/saco.
+         Espessura mínima aceita pela calculadora: 3 mm. */
+      var ESP_MIN       = 3;
+      var ESP_MAX       = 10;
+      var SAFETY_MARGIN = 1.10;
+
+      /* Catálogo de produtos para o Compre Junto.
+         variantId: ID Wake Commerce para data-product-variantid.
+         variants:  array de cores (swatches) — o primeiro swatch inicia ativo.
+         UltraGrip usa o ID do produto pai (sem variante de cor).
+         Preencha os IDs null quando disponíveis; sem ID só "Ver produto" é exibido. */
+      var CATALOG = {
+        smartResina3_6L: {
+          name: 'Smart Resina 5em1 3,6L',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/smart/resinas',
+          variantId: '80243'
+        },
+        smartResina18L: {
+          name: 'Smart Resina 5em1 18L',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/smart/resinas',
+          variantId: '80327'
+        },
+        basePrep3_6L: {
+          name: 'Base Preparadora DryLevis 3,6L',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/base-preparadora',
+          variantId: '80323'
+        },
+        basePrep18L: {
+          name: 'Base Preparadora DryLevis 18L',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/base-preparadora',
+          variantId: '80239'
+        },
+        ultragrip1kg: {
+          name: 'UltraGrip Primer Elastment 1 kg',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/ultragrip/primer',
+          variantId: '267657'
+        },
+        ultragrip5kg: {
+          name: 'UltraGrip Primer Elastment 5 kg',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/ultragrip/primer',
+          variantId: '267779'
+        },
+        ultragrip20kg: {
+          name: 'UltraGrip Primer Elastment 20 kg',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/ultragrip/primer',
+          variantId: '267780'
+        },
+        microcimento4_5kg: {
+          name: 'Microcimento LT Shine 4,5 kg',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos/microcimento',
+          variants: [
+            { name: 'Branco', color: '#f0f0f0', variantId: '266913' },
+            { name: 'Cinza',  color: '#b0b0b0', variantId: '266858' },
+            { name: 'Preto',  color: '#1a1a1a', variantId: '269771' }
+          ]
+        },
+        microcimento18kg: {
+          name: 'Microcimento LT Shine 18 kg',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos/microcimento',
+          variants: [
+            { name: 'Branco', color: '#f0f0f0', variantId: null },
+            { name: 'Cinza',  color: '#b0b0b0', variantId: null },
+            { name: 'Preto',  color: '#1a1a1a', variantId: null }
+          ]
+        },
+        nexFloor4kg: {
+          name: 'Nex Floor Granito Líquido Cristal 4 kg',
+          url:  'https://www.escutaoveio.com/todas-as-marcas/cristal/revestimentos/nex-floor',
+          variantId: null
+        }
+      };
+
+      function buildCompreJunto(substrato, revFinal, sobreposicao, area) {
+        var items = [];
+
+        if (substrato === 'ceramica' || sobreposicao) {
+          var ug = area <= 5 ? CATALOG.ultragrip1kg : area <= 25 ? CATALOG.ultragrip5kg : CATALOG.ultragrip20kg;
+          items.push(Object.assign({}, ug, { hint: '1 demão sobre a cerâmica ou azulejo existente' }));
+        } else {
+          var sr = area <= 22 ? CATALOG.smartResina3_6L : CATALOG.smartResina18L;
+          items.push(Object.assign({}, sr, { hint: 'aplicar 2 demãos antes do Nivela+' }));
+          var bp = area <= 22 ? CATALOG.basePrep3_6L : CATALOG.basePrep18L;
+          items.push(Object.assign({}, bp, { hint: 'para concreto com alta absorção', isAlternative: true }));
+        }
+
+        if (revFinal === 'microcimento') {
+          var mc = area <= 4.5 ? CATALOG.microcimento4_5kg : CATALOG.microcimento18kg;
+          items.push(Object.assign({}, mc, { hint: 'revestimento decorativo aplicável direto sobre o piso regularizado' }));
+        } else if (revFinal === 'vinil') {
+          items.push(Object.assign({}, CATALOG.nexFloor4kg, { hint: 'piso epóxi de alto desempenho para acabamento moderno' }));
+        }
+
+        return items;
+      }
+
+      function renderProductCard(item) {
+        var card = document.createElement('div');
+        card.className = 'calc-product-card';
+
+        var thumb = document.createElement('div');
+        thumb.className = 'calc-product-thumb';
+        thumb.innerHTML = '<span style="font-family:\'Material Symbols Outlined\';font-size:22px;line-height:1;color:#d9d9d9;user-select:none;display:block;">image</span>';
+        card.appendChild(thumb);
+
+        var content = document.createElement('div');
+        content.className = 'calc-product-content';
+
+        var info = document.createElement('div');
+        var nameEl = document.createElement('span');
+        nameEl.className = 'calc-product-name';
+        nameEl.textContent = item.name;
+        info.appendChild(nameEl);
+        if (item.hint) {
+          var hintEl = document.createElement('span');
+          hintEl.className = 'calc-product-hint';
+          hintEl.textContent = item.hint;
+          info.appendChild(hintEl);
+        }
+        content.appendChild(info);
+
+        var priceEl = document.createElement('div');
+        priceEl.className = 'calc-product-price';
+        content.appendChild(priceEl);
+
+        var activeVariantId = null;
+
+        if (item.variants && item.variants.length) {
+          var swatchRow = document.createElement('div');
+          swatchRow.className = 'calc-swatches';
+          var swLabel = document.createElement('span');
+          swLabel.className = 'calc-swatches-label';
+          swLabel.textContent = 'Cor:';
+          swatchRow.appendChild(swLabel);
+          item.variants.forEach(function (v, idx) {
+            var sw = document.createElement('div');
+            sw.className = 'calc-swatch' + (idx === 0 ? ' is-active' : '');
+            sw.setAttribute('data-variantid', v.variantId || '');
+            var chip = document.createElement('div');
+            chip.className = 'calc-swatch__chip';
+            chip.style.background = v.color;
+            var lbl = document.createElement('span');
+            lbl.textContent = v.name;
+            sw.appendChild(chip);
+            sw.appendChild(lbl);
+            swatchRow.appendChild(sw);
+          });
+          content.appendChild(swatchRow);
+          activeVariantId = item.variants[0].variantId;
+        } else {
+          activeVariantId = item.variantId;
+        }
+
+        var actions = document.createElement('div');
+        actions.className = 'calc-product-actions';
+
+        var viewBtn = document.createElement('a');
+        viewBtn.className = 'calc-btn-view';
+        viewBtn.href = item.url;
+        viewBtn.target = '_blank';
+        viewBtn.rel = 'noopener';
+        viewBtn.textContent = 'Ver produto ↗';
+        actions.appendChild(viewBtn);
+
+        if (activeVariantId) {
+          var cartBtn = document.createElement('button');
+          cartBtn.className = 'addcart calc-btn-cart';
+          cartBtn.type = 'button';
+          cartBtn.setAttribute('data-buy-custom', '');
+          cartBtn.setAttribute('data-product-quantity', '1');
+          cartBtn.setAttribute('data-product-variantid', activeVariantId);
+          cartBtn.textContent = 'Adicionar ao carrinho';
+          actions.appendChild(cartBtn);
+        }
+
+        content.appendChild(actions);
+        card.appendChild(content);
+        return card;
+      }
+
+      function wireSwatches(card) {
+        var swatches = card.querySelectorAll('.calc-swatch');
+        var cartBtn  = card.querySelector('.calc-btn-cart');
+        swatches.forEach(function (sw) {
+          sw.addEventListener('click', function () {
+            swatches.forEach(function (s) { s.classList.remove('is-active'); });
+            sw.classList.add('is-active');
+            var vid = sw.getAttribute('data-variantid');
+            if (cartBtn && vid) { cartBtn.setAttribute('data-product-variantid', vid); }
+            if (vid) { enrichCardWithWakeData(card, vid); }
+          });
+        });
+      }
+
+      function applyThumb(thumb, url) {
+        var img = document.createElement('img');
+        img.src = url;
+        img.alt = '';
+        thumb.innerHTML = '';
+        thumb.appendChild(img);
+      }
+
+      function extractImgFromNode(node) {
+        /* Cobre todos os formatos de imagem conhecidos da Wake:
+           - Storefront GraphQL: imageUrl (campo principal), photos[].url
+           - Management API:     Photos[].FotoId (construir URL via CDN)
+           - Genérico:           images[].url/src, thumbnail */
+        if (!node) return null;
+        if (node.imageUrl) return node.imageUrl;
+        var ph = node.photos || node.Photos;
+        if (ph && ph[0]) return ph[0].url || ph[0].Url || ph[0].imageUrl || null;
+        var im = node.images || node.Images;
+        if (im && im[0]) return im[0].url || im[0].src || im[0].imageUrl || im[0].Url || null;
+        return node.thumbnail || node.image || node.foto || null;
+      }
+
+      async function enrichCardWithWakeData(card, variantId) {
+        if (!variantId) return;
+        var thumb  = card.querySelector('.calc-product-thumb');
+        if (!thumb) return;
+        var nameEl  = card.querySelector('.calc-product-name');
+        var priceEl = card.querySelector('.calc-product-price');
+        var q       = nameEl ? nameEl.textContent.trim() : String(variantId);
+
+        try {
+          var r = await fetch('/api/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              query: 'query($q:String!){search(query:$q){products(first:5){edges{node{productId productVariantId productName imageUrl prices{price listPrice}}}}}}',
+              variables: { q: q }
+            })
+          });
+          if (r.ok) {
+            var d     = await r.json();
+            console.log('[Wake GraphQL] variantId=' + variantId, JSON.stringify(d));
+            var edges = d.data && d.data.search && d.data.search.products && d.data.search.products.edges;
+            if (edges && edges.length) {
+              var match = edges.find(function (e) { return String(e.node.productVariantId) === String(variantId); });
+              var node  = (match || edges[0]).node;
+
+              if (node.imageUrl) applyThumb(thumb, node.imageUrl);
+
+              if (priceEl && node.prices) {
+                var p  = node.prices.price;
+                var lp = node.prices.listPrice;
+                if (p) {
+                  var html = '';
+                  if (lp && lp > p) {
+                    html += '<span class="calc-product-price-from">R$ ' +
+                      Number(lp).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
+                      '</span>';
+                  }
+                  html += 'R$ ' + Number(p).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  priceEl.innerHTML = html;
+                }
+              }
+
+              if (node.imageUrl) return;
+            }
+          }
+        } catch (e) { console.log('[Wake GraphQL] erro', e); }
+
+        try {
+          var r2 = await fetch('/api/catalog/product?productId=' + variantId);
+          if (r2.ok) {
+            var d2   = await r2.json();
+            console.log('[Wake catalog REST] id=' + variantId, JSON.stringify(d2));
+            var img2 = extractImgFromNode(d2);
+            if (img2) applyThumb(thumb, img2);
+          }
+        } catch (e) { console.log('[Wake catalog REST] erro', e); }
+      }
+
+      var comprInput      = document.getElementById('calc-comprimento');
+      var largInput       = document.getElementById('calc-largura');
+      var m2Input         = document.getElementById('calc-m2-input');
+      var espInput        = document.getElementById('calc-espessura-mm');
+      var fieldDims       = document.getElementById('calc-field-dims');
+      var fieldM2         = document.getElementById('calc-field-m2');
+      var areaDisplay     = document.getElementById('calc-area-display');
+      var resultEl        = document.getElementById('calc-nivela-result');
+      var countEl         = document.getElementById('result-count');
+      var breakdownEl     = document.getElementById('result-breakdown');
+      var primerList      = document.getElementById('primer-list');
+      var rendNote        = document.getElementById('calc-rend-note');
+      var selRevestimento = document.getElementById('nivela-revestimento');
+      var selUso          = document.getElementById('nivela-uso');
+      var chkSobreposicao = document.getElementById('nivela-sobreposicao');
+
+      function getRadio(name) {
+        var el = document.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : null;
+      }
+
+      function fmt(n) {
+        return n.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+      }
+
+      function setMode(modo) {
+        if (modo === 'm2') {
+          fieldDims.style.display = 'none';
+          fieldM2.style.display   = '';
+        } else {
+          fieldDims.style.display = '';
+          fieldM2.style.display   = 'none';
+        }
+        resultEl.classList.remove('is-visible');
+        areaDisplay.textContent = '= — m²';
+        areaDisplay.classList.remove('has-value');
+      }
+
+      function update() {
+        var substrato    = getRadio('calc-substrato');
+        var modo         = getRadio('calc-modo');
+        var espMM        = parseFloat(espInput.value);
+        var revFinal     = selRevestimento.value;
+        var sobreposicao = chkSobreposicao.checked;
+
+        /* Nota dinâmica de rendimento + validação de espessura */
+        rendNote.classList.remove('is-warning');
+
+        if (isNaN(espMM) || espInput.value === '') {
+          rendNote.textContent = '';
+          resultEl.classList.remove('is-visible');
+          return;
+        }
+
+        if (espMM < ESP_MIN) {
+          rendNote.textContent = 'A espessura mínima recomendada é 3 mm. Para camadas mais finas, fale com nossa equipe.';
+          rendNote.classList.add('is-warning');
+          resultEl.classList.remove('is-visible');
+          return;
+        }
+
+        if (espMM > ESP_MAX) {
+          rendNote.textContent = 'Para desníveis acima de 10 mm, entre em contato com nossa equipe.';
+          rendNote.classList.add('is-warning');
+          resultEl.classList.remove('is-visible');
+          return;
+        }
+
+        var rendPorSaco = 10 / espMM;
+        rendNote.textContent =
+          'Com ' + fmt(espMM) + ' mm de espessura, 1 saco cobre até ' + fmt(rendPorSaco) + ' m².';
+
+        /* Área */
+        var area, breakdownPrefix;
+
+        if (modo === 'm2') {
+          var m2 = parseFloat(m2Input.value);
+          if (!m2 || m2 <= 0) { resultEl.classList.remove('is-visible'); return; }
+          area            = m2;
+          breakdownPrefix = fmt(area) + ' m²';
+        } else {
+          var comp = parseFloat(comprInput.value);
+          var larg = parseFloat(largInput.value);
+          if (!comp || comp <= 0 || !larg || larg <= 0) {
+            areaDisplay.textContent = '= — m²';
+            areaDisplay.classList.remove('has-value');
+            resultEl.classList.remove('is-visible');
+            return;
+          }
+          area = comp * larg;
+          areaDisplay.textContent = '= ' + fmt(area) + ' m²';
+          areaDisplay.classList.add('has-value');
+          breakdownPrefix = fmt(comp) + ' × ' + fmt(larg) + ' m = ' + fmt(area) + ' m²';
+        }
+
+        var rendimento = 10 / espMM;
+        var sacos      = Math.ceil(area * SAFETY_MARGIN / rendimento);
+
+        countEl.textContent =
+          sacos + (sacos === 1 ? ' saco de 20 kg' : ' sacos de 20 kg');
+
+        breakdownEl.textContent =
+          breakdownPrefix + ' · ' + fmt(espMM) + ' mm de espessura · +10% de segurança';
+
+        primerList.innerHTML = '';
+        buildCompreJunto(substrato, revFinal, sobreposicao, area).forEach(function (item) {
+          if (item.isAlternative) {
+            var orEl = document.createElement('div');
+            orEl.className = 'calc-product-or';
+            orEl.textContent = 'ou';
+            primerList.appendChild(orEl);
+          }
+          var card = renderProductCard(item);
+          wireSwatches(card);
+          primerList.appendChild(card);
+          var firstId = item.variants ? (item.variants[0] && item.variants[0].variantId) : item.variantId;
+          enrichCardWithWakeData(card, firstId);
+        });
+
+        resultEl.classList.add('is-visible');
+      }
+
+      comprInput.addEventListener('input', update);
+      largInput.addEventListener('input', update);
+      m2Input.addEventListener('input', update);
+      espInput.addEventListener('input', update);
+      selRevestimento.addEventListener('change', update);
+      selUso.addEventListener('change', update);
+      chkSobreposicao.addEventListener('change', update);
+
+      document.querySelectorAll('#calc-nivela-form input[name="calc-modo"]').forEach(function (radio) {
+        radio.addEventListener('change', function () { setMode(this.value); update(); });
+      });
+
+      document.querySelectorAll('#calc-nivela-form input[name="calc-substrato"]').forEach(function (radio) {
+        radio.addEventListener('change', update);
+      });
+
+      update();
+    }());
+  </script>
+
+</div>
