@@ -1,0 +1,486 @@
+<div class="product-desc-page">
+
+  <style>
+    /* Source: https://raw.githubusercontent.com/escutaoveio/e-commerce/main/product-info/product-description.css */
+    /* Variant: banner — adiciona banner no topo + bloco de nova embalagem no rodapé */
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    .product-desc-page {
+      box-sizing: border-box;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 32px 24px 40px;
+    }
+
+    .product-desc-page *,
+    .product-desc-page *::before,
+    .product-desc-page *::after {
+      box-sizing: border-box;
+    }
+
+    .product-desc-card {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .product-desc-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 24px;
+    }
+
+    .product-desc-details,
+    .product-desc-highlights,
+    .product-desc-faq {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 32px;
+    }
+
+    .product-desc-details h1,
+    .product-desc-highlights h2 {
+      margin: 0 0 24px;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .product-desc-details .product-desc-row {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+      padding: 14px 0;
+    }
+
+    .product-desc-row + .product-desc-row {
+      border-top: 1px solid #e6e6e6;
+    }
+
+    .product-desc-divider {
+      height: 1px;
+      background: #e6e6e6;
+    }
+
+    .meta-label {
+      display: block;
+      color: #8c8c8c;
+      font-size: 0.625rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .meta-value {
+      display: block;
+      color: #1a1a1a;
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .product-desc-note {
+      margin: 16px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.4;
+    }
+
+    .product-desc-highlights {
+      background: #f5f5f5;
+    }
+
+    .product-desc-highlights p {
+      margin: 0 0 24px;
+      font-size: 0.9375rem;
+      color: #4d4d4d;
+      line-height: 1.6;
+    }
+
+    .product-desc-feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .product-desc-feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .product-desc-feature-icon {
+      flex-shrink: 0;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #6a5b16;
+    }
+
+    .product-desc-faq {
+      background: #f7f7f7;
+    }
+
+    .product-desc-faq-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .faq-icon {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #262626;
+      font-size: 20px;
+    }
+
+    .product-desc-faq-header p {
+      margin: 0;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+    }
+
+    .product-desc-faq-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .product-desc-page details {
+      border: 0.5px solid rgba(38, 38, 38, 0.83);
+      border-radius: 7px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .product-desc-page summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 0.667rem;
+      font-weight: 600;
+      letter-spacing: 0.015em;
+      text-transform: uppercase;
+      color: #262626;
+    }
+
+    .product-desc-page summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .accordion-icon {
+      flex-shrink: 0;
+      font-size: 20px;
+      color: #262626;
+      transition: transform 0.2s ease;
+    }
+
+    .product-desc-page details[open] .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 16px 16px;
+      font-size: 0.875rem;
+      color: #4d4d4d;
+      line-height: 1.6;
+    }
+
+    /* ─── Banner ─────────────────────────────────────────────────────────────
+       Desktop : 1160 × 160px  (proporção ~7:1)
+       Mobile  :  640 × 320px  (proporção 2:1)
+    ──────────────────────────────────────────────────────────────────────── */
+    .product-desc-banner {
+      border-radius: 16px;
+      overflow: hidden;
+      line-height: 0;
+      background: #e6e6e6;
+    }
+
+    .product-desc-banner-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ─── Nova Embalagem ─────────────────────────────────────────────────────
+       Imagens fonte: 1080 × 1080px (1:1)
+       Exibidas em grid 2 colunas, responsivas via width: 100%
+    ──────────────────────────────────────────────────────────────────────── */
+    .product-desc-packaging {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 32px;
+    }
+
+    .product-desc-packaging h2 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .product-desc-packaging-intro {
+      margin: 0 0 24px;
+      font-size: 0.9375rem;
+      color: #4d4d4d;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .product-desc-packaging-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 50%;
+      margin: 0 auto;
+    }
+
+    .product-desc-packaging-item {
+      margin: 0;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f0f0f0;
+      aspect-ratio: 1 / 1;
+    }
+
+    .product-desc-packaging-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-desc-packaging-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .product-desc-packaging-tag--before {
+      background: rgba(230, 230, 230, 0.92);
+      color: #4d4d4d;
+    }
+
+    .product-desc-packaging-tag--after {
+      background: rgba(26, 26, 26, 0.88);
+      color: #ffffff;
+    }
+
+    @media (max-width: 920px) {
+      .product-desc-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .product-desc-card {
+        gap: 18px;
+      }
+
+      .product-desc-details,
+      .product-desc-highlights,
+      .product-desc-faq,
+      .product-desc-packaging {
+        padding: 24px;
+      }
+
+      .product-desc-details .product-desc-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+        padding: 12px 0;
+      }
+
+      .product-desc-page {
+        padding: 24px 16px 32px;
+      }
+
+      .product-desc-packaging-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+      }
+    }
+  </style>
+
+  <div class="product-desc-card">
+
+    <!-- ─── Banner ─────────────────────────────────────────────────────────
+         Desktop : substitua banner-desktop.jpg  →  1160 × 160px
+         Mobile  : substitua banner-mobile.jpg   →   640 × 320px
+    ──────────────────────────────────────────────────────────────────────── -->
+    <div class="product-desc-banner">
+      <picture>
+        <source media="(max-width: 640px)" srcset="banner-mobile.jpg">
+        <img
+          src="banner-desktop.jpg"
+          alt="Banner [Nome do Produto]"
+          class="product-desc-banner-img"
+          width="1160"
+          height="160"
+        >
+      </picture>
+    </div>
+
+    <div class="product-desc-grid">
+      <div class="product-desc-details">
+        <h1>Dados do Produto</h1>
+        <div class="product-desc-row">
+          <span class="meta-label">COR/TEXTURA:</span>
+          <span class="meta-value">Pasta em cores (branco, cinza ou preto).</span>
+        </div>
+        <div class="product-desc-divider"></div>
+        <div class="product-desc-row">
+          <span class="meta-label">COMPOSIÇÃO:</span>
+          <span class="meta-value">Selante à base de Poliuretano (sem isocianato livre e solventes)</span>
+        </div>
+        <div class="product-desc-divider"></div>
+        <div class="product-desc-row">
+          <span class="meta-label">RENDIMENTO:</span>
+          <span class="meta-value">De 8 a 10 metros lineares, em juntas de 3mm</span>
+        </div>
+        <div class="product-desc-divider"></div>
+        <div class="product-desc-row">
+          <span class="meta-label">CONSUMO:</span>
+          <span class="meta-value">De 8 a 10 metros lineares, em juntas de 3mm.</span>
+        </div>
+        <p class="product-desc-note">*Rendimento pode variar conforme a porosidade e absorção da base ou o método de aplicação.</p>
+      </div>
+
+      <div class="product-desc-highlights">
+        <h2>Destaques do Produto</h2>
+        <p>O Elastment® Selante DW 240 é um selante adesivo para juntas com alto desempenho, pronto para o uso, completamente elástico, ótima resistência à água, vibrações, movimentações, aos raios UV e ao envelhecimento. Veda e adere com rapidez e elasticidade.</p>
+        <ul class="product-desc-feature-list">
+          <li>
+            <span class="material-symbols-outlined product-desc-feature-icon" aria-hidden="true">check_circle</span>
+            Produto pronto para o uso
+          </li>
+          <li>
+            <span class="material-symbols-outlined product-desc-feature-icon" aria-hidden="true">check_circle</span>
+            Alto poder de adesão
+          </li>
+          <li>
+            <span class="material-symbols-outlined product-desc-feature-icon" aria-hidden="true">check_circle</span>
+            Fácil aplicação
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="product-desc-faq">
+      <div class="product-desc-faq-header">
+        <span class="material-symbols-outlined faq-icon" aria-hidden="true">help</span>
+        <p>Perguntas Frequentes</p>
+      </div>
+
+      <div class="product-desc-faq-list">
+        <details>
+          <summary>
+            QUAL O TEMPO TOTAL DE CURA DO DW240 FLEX?
+            <span class="material-symbols-outlined accordion-icon" aria-hidden="true">keyboard_arrow_down</span>
+          </summary>
+          <div class="faq-answer">O tempo de cura total do DW240 Flex depende da temperatura e umidade, mas geralmente varia entre 24 e 48 horas.</div>
+        </details>
+        <details>
+          <summary>
+            QUAL O TEMPO TOTAL DE CURA DO DW240 FLEX?
+            <span class="material-symbols-outlined accordion-icon" aria-hidden="true">keyboard_arrow_down</span>
+          </summary>
+          <div class="faq-answer">O tempo de cura total do DW240 Flex depende da temperatura e umidade, mas geralmente varia entre 24 e 48 horas.</div>
+        </details>
+        <details>
+          <summary>
+            QUAL O TEMPO TOTAL DE CURA DO DW240 FLEX?
+            <span class="material-symbols-outlined accordion-icon" aria-hidden="true">keyboard_arrow_down</span>
+          </summary>
+          <div class="faq-answer">O tempo de cura total do DW240 Flex depende da temperatura e umidade, mas geralmente varia entre 24 e 48 horas.</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ─── Nova Embalagem ─────────────────────────────────────────────────
+         Imagens fonte: 1080 × 1080px (1:1)
+         Substitua os atributos src pelas URLs finais das imagens.
+    ──────────────────────────────────────────────────────────────────────── -->
+    <div class="product-desc-packaging">
+      <h2>Nova Embalagem</h2>
+      <p class="product-desc-packaging-intro">Texto descritivo sobre a nova embalagem do produto.</p>
+      <div class="product-desc-packaging-grid">
+
+        <figure class="product-desc-packaging-item">
+          <img
+            src=""
+            alt="Embalagem anterior do [Nome do Produto]"
+            class="product-desc-packaging-img"
+            width="1080"
+            height="1080"
+          >
+          <span class="product-desc-packaging-tag product-desc-packaging-tag--before">Antes</span>
+        </figure>
+
+        <figure class="product-desc-packaging-item">
+          <img
+            src=""
+            alt="Nova embalagem do [Nome do Produto]"
+            class="product-desc-packaging-img"
+            width="1080"
+            height="1080"
+          >
+          <span class="product-desc-packaging-tag product-desc-packaging-tag--after">Agora</span>
+        </figure>
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -26,8 +26,8 @@ Planejamento anual de campanhas. Atualize o status conforme avançar.
 |---|---|---|---|---|---|
 | Abr | Páscoa (20/04) | "Reforma de Pascoa" | Cristal / Drylevis | Frete grátis acima de R$X | Planejada |
 | Mai | Dia das Mães (10/05) | "A Casa Que Ela Merece" | LT Shine / Hold Stone | Bundle decoração | Planejada |
-| Jun | Dia dos Namorados (12/06) | "Ambiente Perfeito" | LT Shine | Desconto em efeitos especiais | Planejada |
-| Jun | Festa Junina | "Mão na Massa" | Cristal / Drylevis | Kit pintura com desconto | Planejada |
+| Jun | Dia dos Namorados (12/06) | "Ambiente Perfeito" | LT Shine | Desconto em efeitos especiais | Em produção |
+| Jun | Festa Junina | "Mão na Massa" | Cristal / Drylevis | Kit pintura com desconto | Em produção |
 
 ---
 

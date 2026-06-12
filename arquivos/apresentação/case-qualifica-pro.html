@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case — Qualifica PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --veio-preto: #2D2D2B;
+  --veio-preto-soft: #1F1F1E;
+  --veio-branco: #FFFFFF;
+  --veio-cinza: #EEEDEE;
+  --veio-cinza-2: #D9D9D9;
+  --veio-cinza-3: #B4B3B3;
+  --veio-amarelo: #FEBF13;
+  --veio-laranja: #FAA900;
+
+  --bg-page: var(--veio-branco);
+  --bg-soft: var(--veio-cinza);
+  --bg-dark: var(--veio-preto);
+  --fg-1: var(--veio-preto);
+  --fg-2: #4A4A48;
+  --fg-3: var(--veio-cinza-3);
+  --accent: var(--veio-amarelo);
+  --border-1: var(--veio-cinza-2);
+  --fg-on-dark: var(--veio-branco);
+
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  --text-xs: 12px; --text-sm: 14px; --text-base: 16px; --text-md: 18px;
+  --text-xl: 24px; --text-2xl: 32px; --text-3xl: 44px; --text-4xl: 60px;
+
+  --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
+  --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
+
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 999px;
+
+  --shadow-rest: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.04);
+  --shadow-hover: 0 2px 4px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.08);
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-normal: 180ms;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg-page); color: var(--fg-1); line-height: 1.6; }
+
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--space-32); height: 64px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-1);
+}
+.header__logo { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--veio-preto); letter-spacing: -0.02em; }
+.header__logo span { color: var(--veio-amarelo); }
+.header__nav { display: flex; gap: var(--space-32); }
+.header__nav a { font-size: var(--text-sm); font-weight: 500; color: var(--fg-2); text-decoration: none; transition: color var(--dur-normal); }
+.header__nav a:hover { color: var(--veio-preto); }
+.header__badge { font-size: var(--text-xs); font-weight: 600; background: var(--veio-cinza); padding: 6px 14px; border-radius: var(--radius-pill); color: var(--fg-2); }
+.header__badge strong { color: var(--veio-preto); }
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: var(--space-96) var(--space-32); }
+.eyebrow { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: var(--space-8); }
+.eyebrow--dark { color: var(--fg-3); }
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 32px); color: var(--fg-1); margin-bottom: var(--space-48); }
+.bg-soft { background: var(--bg-soft); }
+.placeholder { color: var(--veio-cinza-2); font-style: italic; opacity: .7; }
+
+.hero {
+  min-height: 88vh; background: var(--veio-preto); color: var(--fg-on-dark);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: var(--space-96) var(--space-32); position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; bottom: -200px; left: 50%;
+  transform: translateX(-50%); width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(254,191,19,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero__inner { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; }
+.hero__meta { display: flex; gap: var(--space-8); flex-wrap: wrap; margin-bottom: var(--space-32); }
+.hero__tag { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; border-radius: var(--radius-pill); background: rgba(255,255,255,.1); color: var(--veio-cinza-3); }
+.hero__tag--accent { background: var(--veio-amarelo); color: var(--veio-preto); }
+.hero h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 5vw, 60px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: var(--space-24); max-width: 800px; }
+.hi { color: var(--veio-amarelo); }
+.hero__sub { font-size: var(--text-md); color: var(--veio-cinza-3); max-width: 600px; margin-bottom: var(--space-48); line-height: 1.7; }
+.hero__mockup { width: 100%; max-width: 900px; aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center; color: var(--veio-cinza-3); font-size: var(--text-sm); margin-bottom: var(--space-48); }
+.hero__info { display: flex; gap: var(--space-48); flex-wrap: wrap; }
+.hero__info-item { font-size: var(--text-sm); color: var(--veio-cinza-3); }
+.hero__info-item strong { color: var(--fg-on-dark); font-weight: 600; display: block; margin-bottom: 2px; }
+
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); margin-bottom: var(--space-48); }
+.result-card { background: var(--veio-branco); border-radius: var(--radius-lg); padding: var(--space-32); border: 1px solid var(--border-1); }
+.result-card__num { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5vw, 52px); color: var(--veio-preto); letter-spacing: -0.02em; margin-bottom: var(--space-8); }
+.result-card__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; }
+.results-note { background: rgba(254,191,19,.08); border-left: 3px solid var(--veio-amarelo); padding: var(--space-16) var(--space-24); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: var(--text-sm); color: var(--fg-2); }
+
+.sobre-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-48); align-items: start; }
+.sobre-descricao { font-size: var(--text-md); color: var(--fg-2); border-left: 3px solid var(--veio-amarelo); padding-left: var(--space-24); margin-bottom: var(--space-32); line-height: 1.8; }
+.sobre-meta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.meta-item__label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3); font-weight: 600; margin-bottom: 4px; }
+.meta-item__value { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.desafio-card { background: var(--veio-preto); border-radius: var(--radius-xl); padding: var(--space-32); }
+.desafio-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--veio-amarelo); margin-bottom: var(--space-16); }
+.desafio-card p { font-size: var(--text-sm); color: var(--veio-cinza-3); margin-bottom: var(--space-16); line-height: 1.7; }
+.objetivo-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.objetivo-list li { font-size: var(--text-sm); color: var(--veio-cinza-3); padding-left: var(--space-24); position: relative; line-height: 1.6; }
+.objetivo-list li::before { content: '→'; position: absolute; left: 0; color: var(--veio-amarelo); font-weight: 700; }
+
+.processo-steps { display: flex; flex-direction: column; }
+.step { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-24); }
+.step__num { width: 48px; height: 48px; background: var(--veio-amarelo); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm); color: var(--veio-preto); flex-shrink: 0; }
+.step__body { border-bottom: 1px solid var(--border-1); padding-bottom: var(--space-32); margin-bottom: var(--space-32); }
+.step:last-child .step__body { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.step__title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--fg-1); margin-bottom: var(--space-8); padding-top: 10px; }
+.step__desc { font-size: var(--text-base); color: var(--fg-2); line-height: 1.7; margin-bottom: var(--space-16); }
+.step__tags { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+.step__tag { font-size: var(--text-xs); font-weight: 500; background: var(--veio-branco); border: 1px solid var(--border-1); padding: 4px 12px; border-radius: var(--radius-pill); color: var(--fg-2); }
+
+.detalhes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.detalhe-card { background: var(--veio-branco); border: 1px solid var(--border-1); border-radius: var(--radius-xl); padding: var(--space-32); box-shadow: var(--shadow-rest); }
+.detalhe-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--fg-1); margin-bottom: var(--space-24); }
+.ferramentas-list { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.ferramenta-chip { font-size: var(--text-sm); font-weight: 500; border: 1.5px solid var(--veio-preto); padding: 6px 16px; border-radius: var(--radius-pill); color: var(--veio-preto); background: transparent; }
+.cronograma-bars { display: flex; flex-direction: column; gap: var(--space-16); }
+.crono-item__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; margin-bottom: 6px; }
+.crono-item__bar { height: 8px; background: var(--veio-cinza-2); border-radius: var(--radius-pill); overflow: hidden; }
+.crono-item__fill { height: 100%; background: var(--veio-amarelo); border-radius: var(--radius-pill); }
+.agentes-grid { display: flex; flex-direction: column; gap: var(--space-12); }
+.agente-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-8) 0; border-bottom: 1px solid var(--veio-cinza); }
+.agente-row:last-child { border-bottom: none; }
+.agente-row__name { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.agente-row__role { font-size: var(--text-sm); color: var(--fg-3); text-align: right; max-width: 55%; }
+.desafio-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.desafio-list li { font-size: var(--text-sm); color: var(--fg-2); border-left: 2px solid var(--veio-cinza-2); padding-left: var(--space-16); line-height: 1.6; }
+
+.conclusao-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
+.conclusao-card { border-radius: var(--radius-xl); padding: var(--space-32); }
+.conclusao-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--space-16); }
+.conclusao-card p { font-size: var(--text-sm); line-height: 1.7; }
+.conclusao-card--reflexao { background: var(--veio-cinza); }
+.conclusao-card--reflexao h3 { color: var(--fg-2); }
+.conclusao-card--reflexao p { color: var(--fg-2); }
+.conclusao-card--impacto { background: var(--veio-preto); }
+.conclusao-card--impacto h3 { color: var(--veio-amarelo); }
+.conclusao-card--impacto p { color: var(--veio-cinza-3); }
+.conclusao-card--proximos { background: var(--veio-amarelo); }
+.conclusao-card--proximos h3 { color: var(--veio-preto); }
+.conclusao-card--proximos p { color: var(--veio-preto); opacity: .75; }
+
+/* Flywheel visual */
+.flywheel { background: var(--veio-cinza); border-radius: var(--radius-xl); padding: var(--space-48); margin-top: var(--space-48); }
+.flywheel__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--fg-1); margin-bottom: var(--space-32); text-align: center; }
+.flywheel__steps { display: flex; flex-direction: column; gap: var(--space-4); max-width: 600px; margin: 0 auto; }
+.flywheel__item { display: flex; align-items: center; gap: var(--space-16); padding: var(--space-16) var(--space-24); background: var(--veio-branco); border-radius: var(--radius-md); border: 1px solid var(--border-1); }
+.flywheel__dot { width: 12px; height: 12px; border-radius: 50%; background: var(--veio-amarelo); flex-shrink: 0; }
+.flywheel__label { font-size: var(--text-sm); font-weight: 600; color: var(--fg-1); }
+.flywheel__sub { font-size: var(--text-xs); color: var(--fg-3); }
+.flywheel__arrow { text-align: center; color: var(--veio-amarelo); font-size: 18px; font-weight: 700; padding: 2px 0; }
+
+.footer { background: var(--veio-preto); color: var(--veio-cinza-3); padding: var(--space-32); text-align: center; font-size: var(--text-sm); }
+.footer strong { color: var(--veio-branco); }
+
+@media (max-width: 900px) {
+  .results-grid, .conclusao-grid { grid-template-columns: 1fr; }
+  .sobre-layout, .detalhes-grid { grid-template-columns: 1fr; }
+  .header__nav { display: none; }
+  .wrap { padding: var(--space-64) var(--space-24); }
+}
+@media (max-width: 480px) { .sobre-meta { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header__logo">Qualifica <span>PRO</span></span>
+  <nav class="header__nav">
+    <a href="#resultados">Resultados</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#processo">Processo</a>
+    <a href="#detalhes">Detalhes</a>
+    <a href="#conclusao">Conclusão</a>
+  </nav>
+  <div class="header__badge">Case <strong>Plataforma Educacional</strong></div>
+</header>
+
+<!-- 01 Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__meta">
+      <span class="hero__tag hero__tag--accent">Case de Portfólio</span>
+      <span class="hero__tag">Qualifica PRO</span>
+      <span class="hero__tag">IVA Química</span>
+      <span class="hero__tag">2024 – 2026</span>
+    </div>
+    <h1>Da Venda ao <span class="hi">Vínculo.</span></h1>
+    <p class="hero__sub">
+      Qualificação profissional como estratégia de pull — ao ensinar, a IVA Química assume o papel de quem investe na carreira do profissional, não de quem quer vender para ele. Isso gera autoridade e lealdade que nenhum desconto compra.
+    </p>
+    <div class="hero__mockup">
+      [ Visual do Qualifica PRO — evento ou plataforma — substituir por &lt;img&gt; ]
+    </div>
+    <div class="hero__info">
+      <div class="hero__info-item"><strong>Projeto</strong> Qualifica PRO</div>
+      <div class="hero__info-item"><strong>Slogan</strong> "Quem Faz Aprende, Quem Aprende Cresce!"</div>
+      <div class="hero__info-item"><strong>Modalidades</strong> Cursos online + Eventos presenciais</div>
+      <div class="hero__info-item"><strong>Segmentos</strong> 5 áreas profissionais</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Resultados -->
+<section id="resultados" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Big Numbers</p>
+    <p class="section-title">Resultados</p>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-card__num">5</div>
+        <div class="result-card__label">Segmentos profissionais atendidos</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">2</div>
+        <div class="result-card__label">Modalidades — cursos online e eventos presenciais</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">3</div>
+        <div class="result-card__label">Níveis de formação — iniciante, intermediário e PRO</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Profissionais formados</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Eventos presenciais realizados</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Conversão para o programa Confia!</div>
+      </div>
+    </div>
+    <div class="results-note">
+      <strong>Nota.</strong> Dados de alunos, eventos e conversão para Confia! serão preenchidos após os primeiros ciclos de operação. Estrutura de segmentos e modalidades já definida.
+    </div>
+  </div>
+</section>
+
+<!-- 03 Sobre -->
+<section id="sobre">
+  <div class="wrap">
+    <p class="eyebrow">Contexto</p>
+    <p class="section-title">Sobre o projeto</p>
+    <div class="sobre-layout">
+      <div>
+        <p class="sobre-descricao">
+          O Qualifica PRO é a plataforma de qualificação profissional da IVA Química. Não é um catálogo de cursos — é a peça central da estratégia de pull. Ao qualificar profissionais, a IVA cria evangelistas que dominam o produto, confiam na marca e recomendam com autoridade. É o investimento que nenhuma promoção substitui.
+        </p>
+        <div class="sobre-meta">
+          <div class="meta-item">
+            <div class="meta-item__label">Objetivo estratégico</div>
+            <div class="meta-item__value">Converter o profissional de comprador em defensor da marca</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Público-alvo</div>
+            <div class="meta-item__value">Profissionais de todos os níveis — iniciantes a experientes</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Integração</div>
+            <div class="meta-item__value">Porta de entrada para o programa Confia!</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Plataforma</div>
+            <div class="meta-item__value placeholder">— a definir —</div>
+          </div>
+        </div>
+      </div>
+      <div class="desafio-card">
+        <h3>O problema real</h3>
+        <p>Produtos técnicos da IVA exigem conhecimento para serem aplicados corretamente. Sem profissionais capacitados, o produto caro fica mal aplicado, o resultado decepciona e a marca perde credibilidade — não o aplicador.</p>
+        <ul class="objetivo-list">
+          <li>Produto técnico de alto valor sem rede de aplicadores capacitados para recomendar com confiança</li>
+          <li>Profissional sem qualificação aplica mal, o cliente culpa o produto — não o aplicador</li>
+          <li>Sem capacitação, a IVA depende de vendedores de balcão que desconhecem a profundidade do catálogo</li>
+          <li>Gap entre o potencial dos produtos e a capacidade de quem os aplica no campo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Flywheel visual -->
+    <div class="flywheel">
+      <div class="flywheel__title">O Flywheel que o Qualifica PRO aciona</div>
+      <div class="flywheel__steps">
+        <div class="flywheel__item">
+          <div class="flywheel__dot"></div>
+          <div>
+            <div class="flywheel__label">Qualifica PRO</div>
+            <div class="flywheel__sub">Profissional aprende e ganha confiança técnica com produtos IVA</div>
+          </div>
+        </div>
+        <div class="flywheel__arrow">↓</div>
+        <div class="flywheel__item">
+          <div class="flywheel__dot"></div>
+          <div>
+            <div class="flywheel__label">Confia!</div>
+            <div class="flywheel__sub">Profissional entra no programa e passa a recomendar ativamente</div>
+          </div>
+        </div>
+        <div class="flywheel__arrow">↓</div>
+        <div class="flywheel__item">
+          <div class="flywheel__dot"></div>
+          <div>
+            <div class="flywheel__label">Cliente Final</div>
+            <div class="flywheel__sub">Recebe indicação de fonte confiável → deseja o produto → procura</div>
+          </div>
+        </div>
+        <div class="flywheel__arrow">↓</div>
+        <div class="flywheel__item">
+          <div class="flywheel__dot"></div>
+          <div>
+            <div class="flywheel__label">Escuta o Véio! / Fácil Decor</div>
+            <div class="flywheel__sub">Canal próprio captura a venda com margem completa</div>
+          </div>
+        </div>
+        <div class="flywheel__arrow">↓</div>
+        <div class="flywheel__item">
+          <div class="flywheel__dot"></div>
+          <div>
+            <div class="flywheel__label">IVA Química</div>
+            <div class="flywheel__sub">Dados do consumidor final em mãos → inteligência → produto melhor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Processo -->
+<section id="processo" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Como foi feito</p>
+    <p class="section-title">Processo</p>
+    <div class="processo-steps">
+
+      <div class="step">
+        <div class="step__num">01</div>
+        <div class="step__body">
+          <div class="step__title">Propósito e posicionamento estratégico</div>
+          <div class="step__desc">
+            Decisão de não criar um curso de produto — mas uma plataforma de desenvolvimento profissional. A diferença é profunda: um curso de produto vende; uma plataforma de qualificação cria lealdade. O slogan "Quem Faz Aprende, Quem Aprende Cresce!" captura o ciclo virtuoso: aprendizado gera resultado, resultado gera crescimento, crescimento gera fidelidade.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Posicionamento</span>
+            <span class="step__tag">Estratégia de pull</span>
+            <span class="step__tag">Lealdade</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">02</div>
+        <div class="step__body">
+          <div class="step__title">Mapeamento de segmentos profissionais</div>
+          <div class="step__desc">
+            Definição dos 5 segmentos atendidos: construção civil, marcenaria, pintura decorativa, gesso & drywall, e paisagismo/jardinagem. Cada segmento tem jornada de aprendizagem própria — do iniciante que está começando ao PRO que quer avançar na carreira. O Qualifica PRO respeita onde o profissional está e o leva para o próximo nível, sem pular etapas.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Construção civil</span>
+            <span class="step__tag">Marcenaria</span>
+            <span class="step__tag">Pintura decorativa</span>
+            <span class="step__tag">Gesso & Drywall</span>
+            <span class="step__tag">Paisagismo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">03</div>
+        <div class="step__body">
+          <div class="step__title">Estrutura de cursos online</div>
+          <div class="step__desc">
+            Desenvolvimento dos cursos online com estrutura modular: módulos, aulas, carga horária e materiais de apoio (apostila, checklist, fichas técnicas). Cada curso é construído em torno do problema real do profissional — não da lista de produtos IVA. O produto entra como solução recomendada dentro do contexto técnico, não como protagonista.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Cursos online</span>
+            <span class="step__tag">Módulos</span>
+            <span class="step__tag">Apostilas</span>
+            <span class="step__tag">em andamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">04</div>
+        <div class="step__body">
+          <div class="step__title">Eventos presenciais — aprendizado com experiência</div>
+          <div class="step__desc">
+            Estrutura de eventos presenciais onde o profissional aplica o produto em condições reais, com suporte técnico da IVA. Eventos têm dupla função: qualificam tecnicamente e criam comunidade — profissionais que se conhecem, indicam trabalho e referenciam a IVA mutuamente. O evento é um produto em si, não só um canal de ensino.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Eventos presenciais</span>
+            <span class="step__tag">Aplicação real</span>
+            <span class="step__tag">Comunidade</span>
+            <span class="step__tag">em andamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">05</div>
+        <div class="step__body">
+          <div class="step__title">Integração com o programa Confia!</div>
+          <div class="step__desc">
+            O Qualifica PRO é a porta de entrada natural para o programa Confia! — profissionais que concluem cursos e eventos são os candidatos mais qualificados para se tornar afiliados. Eles já conhecem o produto, já testaram, já confiam. A integração é fluida: ao concluir a formação, o profissional recebe o convite para entrar no Confia! e começar a gerar renda recomendando o que já usa.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Confia!</span>
+            <span class="step__tag">Afiliados</span>
+            <span class="step__tag">Flywheel</span>
+            <span class="step__tag">Conversão</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 05 Detalhes Técnicos -->
+<section id="detalhes">
+  <div class="wrap">
+    <p class="eyebrow">Técnico</p>
+    <p class="section-title">Detalhes do projeto</p>
+    <div class="detalhes-grid">
+
+      <div class="detalhe-card">
+        <h3>Ferramentas e plataformas</h3>
+        <div class="ferramentas-list">
+          <span class="ferramenta-chip">Plataforma EAD</span>
+          <span class="ferramenta-chip">Notion</span>
+          <span class="ferramenta-chip">Claude Code</span>
+          <span class="ferramenta-chip">WhatsApp Business</span>
+          <span class="ferramenta-chip">Meta Ads</span>
+          <span class="ferramenta-chip">YouTube</span>
+          <span class="ferramenta-chip">Google Workspace</span>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Cronograma estimado</h3>
+        <div class="cronograma-bars">
+          <div class="crono-item">
+            <div class="crono-item__label">Propósito e segmentos</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:100%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Estrutura de cursos (online)</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:60%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Primeiro evento presencial</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:40%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Integração com Confia!</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:30%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Escalada de segmentos</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:20%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Arquitetura de segmentos</h3>
+        <div class="agentes-grid">
+          <div class="agente-row">
+            <span class="agente-row__name">Construção Civil</span>
+            <span class="agente-row__role">Impermeabilização, drywall, ICF</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Pintura Decorativa</span>
+            <span class="agente-row__role">Efeitos, texturas, acabamento</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Marcenaria</span>
+            <span class="agente-row__role">Adesivos, resinas, acabamentos</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Gesso & Drywall</span>
+            <span class="agente-row__role">Novas tecnologias construtivas</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Paisagismo</span>
+            <span class="agente-row__role">Hold Stone — fixação e drenagem</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Principais desafios</h3>
+        <ul class="desafio-list">
+          <li>Criar conteúdo técnico de alta qualidade sem soar publicitário — o curso não pode parecer um catálogo de produtos disfarçado</li>
+          <li>Atrair profissionais experientes que já "sabem tudo" e desconfiam de treinamentos da indústria</li>
+          <li>Converter alunos em afiliados do Confia! sem forçar a jornada — a transição precisa ser natural e desejada</li>
+          <li>Produzir conteúdo em 5 segmentos simultâneos com qualidade técnica em cada área específica</li>
+          <li>Organizar eventos presenciais escaláveis sem perder a qualidade da experiência individual</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 06 Conclusão -->
+<section id="conclusao" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Encerramento</p>
+    <p class="section-title">Conclusão</p>
+    <div class="conclusao-grid">
+
+      <div class="conclusao-card conclusao-card--reflexao">
+        <h3>Aprendizados</h3>
+        <p>Ensinar é a forma mais eficiente de vender produto técnico. Quando a IVA coloca o profissional no centro — não como alvo de venda, mas como protagonista de crescimento — a confiança muda de categoria. Nenhum desconto comercial gera o tipo de lealdade que vem de quem aprendeu o ofício junto com você.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--impacto">
+        <h3>Impacto</h3>
+        <p>O Qualifica PRO é o primeiro elo do flywheel do ecossistema IVA. Sem ele, o Confia! não tem evangelistas de qualidade, o cliente final não recebe indicação confiável e os canais próprios não têm demanda orgânica. Com ele, cada profissional formado se torna um multiplicador permanente da marca no campo.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--proximos">
+        <h3>Próximos passos</h3>
+        <p>Lançar os primeiros cursos online nos segmentos de maior base de profissionais. Realizar o primeiro evento presencial com capacidade limitada para testar o modelo. Ativar o fluxo de conversão para o Confia! ao final de cada formação. Medir taxa de conversão e NPS dos participantes.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>Qualifica PRO</strong> — Case Plataforma Educacional · IVA Química
+</footer>
+
+</body>
+</html>

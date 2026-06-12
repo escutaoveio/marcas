@@ -1,0 +1,199 @@
+<!--
+  TEMPLATE: Adendo de Mudança de Embalagem
+  ─────────────────────────────────────────────────────────────────────────────
+  QUANDO USAR:
+    Sempre que um produto tiver reformulação de rótulo/embalagem.
+    Este bloco é inserido NO TOPO do arquivo index-{variante}.html, antes do
+    grid principal (Dados do Produto + Destaques), dentro de .product-desc-card.
+
+  COMO USAR:
+    1. Copie o bloco <style> e cole junto ao <style> do index-{variante}.html
+       (antes do fechamento </style>).
+    2. Copie o bloco <!-- Adendo --> e cole como PRIMEIRO filho de .product-desc-card.
+    3. Substitua todos os {{PLACEHOLDERS}} descritos abaixo.
+    4. Suba as imagens para o repositório GitHub do produto e use a URL raw:
+       https://raw.githubusercontent.com/escutaoveio/e-commerce/main/products/{marca}/{linha}/{slug}/
+
+  PLACEHOLDERS:
+    {{PRODUCT_NAME}}       Nome completo do produto — ex: "Hold Stone Pro 5L"
+    {{VARIANT_LABEL}}      Label da variante — ex: "5L" | "1L" | "900ml"
+    {{IMG_BEFORE_URL}}     URL raw.githubusercontent.com da foto embalagem anterior
+    {{IMG_AFTER_URL}}      URL raw.githubusercontent.com da foto nova embalagem
+    {{IMG_BEFORE_ALT}}     Alt text da imagem anterior — ex: "Embalagem anterior — Hold Stone Pro 5L"
+    {{IMG_AFTER_ALT}}      Alt text da nova imagem — ex: "Nova embalagem — Hold Stone Pro 5L"
+
+  ASSET COMPARTILHADO — ÍCONE DE SETA:
+    O arquivo arrow-dots.svg é um ativo compartilhado. Use a URL abaixo diretamente
+    (não precisa copiar o SVG para cada produto):
+    https://raw.githubusercontent.com/escutaoveio/e-commerce/main/products/hold-stone/pro/resina-para-pedras/arrow-dots.svg
+
+  NOTAS TÉCNICAS:
+    • mix-blend-mode: multiply → elimina fundo branco das fotos de produto sobre painéis coloridos.
+    • @import do Material Symbols deve incluir o range FILL,GRAD@24,400,0..1,0
+      para que font-variation-settings: 'FILL' 1 funcione no ícone info.
+    • .packaging-img-slot usa aspect-ratio: 1/1 — as imagens devem ser preferencialmente
+      quadradas ou ter fundo branco para o blend mode funcionar corretamente.
+  ─────────────────────────────────────────────────────────────────────────────
+-->
+
+<!-- ── CSS: cole dentro do <style> existente do index-{variante}.html ─────── -->
+<style>
+  /* ── Adendo: Mudança de Embalagem ────────────────────────────── */
+
+  .packaging-change {
+    padding: 0;
+  }
+
+  .packaging-compare {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    align-items: center;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .packaging-item {
+    position: relative;
+    border-radius: 12px;
+    padding: 36px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .packaging-item--old {
+    background: #f0f0f0;
+  }
+
+  .packaging-item--new {
+    background: #ffffff;
+    border: 2px solid #cf2c1f;
+    box-shadow: 0 0 0 1px rgba(207, 44, 31, 0.12);
+  }
+
+  .packaging-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px 10px;
+    font-size: 0.625rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 10px 0 8px 0;
+  }
+
+  .packaging-badge--old {
+    background: #d8d8d8;
+    color: #7a7a7a;
+  }
+
+  .packaging-badge--new {
+    background: #cf2c1f;
+    color: #ffffff;
+  }
+
+  .packaging-img-slot {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .packaging-img-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .packaging-img-placeholder {
+    font-size: 0.6875rem;
+    color: #b0b0b0;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .packaging-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #cf2c1f;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  .packaging-disclaimer {
+    margin: 10px auto 0;
+    max-width: 380px;
+    font-size: 0.6875rem;
+    color: #8c8c8c;
+    line-height: 1.4;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+  }
+
+  .packaging-disclaimer-icon {
+    font-size: 14px;
+    color: #6e6e6e;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    flex-shrink: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .packaging-change {
+      padding: 24px;
+    }
+
+    .packaging-compare {
+      grid-template-columns: 1fr 40px 1fr;
+    }
+
+    .packaging-arrow {
+      width: 30px;
+      height: 30px;
+    }
+  }
+</style>
+
+<!-- ── HTML: cole como PRIMEIRO filho de .product-desc-card ───────────────── -->
+<div class="packaging-change">
+  <div class="packaging-compare">
+
+    <div class="packaging-item packaging-item--old">
+      <span class="packaging-badge packaging-badge--old">Antigo</span>
+      <div class="packaging-img-slot">
+        <img src="{{IMG_BEFORE_URL}}" alt="{{IMG_BEFORE_ALT}}">
+      </div>
+    </div>
+
+    <div class="packaging-arrow" aria-hidden="true">
+      <img src="https://raw.githubusercontent.com/escutaoveio/e-commerce/main/products/hold-stone/pro/resina-para-pedras/arrow-dots.svg" width="24" height="24" alt="">
+    </div>
+
+    <div class="packaging-item packaging-item--new">
+      <span class="packaging-badge packaging-badge--new">Novo</span>
+      <div class="packaging-img-slot">
+        <img src="{{IMG_AFTER_URL}}" alt="{{IMG_AFTER_ALT}}">
+      </div>
+    </div>
+
+  </div>
+  <p class="packaging-disclaimer">
+    <span class="material-symbols-outlined packaging-disclaimer-icon" aria-hidden="true">info</span>
+    Algumas informa&ccedil;&otilde;es podem divergir entre o r&oacute;tulo novo e o antigo.<br>Em caso de d&uacute;vidas, entre em contato com o atendimento comercial.
+  </p>
+</div>

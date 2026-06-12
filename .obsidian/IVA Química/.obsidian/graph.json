@@ -1,0 +1,51 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:E-Commerce",
+      "color": {
+        "a": 1,
+        "rgb": 2600544
+      }
+    },
+    {
+      "query": "path:Community",
+      "color": {
+        "a": 1,
+        "rgb": 10181046
+      }
+    },
+    {
+      "query": "path:Marcas",
+      "color": {
+        "a": 1,
+        "rgb": 15844367
+      }
+    },
+    {
+      "query": "Outros",
+      "color": {
+        "a": 1,
+        "rgb": 12597547
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": false,
+  "textFadeMultiplier": -2.6,
+  "nodeSizeMultiplier": 0.410706860706861,
+  "lineSizeMultiplier": 0.736694386694387,
+  "collapse-forces": false,
+  "centerStrength": 0,
+  "repelStrength": 14.1580041580042,
+  "linkStrength": 0.72037422037422,
+  "linkDistance": 200,
+  "scale": 0.5687652217265186,
+  "close": true
+}

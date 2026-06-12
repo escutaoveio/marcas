@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case — IVA Química</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --veio-preto: #2D2D2B;
+  --veio-preto-soft: #1F1F1E;
+  --veio-branco: #FFFFFF;
+  --veio-cinza: #EEEDEE;
+  --veio-cinza-2: #D9D9D9;
+  --veio-cinza-3: #B4B3B3;
+  --veio-amarelo: #FEBF13;
+  --veio-laranja: #FAA900;
+
+  --bg-page: var(--veio-branco);
+  --bg-soft: var(--veio-cinza);
+  --bg-dark: var(--veio-preto);
+  --fg-1: var(--veio-preto);
+  --fg-2: #4A4A48;
+  --fg-3: var(--veio-cinza-3);
+  --accent: var(--veio-amarelo);
+  --border-1: var(--veio-cinza-2);
+  --fg-on-dark: var(--veio-branco);
+
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-md: 18px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 44px;
+  --text-4xl: 60px;
+
+  --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
+  --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
+
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 999px;
+
+  --shadow-rest: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.04);
+  --shadow-hover: 0 2px 4px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.08);
+
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-normal: 180ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg-page); color: var(--fg-1); line-height: 1.6; }
+
+/* Header */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--space-32); height: 64px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-1);
+}
+.header__logo { height: 36px; font-family: var(--font-display); font-weight: 800; font-size: var(--text-xl); color: var(--veio-preto); text-decoration: none; letter-spacing: -0.02em; }
+.header__logo span { color: var(--veio-amarelo); }
+.header__nav { display: flex; gap: var(--space-32); }
+.header__nav a { font-size: var(--text-sm); font-weight: 500; color: var(--fg-2); text-decoration: none; transition: color var(--dur-normal); }
+.header__nav a:hover { color: var(--veio-preto); }
+.header__badge { font-size: var(--text-xs); font-weight: 600; background: var(--veio-cinza); padding: 6px 14px; border-radius: var(--radius-pill); color: var(--fg-2); }
+.header__badge strong { color: var(--veio-preto); }
+
+/* Wrap */
+.wrap { max-width: 1100px; margin: 0 auto; padding: var(--space-96) var(--space-32); }
+
+/* Eyebrow */
+.eyebrow { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: var(--space-8); }
+.eyebrow--accent { color: var(--veio-amarelo); }
+.eyebrow--dark { color: var(--fg-3); }
+
+/* Section title */
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 32px); color: var(--fg-1); margin-bottom: var(--space-48); }
+
+/* Backgrounds */
+.bg-soft { background: var(--bg-soft); }
+.bg-dark { background: var(--bg-dark); }
+
+/* Placeholder */
+.placeholder { color: var(--veio-cinza-2); font-style: italic; opacity: .7; }
+
+/* Hero */
+.hero {
+  min-height: 88vh; background: var(--veio-preto); color: var(--fg-on-dark);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: var(--space-96) var(--space-32); position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; bottom: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(254,191,19,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero__inner { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; }
+.hero__meta { display: flex; gap: var(--space-8); flex-wrap: wrap; margin-bottom: var(--space-32); }
+.hero__tag {
+  font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.1); color: var(--veio-cinza-3);
+}
+.hero__tag--accent { background: var(--veio-amarelo); color: var(--veio-preto); }
+.hero h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 5vw, 60px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: var(--space-24); max-width: 800px; }
+.hi { color: var(--veio-amarelo); }
+.hero__sub { font-size: var(--text-md); color: var(--veio-cinza-3); max-width: 600px; margin-bottom: var(--space-48); line-height: 1.7; }
+.hero__mockup {
+  width: 100%; max-width: 900px; aspect-ratio: 16/9;
+  border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg);
+  background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center;
+  color: var(--veio-cinza-3); font-size: var(--text-sm); margin-bottom: var(--space-48);
+}
+.hero__info { display: flex; gap: var(--space-48); flex-wrap: wrap; }
+.hero__info-item { font-size: var(--text-sm); color: var(--veio-cinza-3); }
+.hero__info-item strong { color: var(--fg-on-dark); font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* Results */
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); margin-bottom: var(--space-48); }
+.result-card { background: var(--veio-branco); border-radius: var(--radius-lg); padding: var(--space-32); border: 1px solid var(--border-1); }
+.result-card__num { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5vw, 52px); color: var(--veio-preto); letter-spacing: -0.02em; margin-bottom: var(--space-8); }
+.result-card__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; }
+.results-note { background: rgba(254,191,19,.08); border-left: 3px solid var(--veio-amarelo); padding: var(--space-16) var(--space-24); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: var(--text-sm); color: var(--fg-2); }
+
+/* Sobre */
+.sobre-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-48); align-items: start; }
+.sobre-descricao { font-size: var(--text-md); color: var(--fg-2); border-left: 3px solid var(--veio-amarelo); padding-left: var(--space-24); margin-bottom: var(--space-32); line-height: 1.8; }
+.sobre-meta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.meta-item__label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3); font-weight: 600; margin-bottom: 4px; }
+.meta-item__value { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.desafio-card { background: var(--veio-preto); border-radius: var(--radius-xl); padding: var(--space-32); }
+.desafio-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--veio-amarelo); margin-bottom: var(--space-16); }
+.desafio-card p { font-size: var(--text-sm); color: var(--veio-cinza-3); margin-bottom: var(--space-16); line-height: 1.7; }
+.objetivo-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.objetivo-list li { font-size: var(--text-sm); color: var(--veio-cinza-3); padding-left: var(--space-24); position: relative; line-height: 1.6; }
+.objetivo-list li::before { content: '→'; position: absolute; left: 0; color: var(--veio-amarelo); font-weight: 700; }
+
+/* Processo */
+.processo-steps { display: flex; flex-direction: column; gap: 0; }
+.step { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-24); }
+.step__num { width: 48px; height: 48px; background: var(--veio-amarelo); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm); color: var(--veio-preto); flex-shrink: 0; }
+.step__body { border-bottom: 1px solid var(--border-1); padding-bottom: var(--space-32); margin-bottom: var(--space-32); }
+.step:last-child .step__body { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.step__title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--fg-1); margin-bottom: var(--space-8); padding-top: 10px; }
+.step__desc { font-size: var(--text-base); color: var(--fg-2); line-height: 1.7; margin-bottom: var(--space-16); }
+.step__tags { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+.step__tag { font-size: var(--text-xs); font-weight: 500; background: var(--veio-branco); border: 1px solid var(--border-1); padding: 4px 12px; border-radius: var(--radius-pill); color: var(--fg-2); }
+
+/* Detalhes */
+.detalhes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.detalhe-card { background: var(--veio-branco); border: 1px solid var(--border-1); border-radius: var(--radius-xl); padding: var(--space-32); box-shadow: var(--shadow-rest); }
+.detalhe-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--fg-1); margin-bottom: var(--space-24); }
+.ferramentas-list { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.ferramenta-chip { font-size: var(--text-sm); font-weight: 500; border: 1.5px solid var(--veio-preto); padding: 6px 16px; border-radius: var(--radius-pill); color: var(--veio-preto); background: transparent; }
+.cronograma-bars { display: flex; flex-direction: column; gap: var(--space-16); }
+.crono-item__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; margin-bottom: 6px; }
+.crono-item__bar { height: 8px; background: var(--veio-cinza-2); border-radius: var(--radius-pill); overflow: hidden; }
+.crono-item__fill { height: 100%; background: var(--veio-amarelo); border-radius: var(--radius-pill); }
+.agentes-grid { display: flex; flex-direction: column; gap: var(--space-12); }
+.agente-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-8) 0; border-bottom: 1px solid var(--veio-cinza); }
+.agente-row:last-child { border-bottom: none; }
+.agente-row__name { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.agente-row__role { font-size: var(--text-sm); color: var(--fg-3); text-align: right; max-width: 55%; }
+.desafio-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.desafio-list li { font-size: var(--text-sm); color: var(--fg-2); border-left: 2px solid var(--veio-cinza-2); padding-left: var(--space-16); line-height: 1.6; }
+
+/* Conclusão */
+.conclusao-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
+.conclusao-card { border-radius: var(--radius-xl); padding: var(--space-32); }
+.conclusao-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--space-16); }
+.conclusao-card p { font-size: var(--text-sm); line-height: 1.7; }
+.conclusao-card--reflexao { background: var(--veio-cinza); }
+.conclusao-card--reflexao h3 { color: var(--fg-2); }
+.conclusao-card--reflexao p { color: var(--fg-2); }
+.conclusao-card--impacto { background: var(--veio-preto); }
+.conclusao-card--impacto h3 { color: var(--veio-amarelo); }
+.conclusao-card--impacto p { color: var(--veio-cinza-3); }
+.conclusao-card--proximos { background: var(--veio-amarelo); }
+.conclusao-card--proximos h3 { color: var(--veio-preto); }
+.conclusao-card--proximos p { color: var(--veio-preto); opacity: .75; }
+
+/* Footer */
+.footer { background: var(--veio-preto); color: var(--veio-cinza-3); padding: var(--space-32); text-align: center; font-size: var(--text-sm); }
+.footer strong { color: var(--veio-branco); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .results-grid, .conclusao-grid { grid-template-columns: 1fr; }
+  .sobre-layout, .detalhes-grid { grid-template-columns: 1fr; }
+  .header__nav { display: none; }
+  .wrap { padding: var(--space-64) var(--space-24); }
+}
+@media (max-width: 480px) {
+  .sobre-meta { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header__logo">IVA <span>Química</span></span>
+  <nav class="header__nav">
+    <a href="#resultados">Resultados</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#processo">Processo</a>
+    <a href="#detalhes">Detalhes</a>
+    <a href="#conclusao">Conclusão</a>
+  </nav>
+  <div class="header__badge">Case <strong>Institucional</strong></div>
+</header>
+
+<!-- 01 Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__meta">
+      <span class="hero__tag hero__tag--accent">Case de Portfólio</span>
+      <span class="hero__tag">IVA Química</span>
+      <span class="hero__tag">2024 – 2026</span>
+    </div>
+    <h1>Do Produto à <span class="hi">Transformação.</span></h1>
+    <p class="hero__sub">
+      De uma indústria química B2B com portfólio disperso a um ecossistema vertical integrado — marcas posicionadas, canais próprios e plataformas que chegam diretamente ao cliente final.
+    </p>
+    <div class="hero__mockup">
+      [ Diagrama do ecossistema — substituir por visual após produção ]
+    </div>
+    <div class="hero__info">
+      <div class="hero__info-item"><strong>Empresa</strong> IVA Química</div>
+      <div class="hero__info-item"><strong>Segmento</strong> Indústria Química</div>
+      <div class="hero__info-item"><strong>Marcas</strong> 6 ativas</div>
+      <div class="hero__info-item"><strong>Catálogo</strong> 1.200+ produtos</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Resultados -->
+<section id="resultados" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Big Numbers</p>
+    <p class="section-title">Resultados</p>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-card__num">1.200<span style="font-size:.5em">+</span></div>
+        <div class="result-card__label">Produtos ativos no catálogo</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">6</div>
+        <div class="result-card__label">Marcas posicionadas com papel distinto</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">2</div>
+        <div class="result-card__label">Canais de venda próprios ativos</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">2</div>
+        <div class="result-card__label">Plataformas estratégicas de pull</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">3</div>
+        <div class="result-card__label">Públicos mapeados em cascata</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">100<span style="font-size:.5em">%</span></div>
+        <div class="result-card__label">Independência vertical — fabrica, distribui e vende</div>
+      </div>
+    </div>
+    <div class="results-note">
+      <strong>Nota.</strong> Os dados de catálogo e marcas refletem o estado operacional documentado em 2026. Métricas de vendas e conversão são consolidadas nos cases individuais de cada canal.
+    </div>
+  </div>
+</section>
+
+<!-- 03 Sobre -->
+<section id="sobre">
+  <div class="wrap">
+    <p class="eyebrow">Contexto</p>
+    <p class="section-title">Sobre o projeto</p>
+    <div class="sobre-layout">
+      <div>
+        <p class="sobre-descricao">
+          A IVA Química é uma indústria química brasileira com mais de 1.200 produtos ativos para construção civil, decoração, marcenaria, limpeza e artesanato. Fabrica, distribui e vende diretamente — mas chegou num ponto em que o canal B2B não era mais suficiente para ativar a demanda que o portfólio merecia.
+        </p>
+        <div class="sobre-meta">
+          <div class="meta-item">
+            <div class="meta-item__label">Objetivo</div>
+            <div class="meta-item__value">Criar conexão direta com o cliente final e profissional</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Público-alvo</div>
+            <div class="meta-item__value">Cliente final, profissional aplicador, B2B por pull</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Canais ativos</div>
+            <div class="meta-item__value">Escuta o Véio!, Fácil Decor</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Plataformas</div>
+            <div class="meta-item__value">Qualifica PRO, Confia!</div>
+          </div>
+        </div>
+      </div>
+      <div class="desafio-card">
+        <h3>O problema real</h3>
+        <p>A IVA operava com lógica de indústria B2B num mercado que exige conexão direta com o usuário final. Produto bom, inovação real — mas o gap estava no go-to-market.</p>
+        <ul class="objetivo-list">
+          <li>Marketing não conseguia viralizar vídeos de produto — produto químico não emociona</li>
+          <li>Múltiplas marcas no mesmo segmento geravam confusão e desperdício de energia</li>
+          <li>Produtos técnicos e caros sem evangelistas capacitados no campo</li>
+          <li>Dependência total do canal B2B para ativar a demanda do cliente final</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Processo -->
+<section id="processo" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Como foi feito</p>
+    <p class="section-title">Processo</p>
+    <div class="processo-steps">
+
+      <div class="step">
+        <div class="step__num">01</div>
+        <div class="step__body">
+          <div class="step__title">Diagnóstico estratégico</div>
+          <div class="step__desc">
+            Mapeamento completo do ecossistema existente: marcas, produtos, públicos, canais e gaps de posicionamento. Quatro frases-diagnóstico capturaram a raiz do problema — incluindo a percepção interna de que "produto químico não viraliza". A conclusão foi: o produto é um meio, não um fim. O que viraliza é a transformação.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Análise de portfólio</span>
+            <span class="step__tag">Diagnóstico de marca</span>
+            <span class="step__tag">Mapeamento de públicos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">02</div>
+        <div class="step__body">
+          <div class="step__title">Arquitetura de marcas</div>
+          <div class="step__desc">
+            Separação clara de papel, público e canal para cada marca. Drylevis virou branded house com Elastment e Smart como sub-marcas. Hold Stone, LT Shine e Cristal mantiveram independência. Regra central: uma marca pode conversar com o mesmo público que outra, mas nunca no mesmo canal no mesmo momento. Cristal abre a porta; LT Shine cria o desejo.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Branded house</span>
+            <span class="step__tag">Arquitetura de portfólio</span>
+            <span class="step__tag">Separação de canais</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">03</div>
+        <div class="step__body">
+          <div class="step__title">Estratégia pull — cliente final como ponto de partida</div>
+          <div class="step__desc">
+            Inversão do modelo de go-to-market. A estratégia passa a começar no cliente final e sobe — nunca do distribuidor para baixo. O B2B deixa de ser o cliente a convencer e passa a ser o canal ativado por demanda vinda de baixo. O profissional tem papel duplo: é convencido tecnicamente e, ao confiar no produto, vira o melhor vendedor no ponto de venda.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Estratégia pull</span>
+            <span class="step__tag">Go-to-market</span>
+            <span class="step__tag">Ativação de profissionais</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">04</div>
+        <div class="step__body">
+          <div class="step__title">Canais próprios — Escuta o Véio! e Fácil Decor</div>
+          <div class="step__desc">
+            Criação de unidades de negócio no varejo próprio para garantir independência completa de canal. Escuta o Véio! como e-commerce principal do catálogo completo — com identidade, personagem e operação em loja virtual, marketplaces e WhatsApp. Fácil Decor como canal especializado em LT Shine com loja física, e-commerce e modelo de franquia OMS.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">E-commerce</span>
+            <span class="step__tag">Loja física</span>
+            <span class="step__tag">Franquia OMS</span>
+            <span class="step__tag">Marketplaces</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">05</div>
+        <div class="step__body">
+          <div class="step__title">Plataformas de pull — Qualifica PRO e Confia!</div>
+          <div class="step__desc">
+            Desenvolvimento das plataformas estratégicas que criam o flywheel do ecossistema. Qualifica PRO como mecanismo de conversão do profissional — ao ensinar, a IVA assume papel de quem investe na carreira, não de quem quer vender. Confia! como programa de afiliados que dissolve a distância criada pelo canal B2B, transformando profissionais em embaixadores remunerados.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Qualifica PRO</span>
+            <span class="step__tag">Programa de afiliados</span>
+            <span class="step__tag">Flywheel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">06</div>
+        <div class="step__body">
+          <div class="step__title">Inteligência operacional</div>
+          <div class="step__desc">
+            Estruturação do repositório de inteligência operacional — documentação completa do ecossistema, workflows de produção, agentes IA, base de dados e dashboards. A IVA passa a operar com contexto documentado e rastreável: cada decisão estratégica registrada, cada processo replicável.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Documentação</span>
+            <span class="step__tag">Workflows</span>
+            <span class="step__tag">Agentes IA</span>
+            <span class="step__tag">Dashboards</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 05 Detalhes Técnicos -->
+<section id="detalhes">
+  <div class="wrap">
+    <p class="eyebrow">Técnico</p>
+    <p class="section-title">Detalhes do projeto</p>
+    <div class="detalhes-grid">
+
+      <div class="detalhe-card">
+        <h3>Ferramentas e plataformas</h3>
+        <div class="ferramentas-list">
+          <span class="ferramenta-chip">Notion</span>
+          <span class="ferramenta-chip">GitHub</span>
+          <span class="ferramenta-chip">Claude Code</span>
+          <span class="ferramenta-chip">Wake Commerce</span>
+          <span class="ferramenta-chip">Meta Ads</span>
+          <span class="ferramenta-chip">WhatsApp Business</span>
+          <span class="ferramenta-chip">Marketplaces</span>
+          <span class="ferramenta-chip">Google Workspace</span>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Cronograma de fases</h3>
+        <div class="cronograma-bars">
+          <div class="crono-item">
+            <div class="crono-item__label">Diagnóstico e arquitetura</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:100%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Canais próprios (Escuta o Véio!)</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:90%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Fácil Decor — loja física</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:80%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Qualifica PRO e Confia!</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:60%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Fácil Decor — e-commerce</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:40%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Arquitetura do ecossistema</h3>
+        <div class="agentes-grid">
+          <div class="agente-row">
+            <span class="agente-row__name">Marcas (6)</span>
+            <span class="agente-row__role">Posicionamento e portfólio</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Escuta o Véio!</span>
+            <span class="agente-row__role">E-commerce — catálogo completo</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Fácil Decor</span>
+            <span class="agente-row__role">Varejo físico + digital LT Shine</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Qualifica PRO</span>
+            <span class="agente-row__role">Conversão do profissional</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Confia!</span>
+            <span class="agente-row__role">Alcance via afiliados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Principais desafios</h3>
+        <ul class="desafio-list">
+          <li>Portfólio de 6 marcas com posicionamentos sobrepostos — energia dispersa sem clareza de papel</li>
+          <li>Produto técnico de alto valor que exige conhecimento para ser aplicado — barreira de entrada alta</li>
+          <li>Dependência histórica do canal B2B criando distância estrutural do consumidor final</li>
+          <li>Construir demanda pull onde antes só havia operação push</li>
+          <li>Escalar canais próprios sem canibalizar o varejo parceiro já existente</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 06 Conclusão -->
+<section id="conclusao" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Encerramento</p>
+    <p class="section-title">Conclusão</p>
+    <div class="conclusao-grid">
+
+      <div class="conclusao-card conclusao-card--reflexao">
+        <h3>Aprendizados</h3>
+        <p>Produto químico não viraliza — mas a transformação que ele entrega sim. O maior aprendizado foi entender que o conteúdo precisa partir do resultado na vida de quem usa, não das propriedades técnicas do produto. A lógica pull exige paciência e consistência: o profissional é convencido antes de convencer o cliente final.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--impacto">
+        <h3>Impacto</h3>
+        <p>A IVA Química passou de indústria dependente de canal B2B a um ecossistema com canais próprios, identidade de marca clara e plataformas que criam demanda de forma autônoma. O flywheel está em movimento: Qualifica PRO forma profissionais que entram no Confia!, que recomendam ao cliente final, que compra nos canais próprios — e o dado volta para a IVA.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--proximos">
+        <h3>Próximos passos</h3>
+        <p>Lançar o e-commerce do Fácil Decor e expandir o modelo de franquia OMS. Escalar o Qualifica PRO com novos segmentos e eventos presenciais. Ampliar o Confia! com onboarding digital. Usar os dados dos canais próprios para retroalimentar o desenvolvimento de produto.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>IVA Química</strong> — Case Institucional · Ecossistema de Marcas e Canais
+</footer>
+
+</body>
+</html>

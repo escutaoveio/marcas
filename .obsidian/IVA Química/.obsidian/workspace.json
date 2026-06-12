@@ -1,0 +1,218 @@
+{
+  "main": {
+    "id": "b8ccb5afa3bc7717",
+    "type": "split",
+    "children": [
+      {
+        "id": "a40b7be8f7f5e3ac",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dd7089548971d606",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Visualização em gráfico"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b0c18beb06c56fa9",
+    "type": "split",
+    "children": [
+      {
+        "id": "071adc9802aa9955",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "443e046555c79825",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "f0039ae46ca4d7bb",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "7442d8832a0dbea8",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c3ab316041c8b9cb",
+    "type": "split",
+    "children": [
+      {
+        "id": "63fd5b9d42f9abdd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ab6d26b0ae79d7dc",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos"
+            }
+          },
+          {
+            "id": "f06cddec3b48c83c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída"
+            }
+          },
+          {
+            "id": "fa9722e4baa64c9f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "9873b6ef486d19c9",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "5f002b589e283e2c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "dd7089548971d606",
+  "lastOpenFiles": [
+    "Sem título 1.base",
+    "Sem título.base",
+    "Periféricos/Varejo/Fácil Decor.md",
+    "Periféricos/Varejo/E-Commerce/Escuta o Véio!.md",
+    "Periféricos/Serviços/Qualifica PRO/Qualifica PRO.md",
+    "Periféricos/Serviços/Qualifica PRO/Confia!.md",
+    "Periféricos/Serviços/Qualifica PRO",
+    "Periféricos/Qualifica PRO",
+    "Periféricos/Operação/Faturamento.md",
+    "Periféricos/Operação/Expedição.md",
+    "Periféricos/Operação",
+    "Periféricos/Serviços",
+    "Periféricos/Varejo",
+    "Periféricos/Community/Comunidades.md",
+    "Periféricos/Community/CRM.md",
+    "Periféricos/Community/Community.md.tmp.25512.c42f18ca7a5b",
+    "Periféricos/Community.md",
+    "Periféricos/Community/Community.md",
+    "Periféricos/Community",
+    "Periféricos/Comercial.md",
+    "Periféricos/Varejo/E-Commerce/Atendimento Comercial.md",
+    "Marcas/Hold Stone.md.tmp.25512.d43dee41f571",
+    "Marcas/Cristal.md.tmp.25512.0e76975a3365",
+    "Periféricos/Varejo/E-Commerce/Marketplaces.md",
+    "Periféricos/Varejo/E-Commerce/Loja Virtual.md",
+    "Periféricos/Serviços/Confia!.md",
+    "Periféricos/Serviços/Qualifica PRO.md",
+    "Periféricos/Operação/Logística.md",
+    "Periféricos/Varejo/Loja Física.md",
+    "Periféricos/Operação/Design.md",
+    "Periféricos/Marketplace.md",
+    "Periféricos/Loja Virtual.md",
+    "Marcas/Private Label.md",
+    "Marcas/Produtos que Resolvem.md",
+    "Marcas/O Pulo do Gato.md",
+    "Produtos/Acabamentos Decorativos.md"
+  ]
+}

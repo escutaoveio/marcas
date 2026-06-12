@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Itens Mais Pedidos — IVA Química</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
+  --text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;
+  --DRYLEVIS:#3b82f6;--ELASTMENT:#0d9488;--SMART:#f97316;
+  --LT_SHINE:#a855f7;--HOLD_STONE:#22c55e;--CRISTAL:#ef4444;
+  --PULO:#d97706;--HOBBY_ART:#ec4899;--WOOD_WOOD:#92400e;
+  --IVACLEAN:#06b6d4;--OUTROS:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+a{color:var(--accent);text-decoration:none}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px}
+header h1{font-size:18px;font-weight:700}
+header p{color:var(--muted);font-size:13px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
+#filters{padding:16px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--surface);border-bottom:1px solid var(--border)}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.filter-group label{color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+.pill{padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;font-size:12px;font-weight:500;transition:all .15s}
+.pill:hover{border-color:var(--accent)}
+.pill.active{color:#fff;border-color:transparent}
+.pill[data-brand="DRYLEVIS"].active{background:var(--DRYLEVIS)}
+.pill[data-brand="ELASTMENT"].active{background:var(--ELASTMENT)}
+.pill[data-brand="SMART"].active{background:var(--SMART)}
+.pill[data-brand="LT SHINE"].active{background:var(--LT_SHINE)}
+.pill[data-brand="HOLD STONE"].active{background:var(--HOLD_STONE)}
+.pill[data-brand="CRISTAL"].active{background:var(--CRISTAL)}
+.pill[data-brand="O PULO DO GATO"].active{background:var(--PULO)}
+.pill[data-brand="HOBBY ART"].active{background:var(--HOBBY_ART)}
+.pill[data-brand="WOOD WOOD"].active{background:var(--WOOD_WOOD)}
+.pill[data-brand="IVACLEAN"].active{background:var(--IVACLEAN)}
+.pill[data-brand="OUTROS"].active{background:var(--OUTROS)}
+.pill[data-brand="TODOS"].active{background:var(--accent)}
+.pill[data-month].active{background:var(--accent);border-color:transparent}
+#search{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;font-size:13px;width:220px;outline:none}
+#search:focus{border-color:var(--accent)}
+#kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 24px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:700}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:4px}
+#chart-section{padding:0 24px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.chart-card h3{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.chart-card canvas{max-height:220px}
+#table-section{padding:0 24px 100px}
+.table-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.table-header h2{font-size:14px;font-weight:600}
+#count{color:var(--muted);font-size:13px}
+.table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--surface2)}
+th{padding:10px 12px;text-align:left;color:var(--muted);font-weight:600;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;background:var(--surface2)}
+th:hover{color:var(--text)}
+th.sort-asc::after{content:" ▲";font-size:10px}
+th.sort-desc::after{content:" ▼";font-size:10px}
+td{padding:8px 12px;border-top:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:rgba(255,255,255,.03)}
+.brand-col{width:100px}
+.name-col{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.month-cell{text-align:right;font-variant-numeric:tabular-nums;border-radius:4px;min-width:50px}
+.total-cell{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.add-btn{background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;padding:3px 8px;border-radius:4px;font-size:11px;transition:all .15s}
+.add-btn:hover{border-color:var(--accent);color:var(--accent)}
+.add-btn.in-campaign{background:var(--accent);border-color:var(--accent);color:#fff}
+#campaign-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface2);border-top:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;z-index:100;transform:translateY(100%);transition:transform .2s}
+#campaign-bar.visible{transform:translateY(0)}
+#campaign-bar h3{font-size:13px;font-weight:600;white-space:nowrap}
+#campaign-tags{display:flex;flex-wrap:wrap;gap:6px;flex:1;overflow:hidden;max-height:32px}
+.ctag{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:11px;display:flex;align-items:center;gap:4px}
+.ctag button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;line-height:1;padding:0}
+#campaign-actions{display:flex;gap:8px;white-space:nowrap}
+.btn{padding:7px 16px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s}
+.btn-primary{background:var(--accent);color:#0d1117}
+.btn-primary:hover{opacity:.9}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent)}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+#modal.open{display:flex}
+#modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto}
+#modal-box h2{margin-bottom:16px;font-size:16px}
+#modal-content{font-family:monospace;white-space:pre;font-size:12px;background:var(--bg);padding:16px;border-radius:6px;overflow-x:auto;border:1px solid var(--border)}
+#modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+@media(max-width:900px){
+  #kpis{grid-template-columns:repeat(2,1fr)}
+  #chart-section{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>📦 Itens Mais Pedidos</h1>
+    <p>Escuta o Véio! · Últimos 6 meses · Dez/25 → Jun/26</p>
+  </div>
+  <div style="margin-left:auto;color:var(--muted);font-size:12px">IVA Química © 2026</div>
+</header>
+
+<div id="filters">
+  <div class="filter-group">
+    <label>Marca</label>
+    <button class="pill active" data-brand="TODOS">Todas</button>
+    <button class="pill" data-brand="DRYLEVIS">Drylevis</button>
+    <button class="pill" data-brand="ELASTMENT">Elastment</button>
+    <button class="pill" data-brand="SMART">Smart</button>
+    <button class="pill" data-brand="LT SHINE">LT Shine</button>
+    <button class="pill" data-brand="HOLD STONE">Hold Stone</button>
+    <button class="pill" data-brand="CRISTAL">Cristal</button>
+    <button class="pill" data-brand="O PULO DO GATO">O Pulo do Gato</button>
+    <button class="pill" data-brand="HOBBY ART">Hobby Art</button>
+    <button class="pill" data-brand="WOOD WOOD">Wood Wood</button>
+    <button class="pill" data-brand="IVACLEAN">IvaClean</button>
+    <button class="pill" data-brand="OUTROS">Outros</button>
+  </div>
+  <div class="filter-group" style="margin-left:auto">
+    <label>Mês</label>
+    <button class="pill active" data-month="ALL">Todos</button>
+    <button class="pill" data-month="0">Dez/25</button>
+    <button class="pill" data-month="1">Jan/26</button>
+    <button class="pill" data-month="2">Fev/26</button>
+    <button class="pill" data-month="3">Mar/26</button>
+    <button class="pill" data-month="4">Abr/26</button>
+    <button class="pill" data-month="5">Mai/26</button>
+  </div>
+  <input id="search" type="text" placeholder="🔍  Buscar produto…">
+</div>
+
+<div id="kpis">
+  <div class="kpi"><div class="kpi-label">Total de Pedidos</div><div class="kpi-value" id="kpi-total">—</div><div class="kpi-sub" id="kpi-total-sub"></div></div>
+  <div class="kpi"><div class="kpi-label">Itens Ativos</div><div class="kpi-value" id="kpi-items">—</div><div class="kpi-sub" id="kpi-items-sub"></div></div>
+  <div class="kpi"><div class="kpi-label">Melhor Mês</div><div class="kpi-value" id="kpi-month">—</div><div class="kpi-sub" id="kpi-month-sub"></div></div>
+  <div class="kpi"><div class="kpi-label">Top Produto</div><div class="kpi-value" id="kpi-top" style="font-size:14px;line-height:1.4">—</div><div class="kpi-sub" id="kpi-top-sub"></div></div>
+</div>
+
+<div id="chart-section">
+  <div class="chart-card"><h3>Pedidos por Mês (por Marca)</h3><canvas id="chart-stacked"></canvas></div>
+  <div class="chart-card"><h3>Distribuição por Marca</h3><canvas id="chart-brand"></canvas></div>
+</div>
+
+<div id="table-section">
+  <div class="table-header">
+    <h2>Lista de Produtos <span id="count" style="font-weight:400"></span></h2>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="color:var(--muted);font-size:12px">Clique nos cabeçalhos para ordenar · Clique em + para adicionar à campanha</span>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table id="prod-table">
+      <thead>
+        <tr>
+          <th class="brand-col" data-col="brand">Marca</th>
+          <th class="name-col" data-col="name">Produto</th>
+          <th data-col="0">Dez/25</th>
+          <th data-col="1">Jan/26</th>
+          <th data-col="2">Fev/26</th>
+          <th data-col="3" class="sort-desc">Mar/26</th>
+          <th data-col="4">Abr/26</th>
+          <th data-col="5">Mai/26</th>
+          <th data-col="total">Total</th>
+          <th style="width:40px"></th>
+        </tr>
+      </thead>
+      <tbody id="prod-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="campaign-bar">
+  <h3>🎯 Lista de Campanha</h3>
+  <div id="campaign-tags"></div>
+  <div id="campaign-actions">
+    <button class="btn btn-ghost" onclick="clearCampaign()">Limpar</button>
+    <button class="btn btn-primary" onclick="exportCampaign()">Exportar Lista</button>
+  </div>
+</div>
+
+<div id="modal">
+  <div id="modal-box">
+    <h2>📋 Lista de Campanha — Exportar</h2>
+    <div id="modal-content"></div>
+    <div id="modal-actions">
+      <button class="btn btn-primary" onclick="copyModal()">Copiar Texto</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MONTHS = ['Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'];
+const MONTH_KEYS = ['2025-dez','2026-jan','2026-fev','2026-mar','2026-abr','2026-mai'];
+
+const BRAND_COLORS = {
+  'DRYLEVIS':'#3b82f6','ELASTMENT':'#0d9488','SMART':'#f97316',
+  'LT SHINE':'#a855f7','HOLD STONE':'#22c55e','CRISTAL':'#ef4444',
+  'O PULO DO GATO':'#d97706','HOBBY ART':'#ec4899','WOOD WOOD':'#b45309',
+  'IVACLEAN':'#06b6d4','OUTROS':'#6b7280'
+};
+
+// Brand detection
+const BRAND_RULES = [
+  ['ELASTMENT', /elastment/i],
+  ['DRYLEVIS', /drylevis|drymanta|drytherm|dryfit|dw240/i],
+  ['O PULO DO GATO', /pulo do gato/i],
+  ['HOBBY ART', /^hobby art/i],
+  ['LT SHINE', /^lt shine|^lt concrete|^lt sand/i],
+  ['HOLD STONE', /hold stone|hold manta/i],
+  ['WOOD WOOD', /wood wood/i],
+  ['SMART', /\bsmart\b/i],
+  ['IVACLEAN', /ivaclean/i],
+  ['CRISTAL', /^umi block|^nex floor|^protelha|^borracha l[ií]quida cristal|^cristal[ ,]|^azulejo liquido|shampoo para telhas|^tira tintas|^rufo l[ií]quido|^massa fina seca parede|^agente fixador sand|skin color cristal|^manta el[aá]stica impermeabilizante acr[ií]lica acqua zero|^manta el[aá]stica hidrofóbica|^primer promotor de ader[eê]ncia ultragrip|^sos umidade|^magic imper|^removick|^concre fast|^cimento autonivelante|^argamassa de revestimento skim coat|^base coat ciment|cristal$/i],
+];
+
+function detectBrand(name) {
+  for (const [brand, rx] of BRAND_RULES) {
+    if (rx.test(name)) return brand;
+  }
+  return 'OUTROS';
+}
+
+// Embedded CSV data (product rows only, no header, no Total geral)
+const CSV_TEXT = `Selante para Juntas Cimentícias DW240 Flex 400g Branco,25,94,130,384,138,90,,861
+Selante para Juntas Cimentícias DW240 Flex 400G - Cinza,,22,87,344,107,57,,617
+"Smart Resina, 3-6L, Semi Brilho  Multiuso à Base de Água",59,33,39,53,34,27,2,247
+Adesivo de Reparo para Pisos Elastment - SOS Piso 1KG,26,22,48,64,20,19,1,200
+LT Shine Película Líquida Zero Mofo 900ML,23,28,26,35,24,39,5,180
+Selante para Juntas Cimentícias DW240 Flex 420G - Preto,,,,89,38,19,,146
+Umi Block Cristal 250ML,,12,36,17,41,28,,134
+Massa Fina Seca Parede 20KG Branco,21,20,18,22,27,22,1,131
+Smart Resina 900ML Semi Brilho 5 em 1 Impermeabilizante e Seladora - Alta Resistência à Água,14,12,21,24,18,34,,123
+"Smart Resina, 900ML, Fosca  Sela, Impermeabiliza e Protege",10,21,18,21,29,20,1,120
+"Drylevis, SOS Concreto, 1L  Impermeabilizante para Concreto e Argamassa",17,24,15,18,21,17,,112
+Umi Block Cristal 1L,,9,36,19,25,20,,109
+"Smart Resina, 3-6L, Fosca  Multiuso 6 em 1 | Sela, Protege e Regula Brilho, Uso Interno e Externo",25,10,17,32,17,8,,109
+Sos Umidade Bisnaga  250G - Bege,14,15,9,28,19,19,,104
+LT Shine Fixador de Pedras Soltas Hold Stone 5L,16,20,19,19,20,6,,100
+Protelha Fast Tape Cristal,,,,52,41,5,,98
+Verniz Madeira Wood Wood Verniz PU 75 900ML,15,22,12,9,9,25,1,93
+Hobby Art Decora Pinta Tudo 250ML Branco,15,23,17,19,8,10,,92
+"Cimento Autonivelante, 20KG, Cinza - Nivelamento Fácil para Pisos, Secagem Rápida",26,18,17,15,5,10,1,92
+Aplicador de Silicone 9 Polegadas Sparta,,,,45,28,12,1,86
+LT Shine Resina para Pedras Hold Stone Pro 5L,3,7,7,13,27,25,,82
+"LT Shine Microcimento 4,5KG Branco",10,8,11,11,14,23,,77
+Elastment Rapid Cure Crack Filler - Preenchedor de Trincas de Concreto em Pó 700G Concreto,22,11,8,11,19,6,,77
+Massa Acrílica em Pó - Saco 20KG,12,13,11,17,16,7,,76
+LT Shine Pigmento Uma Gota 50ML Preto,15,16,12,10,10,10,,73
+LT Shine Grannistone Primer Promotor de Aderência 4KG Off White,10,10,13,10,12,13,,68
+LT Shine Fixador de Pedras Hold Stone 1L,9,11,12,17,8,7,,64
+Verniz para Madeira á Base Água PU 70 900ML,8,22,3,13,5,12,,63
+Cola para Madeira Wood Wood 3 497G,8,13,2,19,9,11,1,63
+"Umi Block Cristal 3,6L",1,1,11,34,7,6,,60
+LT Shine Microcimento 18KG Branco,11,11,9,10,10,8,,59
+LT Shine Grannistone Primer Promotor de Aderência 4KG Bege,5,17,7,13,5,11,1,59
+Massa Fina Seca Parede 4KG Branco,13,8,10,14,6,7,,58
+"Smart Resina, 18L, Fosca  Primer, Seladora e Verniz Base Água",9,5,8,11,18,5,,56
+Tira Tintas 500ML,14,22,7,6,3,3,,55
+Limpa Pedras Biodegradável Ivaclean 1L,7,26,8,4,5,4,1,55
+"LT Shine Resina 3,6L Fosco",16,9,7,8,8,5,,53
+Hobby Art Smart Resina 250ML,9,10,7,11,7,9,,53
+Hobby Art Perfect Glass Monocomponente 100G,4,6,8,10,16,8,,52
+LT Shine Marmorite 4KG Base,19,14,5,5,6,2,,51
+"LT Shine Verniz Para Acabamento LT300 3,5KG Fosco Incolor",5,17,7,10,7,4,,50
+LT Shine Resina para Pedras Hold Stone Pro 1L,1,5,7,10,13,14,,50
+LT Shine Resina 900ML Semi-Brilho,9,6,7,9,9,10,,50
+"Drylevis, SOS Concreto, 200ML  Proteção Duradoura Contra Umidade e Corrosão",8,7,5,12,5,12,,49
+LT Shine Acqua Shine 750G - Proteção e Brilho para Marmoratos e Efeitos,5,4,13,8,15,3,,48
+Shampoo para Telhas Power Shower 5L Cristal,14,6,5,5,7,10,,47
+Massa Acrílica em Pó - Balde 4KG,12,3,9,5,9,9,,47
+LT Shine Primer Universal 1KG Gelo ,4,7,8,10,12,5,,46
+LT Shine Grannistone Pedras Naturais 25KG Off White,10,8,7,5,8,8,,46
+Primer Promotor de Aderência Ultragrip 5KG Cinza,13,11,11,6,1,3,,45
+"Porcelanato Liquido Baixa Espessura C/ Endurecedor Kit 1,5KG",7,7,9,7,6,9,,45
+"Porcelanato Líquido Atóxico de Baixa Espessura e Baixa Viscosidade 1,280kg Wood Wood",6,12,4,5,6,12,,45
+Hobby Art Decora Pinta Tudo 250ML Acqua Marina,5,10,4,10,11,5,,45
+Umi Block Cristal C/ Bico Aplicador 500ML,,1,8,7,14,14,,44
+"Tira Tintas, Limpador de Cortina de Vidros e Placas Solares Fullvit 1L IvaClean",4,21,7,3,6,3,,44
+Removick Removedor de Filme 150ML,3,1,1,17,13,9,,44
+LT Shine Grannistone Pedras Naturais 25KG Praia Dourada,4,11,7,10,5,6,1,44
+Umi Block Cristal - Impermeabilizante para Pequenos Reparos 250ML,19,24,,,,,,43
+"LT Shine Resina 3,6L Brilhante",5,8,6,12,7,5,,43
+"Cimento Autonivelante, 20KG,  Branco - Fácil Aplicação, Secagem em 72h, Alta Aderência",7,13,2,10,7,4,,43
+"Smart Resina, 250ML, Semi Brilho  Primer, Verniz e Impermeabilizante 5 em 1",9,7,5,4,12,5,,42
+Óleo Cristal Wood Wood 900ML,7,10,6,5,5,7,2,42
+Hobby Art Decora Pinta Tudo 900ML Branco,10,9,7,8,4,4,,42
+Umi Block Cristal - Impermeabilizante para Pequenos Reparos 1L,18,23,,,,,,41
+LT Shine Grannistone Pedras Naturais 25KG Castelo de Areia,7,8,3,7,5,11,,41
+Hobby Art Decora Pinta Tudo 250ML Larimar,3,15,7,10,4,2,,41
+LT Shine Primer Universal 5KG Gelo,6,14,10,7,1,2,,40
+LT Shine Grannistone Pedras Naturais 25KG São Gabriel,4,5,3,7,17,4,,40
+Kit 2x Sos Umidade Bisnaga 250G - Bege,8,7,7,16,2,,,40
+LT Shine Revestimento Concreto Aparente 20KG,2,4,5,2,15,11,,39
+LT Shine Grannistone Primer Promotor de Aderência 4KG Cinza Escuro,8,12,1,6,5,7,,39
+Drymanta G60 25M x 16CM,2,4,8,11,6,8,,39
+LT Shine Pigmento Uma Gota 50ML Azul,9,8,6,3,4,8,,38
+"Rufo Líquido 3,6KG Cinza",11,1,14,6,5,,,37
+Manta Elástica Impermeabilizante Acrílica Acqua Zero 4KG Branco,9,5,10,6,4,3,,37
+Hobby Art Decora Pinta Tudo 250ML Safira,5,9,6,1,9,7,,37
+LT Shine Pigmento Uma Gota 50ML Amarelo Óxido,9,4,7,4,3,9,,36
+LT Shine Acqua Shine 375G - Proteção e Brilho para Marmoratos e Efeitos,11,10,3,4,5,2,1,36
+Hobby Art Decora Pinta Tudo 250ML Verde Oliva,3,10,5,9,6,3,,36
+Primer Promotor  de Aderência Ultragrip 1KG Cinza,7,10,4,6,6,1,,34
+LT Shine Pigmento Uma Gota 50ML Marrom,6,8,7,4,6,3,,34
+"LT Shine Microcimento 4,5KG Arábia",3,4,4,7,9,7,,34
+Hobby Art Laca PU 250ML Brilhante,3,5,7,15,3,1,,34
+Nex Floor Nivela & Primer - Promotor de Aderência e Autonivelante 4KG Cristal,1,5,5,15,4,3,,33
+LT Shine Pigmento Uma Gota 50ML Castanho,8,4,5,5,5,5,1,33
+Hobby Art Decora Pinta Tudo 250ML Quartzo Rosa,5,10,8,7,3,,,33
+Hobby Art Decora Pinta Tudo 250ML Navarro,8,7,5,7,5,1,,33
+"Smart Resina, 18L, Semi Brilho  5 em 1: Primer, Verniz, Seladora, Impermeabilizante e Membrana de Cura",2,10,3,8,2,7,,32
+Nex Floor Granito Líquido 4KG Branco Ceará - Cristal,2,11,2,7,3,7,,32
+"LT Shine Verniz para Acabamento LT300 Brilhante 3,5KG Incolor ",7,5,5,7,5,2,,31
+LT Shine Grannistone Primer Promotor de Aderência 4KG Cinza Claro,7,6,4,1,7,6,,31
+LT Shine Pigmento Uma Gota 50ML Branco,6,5,9,5,2,3,,30
+Hobby Art Verniz Atóxico 100ML,7,6,3,7,5,2,,30
+Hobby Art Decora Pinta Tudo 250ML Garden,7,11,4,3,2,3,,30
+LT Shine Pigmento Uma Gota 50ML Vermelho,8,6,5,4,4,2,,29
+Hobby Art Cola Gel Decoupage para Papel 100ML,3,3,8,11,2,2,,29
+Espuma Turbo DW240 750G - Drylevis,,,4,6,3,16,,29
+Limpa Porcelanato Rejunte Desincrustante Concentrado Ivaclean 1L,,12,5,3,6,2,,28
+Cimento Elástico Elastment 4KG Cinza,4,7,5,6,2,4,,28
+Cera Cristal Wood Wood 900ml,4,6,5,3,6,4,,28
+LT Shine Pigmento Uma Gota 50ML Amarelo,8,7,4,1,3,4,,27
+LT Shine Marmorite Cera de Carnaúba 200G,8,2,7,6,1,3,,27
+LT Shine Grannistone Pedras Naturais 25KG Cinza São Paulo,6,7,2,3,5,4,,27
+LT Shine Fixador de Pedras Soltas Hold Stone 500ML,3,2,6,9,6,1,,27
+LT Shine Cera Atóxica de Acabamento 700G,5,6,3,7,4,2,,27
+Cimento Elástico Elastment 20KG Cinza,1,,8,11,4,3,,27
+LT Shine Microcimento 18KG Arábia,11,2,1,2,7,3,,26
+Hobby Art Decora Pinta Tudo 250ML Preto,6,7,6,4,1,2,,26
+LT Shine Grannistone Pedras Naturais 25KG Branco Dallas,2,6,2,6,7,2,,25
+Hobby Art Decora Pinta Tudo 250ML Areia Intensa,9,4,4,2,5,1,,25
+"Elastment Vitro Impermeabilizante Incolor 3,6KG",2,6,7,8,,2,,25
+Cera Cristal Tripla Ação  Wood Wood 200G,3,5,5,2,4,4,2,25
+LT Shine Pigmento Uma Gota 50ML Jade,5,6,6,1,4,2,,24
+Cola Extra Forte Ac 6000 - 400g,2,5,3,4,2,7,1,24
+Selante Acrílico Zero Trinca 420G,4,2,3,5,3,6,,23
+Rolo Fura Bolha 18MM C/ Cabo Compel,6,8,4,3,1,1,,23
+LT Shine Marmorite Veneziano 4KG Base,9,4,4,4,2,,,23
+LT Shine Grannistone Pedras Naturais 25KG Cinza Andorinha,6,6,3,,4,4,,23
+Hold Stone Carpet 15KG Micro Seixos Rio Prata 2 a 5mm,,7,2,3,11,,,23
+Hobby Art Perfect Glass Resina Monocomponente 500G,,3,6,5,4,5,,23
+Hobby Art Laca PU 100ML Fosco,4,4,2,7,3,3,,23
+"Porcelanato Líquido Atóxico de Baixa Espessura e Média Viscosidade 1,280kg Wood Wood",4,7,1,6,1,3,,22
+Hobby Art Laca PU 250ML Fosco,2,4,7,6,3,,,22
+Hobby Art Concrete Design 1KG Branco,5,1,,6,3,7,,22
+Elastment Rapid Cure Crack Filler - Preenchedor de Trincas de Concreto em Pó 700G Branco,,2,3,4,4,9,,22
+Tinta Elástica Smart Color fosco Gelo 3.6L,3,3,2,5,5,3,,21
+"LT Shine Verniz Para Acabamento LT300 3,5KG Fosco Branco",5,,7,2,4,3,,21
+LT Shine Grannistone Pedras Naturais 25KG Cinza Garoa,6,4,2,2,6,1,,21
+Limpa Pedras Biodegradável Ivaclean 5L,2,5,5,3,2,4,,21
+Kit 4x Sos Umidade Bisnaga 250G - Bege,,9,4,3,5,,,21
+"Rufo Líquido 3,6KG Branco",1,5,10,1,2,1,,20
+Hidrofugante para Gesso - Sos Gesso 1litro,3,4,2,6,2,3,,20
+Disco de Lixa Abranet Ace 6 / 150MM P1000 Mirka - 1 un ,1,1,4,3,8,3,,20
+Removedor de Colas e Adesivos Xô Cola 500ML - Cristal,,,,,,4,,4
+Removick Removedor de Filme 900ML,3,5,2,3,3,3,,19
+Pistola Aplicadora para Espuma Expansiva Sparta,,,2,2,2,13,,19
+"Nex Floor Granito Líquido 1,250KG Branco Ceará - Cristal",,3,2,6,6,2,,19
+LT Shine Pigmento Uma Gota 50ML Café Arábica,5,6,3,,2,3,,19
+LT Shine Grannistone Pedras Naturais 5KG Castelo de Areia,5,4,1,5,3,1,,19
+LT Shine Fixador de Pedras Soltas Hold Stone 20L,6,3,3,6,1,,,19
+Hobby Art Decora Pinta Tudo 900ML Verde Oliva,9,5,1,2,1,1,,19
+Elastment Vitro Impermeabilizante Incolor 500G,5,3,1,3,2,5,,19
+Disco de Lixa Abranet Ace 6 / 150MM P600 Mirka - 1 un ,,,4,3,8,4,,19
+"Umi Block Cristal - Impermeabilizante para Pequenos Reparos 3,6L",12,6,,,,,,18
+Tinta Elástica Smart Color  Fosco Branco  3.6L,5,,1,4,1,7,,18
+LT Shine Pigmento Uma Gota 50ML Verde,4,5,2,2,2,3,,18
+Impermeabilizante SOS Concreto Hard Structural 2L,2,3,3,4,3,3,,18
+Hobby Art Decora Pinta Tudo 900ML Acqua Marina,3,2,5,4,1,3,,18
+Disco de Lixa Abranet Ace 6 / 150MM P800 Mirka - 1 un ,1,1,5,1,7,3,,18
+"Disco de Lixa Abralon 6 / 150MM 3000 Mirka - 1 un",3,2,5,3,5,,,18
+Bico Injetor Veipar,,,2,11,4,1,,18
+Primer Promotor de Aderência PR10 Incolor 150ML,,1,2,7,3,4,,17
+Hobby Art Laca PU 100ML Brilhante,2,4,5,3,2,1,,17
+Hobby Art Decora Pinta Tudo 250ML Lavanda,,4,1,7,2,3,,17
+Desempenadeira Inox Trapezoidal Roma,,7,2,1,3,4,,17
+"Cola para Madeira Wood Wood 3 1,1KG",4,6,3,1,3,,,17
+"Porcelanato Liquido Alta Espessura C/ Endurecedor Kit 1,340KG",2,3,5,2,3,1,,16
+Massa Flex Tapa Tudo 5000 - 90G,3,2,2,4,4,1,,16
+Manta Elástica Impermeabilizante Acrílica Acqua Zero 20KG Branco,2,5,1,2,3,3,,16
+LT Shine Grannistone Pedras e Cristais 25KG Cristal,1,4,7,,1,3,,16
+Hobby Art Decora Pinta Tudo 30ML Branco,2,5,4,2,2,1,,16
+Disco de Lixa Abranet Ace 6 / 150MM P400 Mirka - 1 un ,,1,3,2,7,3,,16
+Verniz para madeira á Base Água PU Q10 Fosco 900ML,4,2,3,2,,4,,15
+Pincel Silicone Wood Wood,1,1,3,5,3,2,,15
+Massa Anti Trinca para Superfícies Cimentícia Highflex 4kg,2,1,7,2,3,,,15
+LT Shine Pigmento Uma Gota 50ML Laranja,3,5,1,3,2,1,,15
+LT Shine Grannistone Primer Promotor de Aderência 4KG Preto,2,2,5,,3,3,,15
+LT Shine Cortina Líquida 250ML,6,3,2,4,,,,15
+Fita Multiuso Líquida para Telhados SOS Telhas 900G Cinza,3,2,3,3,1,3,,15
+Antiderrapante Líquido Contra Quedas 250G Incolor,,4,1,6,1,3,,15
+Verniz Cristal  Incolor Atóxico Wood Wood 900ML,2,2,1,6,3,,,14
+Tinta Elástica Smart Color  Semi Brilho  Branco Neve   3.6L,,4,3,2,3,2,,14
+LT Shine Cold Transfer Metallic - Folha de Transferência 10cmx5m Ouro,5,,2,3,4,,,14
+Limpa Cerâmica Desincrustante Ivaclean 1L,2,6,2,,1,3,,14
+Hidrofugante para Madeira  Shield Protector 900ml,2,3,5,2,1,1,,14
+Hidrofugante Dry Full 200ML,2,1,3,2,4,2,,14
+Elastment Smart Cimento Massa Design 20KG Branco,3,5,4,,,2,,14
+Disco de Lixa Abranet Ace 6 / 150MM P320 Mirka - 1 un ,2,3,3,1,3,2,,14
+Borrifador Manual de Compressão Prévia 2L Bestfer,2,1,1,2,5,3,,14
+Tinta Impermeabilizante Protelha Plus Semi Brilho 18L Cor Cerâmica Telha,2,3,1,2,3,2,,13
+Rolo de Pintura Lã Sintética 15cm Atlas ,1,8,1,3,,,,13
+"Pulo do Gato Crack Filler Stop Trincas, 700G Concreto - Pó Reparador para Rachaduras de Alvenaria",5,1,1,4,1,1,,13
+Promotor de Aderência Ultragrip Smooth 900ml,1,4,4,,,4,,13
+Nex Floor Granito Líquido 4KG Cinza Corumbá - Cristal,1,2,6,2,2,,,13
+"Nex Floor Granito Líquido 1,250KG Cinza Corumbá - Cristal",,1,5,6,1,,,13
+"LT Shine Microcimento 4,5KG Cinza Médio",,1,3,3,2,4,,13
+LT Shine Microcimento 18KG Cinza Ghost,1,8,1,2,,1,,13
+LT Shine Grannistone Pedras Naturais 5KG Off White,2,3,,4,1,3,,13
+Kit Cola para Madeira Wood Wood 3 497G - 2 unidades,1,3,5,3,1,,,13
+Hold Manta - Manta Estruturante para Jardim 1M x 25M,,1,8,3,,1,,13
+Hobby Art Decora Pinta Tudo 30ML Safira,1,3,4,1,1,3,,13
+Desempenadeira de Aço Inox para Efeitos Decorativos Roma,2,,4,1,2,4,,13
+Tinta Elástica Smart Color Fosco Branco 18L,3,,2,3,3,1,,12
+Massa Flex Tapa Tudo 5000 - 340G,1,3,2,1,2,3,,12
+Massa Flex Reparo Fácil  para Madeira BRANCA - 90g,6,5,,,,1,,12
+Massa Acrílica em Pó - Balde 18KG,1,3,5,,1,2,,12
+Manta Elástica  Impermeabilizante Acrílica Acqua Zero 20kg  Cinza,,2,4,1,4,1,,12
+Magic Imper Super Selante 250G,3,5,1,2,1,,,12
+LT Shine Pigmento Uma Gota 50ML Violeta,4,1,1,1,1,4,,12
+LT Shine Marmorite 4Kg Branco Supremo,1,,4,3,4,,,12
+LT Shine Grannistone Pedras Naturais 25KG Cinza Grafite,1,2,,4,1,4,,12
+Hold Manta - Manta Estruturante para Jardim 1M x 5M,1,4,4,2,1,,,12
+Hold Manta - Manta Estruturante para Jardim 1M x 1M,,8,1,1,1,1,,12
+Hobby Art Decora Pinta Tudo 30ML Acqua Marina,2,5,3,2,,,,12
+Hobby Art Decora Pinta Tudo 250ML Verde Pastel,1,3,2,3,2,1,,12
+"Gessonato Hobby Art - Kit 1,33KG",2,,1,2,7,,,12
+Elastment Rapid Cure Crack Filler - Preenchedor de Trincas de Concreto em Pó 700G Asfalto,5,,2,1,4,,,12
+Concre Fast 4KG,6,1,2,,2,1,,12
+Cola Piso Vinílico e Emborrachado AC10000 4KG,3,5,1,,1,2,,12
+Cola para Madeira Wood Wood 3 100G,3,3,1,1,4,,,12
+Argamassa de Revestimento Skim Coat Cristal 20KG,4,2,,3,1,2,,12
+Umi Block Cristal C/ Bico Aplicador - Impermeabilizante para Pequenos Reparos 500ML,7,4,,,,,,11
+Selante Acrílico Zero Trinca 1KG,1,1,2,1,3,3,,11
+Protelha Fast Cristal 380G Cinza,,,,2,8,1,,11
+LT Shine Marmorite Floor Branco 4Kg,2,5,1,2,1,,,11
+Kit Marceneiro 6 - Verniz PU 70 900ML + Rolo de Espuma 5CM Condor,1,4,3,1,2,,,11
+Hobby Art Decora Pinta Tudo 900ML Navarro,5,1,2,1,1,1,,11
+Hobby Art Decora Pinta Tudo 250ML Rosa Retrô,1,4,2,1,1,2,,11
+Gel Impregnante Hidrofugante SOS Concreto 900ML,5,1,1,,3,1,,11
+Cimento Elástico Elastment Transit 4KG Cinza,4,,,7,,,,11
+Cimento Elástico Elastment Transit 18KG Cinza,1,,4,6,,,,11
+Tinta Elástica Smart Color Semi Brilho Branco 18L,3,2,1,3,,1,,10
+Tinta Elástica Smart  Color Fosco Gelo 18L,1,,4,1,2,2,,10
+Rufo Líquido 900G Cinza,,3,2,3,1,1,,10
+Rufo Líquido 900G Branco,1,,5,3,,1,,10
+Rolo de Espuma 5cm Condor,2,4,4,,,,,10
+LT Shine Revestwall 20KG Bege,2,2,3,,3,,,10
+LT Shine Piso Liquido Cimentício Autonivelante 20KG Cinza,1,1,3,3,,2,,10
+LT Shine Marmorite Veneziano 4KG Branco,1,3,2,4,,,,10
+LT Shine Grannistone Pedras Naturais 5KG Praia Dourada,,1,3,1,4,1,,10
+Kit Limpador Multiuso Fullvit 1L + Borrifador Manual de Compressão 2L,1,5,3,,1,,,10
+Kit Desempenadeira para Efeitos Decorativos + Desempenadeira Trapezoidal Roma,2,4,2,2,,,,10
+Kit 100x Proteção De Parafuso Premium Protelha Alumínio Fast Cristal,,,,2,8,,,10
+Hobby Art Decora Pinta Tudo 30ML Quartzo Rosa,1,2,4,2,1,,,10
+Hobby Art Decora Pinta Tudo 30ML Larimar,1,3,6,,,,,10
+Fita Multiuso Líquida para Telhados - SOS Telhas 900G Branco,3,3,,3,1,,,10
+Drymanta G60 25M,,1,1,2,2,4,,10
+Drymanta  G60 5M x 16 CM,2,,2,2,1,3,,10
+"Disco de lixa Abralon 6 / 150MM 1000 Mirka - 1 un",2,3,3,1,,1,,10
+Convertedor de Ferrugem SOS Ferrugem 1KG Black Base água,1,2,4,2,1,,,10
+Antiderrapante Líquido Contra Quedas 1KG Incolor,1,3,,3,1,1,1,10
+Tinta Smart Color Semi Brilho Branco  3.6L,1,,2,,6,,,9
+"Tinta Elástica Smart Color Semi Brilho Branco 3,6L",,2,2,1,2,2,,9
+Tinta Elástica Smart Color fosco  Branco Neve 3.6L,1,,3,1,1,3,,9
+Nex Floor Granito Líquido 4KG Cinza Andorinha - Cristal,,1,,2,2,4,,9
+Massa Flex Reparo Fácil  para Madeira PEROBINHA - 90g,1,2,4,,1,1,,9
+LT Shine Piso Liquido Cimentício Autonivelante 20KG Off White,,,2,2,1,3,1,9
+LT Shine Microcimento 18KG Cinza Médio,,1,3,3,2,,,9
+LT Shine Microcimento 18KG Cinza Claro,3,,1,,2,3,,9
+LT Shine Marmorite 1Kg Branco Supremo,3,,1,,3,2,,9
+LT Shine Grannistone Pedras Naturais 25KG Cinza Corumbá,2,,1,1,2,3,,9
+Limpador de Superfícies TF Clean 200ML,3,1,,1,1,3,,9
+Kit LT Shine Pigmento Uma Gota 50ML - 11 Cores,3,2,2,1,1,,,9
+KIT Efeito Mármore Parede 2,2,,,,7,,,9
+Kit de Lixas P320/P400/P600/P1000/P3000 + Suporte para Disco de Lixa com Velcro e Adaptador 150MM Bestfer,8,,,1,,,,9
+"Hold Stone Pro Carpets - Revestimento de Pedras Naturais para Pisos 20,8KG Jaspe Cinza",1,2,1,4,,1,,9
+Hold Stone Clean Tool Limpador de Espátula 1L,,1,,1,6,1,,9
+Hobby Art Decora Pinta Tudo 900ML Safira,3,2,1,,,3,,9
+Hobby Art Decora Pinta Tudo 30ML Sunshine,3,1,2,,1,2,,9
+Hobby Art Decora Pinta Tudo 30ML Garden,1,2,1,1,,4,,9
+Hobby Art Decora Pinta Tudo 250ML Azul Celeste,1,,1,5,2,,,9
+Hidrofugante Dry Full 800ML,5,2,,1,,1,,9
+Espátula de Aço Cromada 75MM Roma,1,,2,,2,4,,9
+Elastment Desmolde Fácil 500ML,1,3,2,3,,,,9
+"Disco de Lixa Abralon 6 / 150MM 2000 Mirka - 1 un",3,1,1,1,3,,,9
+Conversor de Ferrugem Ultrafer 1L - Pulo do Gato,2,1,2,2,,2,,9
+Argamassa de Regularização Rapid Cure 4KG Elastment,,,4,,1,4,,9
+Tinta Elástica Smart Color Fosco Algodão Egipício 18L,,3,2,1,,2,,8
+Tinta Elástica Smart Color fosco Algodão Egípcio 3.6L,1,1,,1,5,,,8
+Super Cola Gel 100G Wood Wood,,2,1,2,2,1,,8
+"Rufo Líquido 3,6KG Cerâmica Telha",,,3,4,1,,,8
+Resina Multiuso Tech Resina 1L - Pulo do Gato,3,2,2,,,1,,8
+Pincel Artístico Redondo Fino e Linear 422-2 Condor,3,,,3,2,,,8
+"Nex Floor Granito Líquido 1,250KG São Gabriel - Cristal",2,2,,2,,2,,8
+Massa Flex Reparo Fácil  para Madeira MARFIM - 90g,,2,3,,2,1,,8
+Massa Flex Reparo Fácil  para Madeira CUMARÚ - 90g,1,1,4,2,,,,8
+LT Shine Pasta Metalizada Ouro 200g,1,1,3,2,1,,,8
+"LT Shine Microcimento 4,5KG Cinza Granizo",2,1,2,1,1,1,,8
+"LT Shine Microcimento 4,5KG Cinza Ghost",1,,3,2,1,1,,8
+"LT Shine Microcimento 4,5KG Cinza Claro",1,,5,1,1,,,8
+LT Shine Grannistone Pedras e Cristais 5KG Cristal,1,1,3,1,,2,,8
+Kit Óleo Cristal 900ML + Cera Tripla Ação 200ML Wood Wood,4,,2,2,,,,8
+Kit Multi Aplicação Selantes e Bisnagas 1 Bico aplicador + 1 Tampa Duramais Drylevis,,,,3,5,,,8
+Kit Cola para Madeira Wood Wood 3 497G - 3 unidades,1,4,,2,1,,,8
+Hobby Art Decora Pinta Tudo 900ML Areia Intensa,1,3,1,1,,2,,8
+Hobby Art Decora Pinta Tudo 30ML Rosa Retrô,1,2,2,,,3,,8
+Hobby Art Decora Pinta Tudo 30ML Lavanda,1,,,2,1,4,,8
+Hobby Art Decora Pinta Tudo 30ML Areia Intensa,1,2,1,,2,2,,8
+Hobby Art Decora Pinta Tudo 250ML Vermelho Cardinal,2,2,3,1,,,,8
+Hobby Art Decora Pinta Tudo 250ML Sunshine,3,1,3,1,,,,8
+Fita Multiuso Líquida para Telhados SOS Telhas 900G Cerâmica Telha,3,2,2,,1,,,8
+Drymanta G60 20M,,,7,1,,,,8
+Cera de Carnaúba Automotiva Líquida Auge 270ML - Creme,3,1,2,1,1,,,8
+Base Coat Cimentício 20KG,1,2,2,,2,1,,8
+"Acqua Shine 400G Atóxico Wood Wood - Proteção, Brilho e Acabamento",,2,,2,1,3,,8
+"Acqua Shine 370G Atóxico Wood Wood - Proteção, Brilho e Acabamento",2,6,,,,,,8
+"Verniz Pu Manta Líquida Zero Obra Elastment 3,5kg Cinza Escuro",,4,1,2,,,,7
+Tinta Elástica Smart Color fosco Palha 3.6L,3,1,,2,1,,,7
+Tinta Elástica Smart Color fosco   Areia 3.6L,,1,1,2,1,2,,7
+Tela de Fibra de Vidro Dryfit Plus Branco 100MM X 50M,,3,1,2,,1,,7
+Removick Removedor de Sublimação 150ML,,1,,3,,3,,7
+Nex Floor Granito Líquido 4KG São Gabriel - Cristal,3,1,1,1,,1,,7
+"Nex Floor Granito Líquido 1,250KG Cinza Andorinha - Cristal",2,1,2,1,1,,,7
+Massa Flex Reparo Fácil  para Madeira IMBUIA - 90g,1,1,3,,1,1,,7
+Massa Fina Seca Parede 12KG Branco,,2,2,,2,1,,7
+LT Shine Revestwall 20KG Branco,3,1,1,2,,,,7
+LT Shine Massa Niveladora 25KG,1,1,,1,2,2,,7
+"LT Shine Marmorite Floor Bi Componente 4,5KG Branco",2,2,,3,,,,7
+LT Shine Grannistone Pedras Naturais 5KG São Paulo,,,4,,2,1,,7
+LT Shine Grannistone Pedras Naturais 5KG Cinza Corumbá,1,3,1,1,1,,,7
+LT Shine Fixador de Pedras Soltas Hold Stone 500ML + Refil de 5L,4,1,2,,,,,7
+Kit Tratamento de Umidade para Pressão Positiva c/ Tinta Smart Color Semi Brilho - 4m²,6,1,,,,,,7
+Kit Massa Tapa Tudo 5000 90G - 2 unidades,1,2,,3,1,,,7
+Kit Limpador Multiuso Fullvit 1L + Borrifador 1L c/ Pulverizador,1,6,,,,,,7
+Kit de Pincéis Prático Condor,5,1,,1,,,,7
+Kit 8x Sos Umidade Bisnaga 250G - Bege,,2,1,4,,,,7
+Kit 10x Sos Umidade Bisnaga  250G - Bege,2,2,,1,2,,,7
+Kit 100x Proteção De Parafuso Veipar,,,,4,2,1,,7
+Hobby Art Decora Pinta Tudo 900ML Metalizado Dourado,1,,2,1,2,1,,7
+Hobby Art Decora Pinta Tudo 30ML Navarro,2,2,,1,1,1,,7
+"Fita Multiuso Líquida para Telhados - SOS Telhas 3,6KG Branco",,,2,2,2,1,,7
+Drytherm XPS Eco 1000X600X20MM,1,,1,3,2,,,7
+Cimento Branco Estrutural Egípcio Cbp 40 - 20KG,,2,2,1,2,,,7
+"Chapisco Flex Elastment 3,6KG",,1,4,,,2,,7
+"Verniz Pu Manta Líquida Zero Obra Elastment 3,5KG Fosco Incolor",1,1,2,1,1,,,6
+Tinta Elástica Smart Color fosco Camurça  3.6L,1,,2,1,2,,,6
+Tinta Elástica Smart Color  Semi Brilho Verde Selva  3.6L,,,,4,1,1,,6
+Rufo Líquido 900G Cerâmica Telha,2,3,,1,,,,6
+Protelha Powerlastic 18L Branco,1,2,,,2,1,,6
+Primer Promotor de Aderência Transfix para Vidro TF300 150ML,1,1,,3,1,,,6
+Manta Elástica Impermeabilizante Acrílica Acqua Zero 12KG Branco,1,1,,1,2,1,,6
+LT Shine Resina 18L Semi-Brilho,,,,3,1,2,,6
+LT Shine Massa Niveladora 5KG,,2,1,1,,2,,6
+LT Shine Grannistone Pedras Naturais 5KG Grafite,,1,1,4,,,,6
+LT Shine Grannistone Pedras Naturais 25KG Branco Serena,,1,1,3,,1,,6
+LT Shine Grannistone Pedras e Cristais 25KG Preto Ônix,,,3,1,2,,,6
+LT Shine Fixador de Pedras Soltas Hold Stone 500ML + Refil de 1L,2,3,1,,,,,6
+LT Shine Cortina Líquida 900ML,1,2,1,1,1,,,6
+Lixa para Madeira e Massa Condor - Grão 60,4,2,,,,,,6
+Lixa para Madeira e Massa Condor - Grão 150,3,1,1,1,,,,6
+Limpa Telhas Dubom 25L,,5,1,,,,,6
+Kit Madeira 5 - Cola Wood Wood 497G + Verniz PU 70 900ML,2,3,1,,,,,6
+Kit Limpa Pedras Biodegradável Ivaclean 1L - 2 unidades,1,1,,4,,,,6
+Hobby Art Decora Pinta Tudo 900ML Quartzo Rosa,,,1,1,4,,,6
+Hobby Art Decora Pinta Tudo 900ML Preto,5,,,,,1,,6
+Hobby Art Decora Pinta Tudo 900ML Larimar,2,3,,,1,,,6
+"Fundo Preparador Incolor 3,6L",3,,,2,,1,,6
+Fita Telada Fibatape 45M x 48MM Adfors,2,,2,1,,1,,6
+"Fita Multiuso Líquida para Telhados - SOS Telhas 3,6KG Cerâmica Telha",1,,1,,1,3,,6
+Fita Multiuso Líquida para Telhados - SOS Telhas 18KG Cinza,,,1,5,,,,6
+Espátula Artística Metal Condor,4,,2,,,,,6
+"Elastment Sos Umidade Bloco 2,4L",,,,,3,3,,6
+"Cimento Queimado Elastment Marfim 4,5kg",,,6,,,,,6
+Argamassa de Preparação 10KG,,1,1,1,2,1,,6
+Aplicador de silicone 9 polegadas (Ferro) Bestfer,1,2,3,,,,,6
+Aditivo para Concreto Tech Concreto 150G - Pulo do Gato,1,,1,2,1,1,,6
+"Verniz Pu Manta Líquida Zero Obra Elastment 3,5kg Branco",1,2,,,,2,,5
+Tinta Elástica Smart Color Semi Brilho  Areia  3.6L,2,2,,1,,,,5
+Tinta Elástica Smart Color Fosco Elefante 18L,1,,1,,2,1,,5
+Tinta Elástica Smart Color Fosco Branco Neve 18L,1,,1,,3,,,5
+Tinta Elástica Smart Color  Semi Brilho Algodão Egípcio 3.6L,,2,,,1,2,,5
+Tinta Elástica Smart Color  Semi Brilho  Gelo  3.6L,1,,,1,2,1,,5
+Tinta Elástica Smart  Color Fosco Pêssego 18L,,,,4,1,,,5
+Super Cola Ultra Fast 100G Wood Wood,,,1,2,1,1,,5
+SOS Gesso Retardante de Pega Liso Perfect Finish  250 ml,2,1,,2,,,,5
+Selante para Colagem e Vedação PU 40 360G Branco - Pulo do Gato,,,,3,1,1,,5
+Selante para Colagem e Vedação PU 40 360G - Pulo do Gato,,5,,,,,,5
+Rejunte Elástico Elastment 420G Platina,,2,1,,,2,,5
+Rejunte Elástico Elastment 420G Cinza Artico,1,1,1,,1,1,,5
+Rejunte Elástico Elastment 420G Branco,,2,1,,1,1,,5
+Protelha Powerlastic 18L Cinza ,1,,,1,1,2,,5
+Primer Promotor de Aderência Transfix para metal TF100 150ML,,2,,3,,,,5
+Primer Promotor  de Aderência Ultragrip 20KG Cinza,1,1,,,3,,,5
+Primer para Alúminio Smart Primer 900ML,,1,4,,,,,5
+Politriz 1200W / 127V Schulz,3,,,2,,,,5
+Papel Transfer Chinelos - 100 Folhas,1,,1,3,,,,5
+Molde de Silicone para Vaso de Suculenta com 3 recipientes - Cor Vermelho,1,1,,2,,1,,5
+Massa Niveladora 5KG,1,2,1,,1,,,5
+Massa Flex Reparo Fácil  para Madeira CEREJEIRA - 90g,,2,2,,,1,,5
+Manta Estruturante Tech Manta 16cmx25m - Pulo do Gato,,2,,1,1,1,,5
+Manta Estruturante para Telhado - Drymanta 25M,,1,1,1,2,,,5
+LT Shine Verniz Monocomponente  LT200 900ML,3,1,,,1,,,5
+LT Shine Revestwall 5KG Bege,5,,,,,,,5
+LT Shine Resina 18L Fosco,,,1,2,1,1,,5
+LT Shine Microcimento 18KG Cinza Granizo,,1,1,1,1,1,,5
+LT Shine Grannistone Primer Promotor de Aderência 4KG Azul Safira,1,2,,1,1,,,5
+LT Shine Grannistone Fine P/ Trafego Intenso e Área Molhada 5KG Luna,,,,,3,2,,5
+LT Shine Cold Transfer Metallic - Folha de Transferência 10cmx5m Bronze,,,2,,3,,,5
+Lixa para Madeira e Massa Condor - Grão 220,1,1,1,,1,1,,5
+Lixa para Madeira e Massa Condor - Grão 100,1,,2,1,1,,,5
+Kit Limpa Pedras Biodegradável Ivaclean 1L - 5 unidades,,,,5,,,,5
+Kit Cola para Madeira Wood Wood 3 497G - 4 unidades,1,,1,3,,,,5
+"Hold Stone Pro Carpets - Revestimento de Pedras Naturais para Pisos 20,8KG Âmbar",,3,,1,,1,,5
+Hobby Art Decora Pinta Tudo 900ML Garden,,,1,1,,3,,5
+Hobby Art Decora Pinta Tudo 30ML Vermelho Cardinal,,,,,1,4,,5
+Hobby Art Concrete Design 1KG Cinza,3,,,1,,1,,5
+"Fita Multiuso Líquida para Telhados - SOS Telhas 3,6KG Cinza",,,2,1,,2,,5
+Espátula Redonda para Balde Condor,,,5,,,,,5
+Drymanta G60 4M,2,,2,1,,,,5
+Disco de Lixa Abranet Ace 6 / 150MM P180 Mirka - 1 un ,1,1,1,1,1,,,5
+Desempenadeira Mirox 35CM Mirka,,,4,1,,,,5
+Boina de Espuma Amarela Waffle para Polimento 150MM Mirka,5,,,,,,,5
+Blinda Umidade Inject Gel 250G - Pulo do Gato,,1,,1,1,2,,5
+Base Coat Render Pronto para Placa Cimentícia Zero Trinca 25kg,,1,1,,3,,,5
+Argamassa de Regularização Rapid Cure 20KG Elastment,,,4,,,1,,5
+Agente Fixador Sand & Stone 5L Cristal,,2,1,1,1,,,5
+Tinta Removível Skin Color Cristal 900ML Branco,2,2,,,,,,4
+Tinta Elástica Smart Color Fosco Palha 18L,,1,,1,1,1,,4
+Tinta Elástica Smart Color fosco Elefante 3.6L,2,,1,,,1,,4
+Tinta Elástica Smart Color fosco Azul Oceano 3.6L,1,1,1,,1,,,4
+Tinta Elástica Smart Color Fosco 18L Areia,,4,,,,,,4
+Tinta Elástica Smart Color fosco  Preto 3.6L,1,,,,3,,,4
+Tinta Elástica Smart Color fosco  Fendi 3.6L,3,,,,1,,,4
+Tinta Elástica Smart Color fosco  Creme de Avelã 3.6L,,,,1,2,,1,4
+Super Cola Ultra Fast 20G Wood Wood,1,1,,,1,1,,4
+Super Cola Gel 20G Wood Wood,,2,1,1,,,,4
+"Smart Resina 500ML Semi Brilho  Impermeabilizante 5 em 1, Primer, Verniz e Seladora para Madeira, Gesso e Concreto",1,,2,,,1,,4
+Smart Coat Brilhante 200ML,,4,,,,,,4
+Shampoo para Telhas Power Shower 1L Cristal,,,,,2,2,,4
+Selante para Colagem e Vedação PU 40 360G Cinza - Pulo do Gato,,,,,3,1,,4
+Selante Acrílico para Trincas e Fissuras Zero Trinca 420G -  3 unidades,1,1,,2,,,,4
+Selante  Acrílico Zero Trinca 5KG,2,,,1,1,,,4
+Saco de Pedras Hold Stone Garden Color Stone Seixo Pedra Âmbar 25KG,,,,1,3,,,4
+"Resina Multiuso Tech Resina 3,6L - Pulo do Gato",1,1,1,,,1,,4
+Removick Removedor de Transfer  150ml,1,,,2,1,,,4
+Primer Promotor de Aderência para Plástico TF200 900ML,1,,,1,1,1,,4
+Primer Promotor de Aderência para plástico TF200 150ML,2,,1,1,,,,4
+Primer para Gravações a Laser TF700 150ML,,1,2,,,1,,4
+Mini Prensa Plana Térmica 220V,,4,,,,,,4
+Massa Flex Reparo Fácil  para Madeira CASTANHO - 90g,,1,1,,1,1,,4
+LT Shine Primer Universal 20KG Gelo,,1,,1,1,1,,4
+"LT Shine Microcimento 4,5KG Kalahari",3,1,,,,,,4
+LT Shine Microcimento 18KG Javier,,,2,1,1,,,4
+LT Shine Microcimento 18KG Iva,,,,,4,,,4
+LT Shine Grannistone Primer Promotor de Aderência 4KG Citrino,,2,1,,1,,,4
+LT Shine Grannistone Pedras Naturais 5KG Cinza Garoa,1,,1,,1,1,,4
+LT Shine Grannistone Pedras Naturais 25KG Ouro Brasil,1,2,,,,1,,4
+"LT Shine Cimento Queimado Turmalina Negra 1,3Kg",4,,,,,,,4
+"LT Shine Cimento Queimado Off White 2,5Kg",,3,,1,,,,4
+Lixa para Madeira e Massa Condor - Grão 80,2,1,1,,,,,4
+Limpador e Removedor de Espuma PU Sieger 500ml,,,2,1,1,,,4
+Kit Cola para Madeira Wood Wood 3 497G - 6 unidades,,,,,2,,,2
+KIT Limpador de Superfícies TF Clean 200ML + Primer para Gravações a Laser TF700 Black 150ML,4,,,,,,,4
+Kit 6x Sos Umidade Bisnaga 250G - Bege,,2,,1,1,,,4
+"Hold Stone Pro Carpets - Revestimento de Pedras Naturais para Pisos 20,8KG Opala Rosa",,,,2,,2,,4
+Espátula Plástica Dentada C/ Cabo 8CM Roma,2,1,,,,1,,4
+Espátula para Rejunte e Selante Elastment - Raspador e Alisador,2,2,,,,,,4
+Elastment White - Cimento Termoelástico Redutor de Temperatura 4KG,,1,1,1,,1,,4
+Cimento Elástico Elastment 20KG Azul Piscina,1,,,,1,2,,4
+"Cristal Ultra Resina 3,6L",2,,1,,,1,,4
+Concrete Stain 250ML Casca de Árvore,,,,3,1,,,4
+"Cimento Queimado Elastment Cinza Médio 4,5kg",,4,,,,,,4
+Adesivo de Contato  AC9000 900ML,1,,,1,1,1,,4
+Kit 4x Primer Promotor de Aderência Pr10 Incolor150ML,,1,,1,,,,2
+Kit 4x Cola Extra Forte AC6000 400G,1,,,1,,,,2
+Kit 12x Sos Umidade Bisnaga 250G - Bege,1,,,1,,,,2
+Hold Stone Garden Color Stone - Revestimento de Pedras Naturais para Pisos 2KG Quartzo,,1,,,1,,,2
+Hobby Art Stone Make 30G Bege,,,1,,,1,,2
+Hobby Art Stain Color Verniz de Efeito Vitrificado 100ML Bronze,,2,,,,,,2
+Hobby Art Primer Universal 150G,1,,,1,,,,2
+"Hobby Art Pedras Naturais C/ Endurecedor Resin Stone 1,080kg Vesúvio",,,,1,1,,,2
+Hobby Art Decora Pinta Tudo 900ML Sunshine,1,1,,,,,,2
+Hobby Art Decora Pinta Tudo 250ML Verde Água,1,1,,,,,,2
+"Hidrofugante Blinda Umidade Superfícies 3,6L - Pulo do Gato",2,,,,,,,2
+Hidrofugante Blinda Umidade Superfícies 1L - Pulo do Gato,,1,,1,,,,2
+Hidrofugante Blinda Gesso 1L - Pulo do Gato,,,1,1,,,,2
+"Forma Cuba Redonda C/ Base 38,5x12CM 3MM",1,1,,,,,,2
+Fixador de Pedras Fix Stone 5L,,1,1,,,,,2
+"Fita Reparadora Magic Imper Super Tape 1,5MX10CM - Preta",,,,2,,,,2
+Espátula de Plástico para Massa 7x9CM Roma,1,,1,,,,,2
+Espátula Aço Inox Multiuso Condor,1,,,,,1,,2
+"Esmalte Marítimo Sobre Ferrugem 3,6KG Preto - Pulo do Gato",,,1,1,,,,2
+Elastment Stabilizer Primer 25KG,,,,,,,, 2
+Elastment Scudo Pro Tinta Para Piso 18KG Cinza Concreto,,,,2,,,,2
+"Verniz Pu Manta Líquida Zero Obra Elastment 3,5KG Fosco Cinza Escuro",1,,,3,,,,4
+Borracha Líquida Cristal 18KG Cinza,,,1,,,1,,2
+"Concrete Stain 3,6L Café",1,,,1,,,,2
+Concrete Stain 250ML Asfalto,,,,,2,,,2
+Cola Spray Tapeceiro 500ML Sieger,,,,,2,,,2
+Cola Piso Vinílico E Emborrachado AC10000 1KG,,,,,,2,,2
+"Cimento Queimado Elastment Vermelho 4,5kg",,,2,,,,,2
+"Cimento Queimado Elastment Salmão 4,5kg",,,2,,,,,2
+"Cimento Queimado Elastment Marrom 4,5kg",,,,2,,,,2
+"Cimento Queimado Elastment Chocolate 4,5kg",,,2,,,,,2
+"Cimento Queimado Elastment Calcário 4,5kg",,,2,,,,,2
+"Cimento Queimado Elastment Bege 4,5kg",,,2,,,,,2
+Cera de Carnaúba Auge Stucco 270ML -  Creme,1,,,,1,,,2
+Borracha Líquida Cristal 18KG Azul,,1,,,,1,,2
+Agente Fixador Sand & Stone 1L Cristal,1,,,1,,,,2
+Aditivo para Argamassas Tech Liga 150G - Pulo do Gato,1,,1,,,,,2
+`;
+
+// Parse the CSV text
+function parseCSVLine(line) {
+  const fields = [];
+  let i = 0;
+  while (i < line.length) {
+    if (line[i] === '"') {
+      i++;
+      let f = '';
+      while (i < line.length) {
+        if (line[i] === '"') {
+          if (line[i+1] === '"') { f += '"'; i += 2; }
+          else { i++; break; }
+        } else { f += line[i++]; }
+      }
+      fields.push(f);
+      if (line[i] === ',') i++;
+    } else {
+      const end = line.indexOf(',', i);
+      if (end === -1) { fields.push(line.slice(i)); break; }
+      fields.push(line.slice(i, end));
+      i = end + 1;
+    }
+  }
+  return fields;
+}
+
+const products = CSV_TEXT.trim().split('\n').map(line => {
+  const f = parseCSVLine(line.trim());
+  if (!f[0] || f[0].startsWith('Total')) return null;
+  const months = [0,1,2,3,4,5].map(i => parseInt(f[i+1])||0);
+  const total = parseInt(f[7])||months.reduce((a,b)=>a+b,0);
+  const name = f[0].trim();
+  const brand = detectBrand(name);
+  return { name, brand, months, total };
+}).filter(Boolean);
+
+// State
+let state = {
+  brands: new Set(['TODOS']),
+  month: 'ALL',
+  sort: { col: 'total', dir: 'desc' },
+  search: '',
+  campaign: new Set()
+};
+
+let stackedChart = null, brandChart = null;
+
+function getFiltered() {
+  return products.filter(p => {
+    const brandOk = state.brands.has('TODOS') || state.brands.has(p.brand);
+    const searchOk = !state.search || p.name.toLowerCase().includes(state.search.toLowerCase());
+    return brandOk && searchOk;
+  });
+}
+
+function getSorted(list) {
+  return [...list].sort((a, b) => {
+    let av, bv;
+    if (state.sort.col === 'name') { av = a.name; bv = b.name; }
+    else if (state.sort.col === 'brand') { av = a.brand; bv = b.brand; }
+    else if (state.sort.col === 'total') { av = a.total; bv = b.total; }
+    else {
+      const i = parseInt(state.sort.col);
+      av = a.months[i]; bv = b.months[i];
+    }
+    if (typeof av === 'string') return state.sort.dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+    return state.sort.dir === 'asc' ? av - bv : bv - av;
+  });
+}
+
+function renderKPIs() {
+  const list = getFiltered();
+  const totalOrders = list.reduce((s,p) => s + p.total, 0);
+  const monthTotals = MONTHS.map((_,i) => list.reduce((s,p) => s+p.months[i], 0));
+  const bestMonthIdx = monthTotals.indexOf(Math.max(...monthTotals));
+  const topProduct = [...list].sort((a,b) => b.total - a.total)[0];
+
+  document.getElementById('kpi-total').textContent = totalOrders.toLocaleString('pt-BR');
+  document.getElementById('kpi-total-sub').textContent = `em ${list.length} SKUs`;
+  document.getElementById('kpi-items').textContent = list.length;
+  document.getElementById('kpi-items-sub').textContent = `de ${products.length} total`;
+  document.getElementById('kpi-month').textContent = MONTHS[bestMonthIdx];
+  document.getElementById('kpi-month-sub').textContent = `${monthTotals[bestMonthIdx].toLocaleString('pt-BR')} pedidos`;
+  document.getElementById('kpi-top').textContent = topProduct ? topProduct.name.substring(0,40)+(topProduct.name.length>40?'…':'') : '—';
+  document.getElementById('kpi-top-sub').textContent = topProduct ? `${topProduct.total} pedidos · ${topProduct.brand}` : '';
+}
+
+function getBrandTotals(list) {
+  const bt = {};
+  for (const p of list) {
+    if (!bt[p.brand]) bt[p.brand] = Array(6).fill(0);
+    p.months.forEach((v,i) => { bt[p.brand][i] += v; });
+  }
+  return bt;
+}
+
+function renderCharts() {
+  const list = getFiltered();
+  const bt = getBrandTotals(list);
+  const brands = Object.keys(bt).sort();
+
+  // Stacked bar chart
+  const ctx1 = document.getElementById('chart-stacked').getContext('2d');
+  if (stackedChart) stackedChart.destroy();
+  stackedChart = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: MONTHS,
+      datasets: brands.map(br => ({
+        label: br,
+        data: bt[br],
+        backgroundColor: BRAND_COLORS[br] || '#6b7280',
+        stack: 'stack'
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'bottom', labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' }, stacked: true }
+      }
+    }
+  });
+
+  // Brand donut chart
+  const brandTotals = brands.map(br => bt[br].reduce((a,b)=>a+b,0));
+  const ctx2 = document.getElementById('chart-brand').getContext('2d');
+  if (brandChart) brandChart.destroy();
+  brandChart = new Chart(ctx2, {
+    type: 'doughnut',
+    data: {
+      labels: brands,
+      datasets: [{ data: brandTotals, backgroundColor: brands.map(br => BRAND_COLORS[br]||'#6b7280'), borderWidth: 2, borderColor: '#161b22' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'right', labels: { color: '#8b949e', boxWidth: 12, font: { size: 11 } } },
+        tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${ctx.parsed.toLocaleString('pt-BR')} pedidos` } }
+      }
+    }
+  });
+}
+
+function heatColor(val, max, brand) {
+  if (!val || !max) return '';
+  const intensity = val / max;
+  const col = BRAND_COLORS[brand] || '#6b7280';
+  const r = parseInt(col.slice(1,3),16);
+  const g = parseInt(col.slice(3,5),16);
+  const b = parseInt(col.slice(5,7),16);
+  const alpha = 0.15 + intensity * 0.55;
+  return `background:rgba(${r},${g},${b},${alpha});color:${intensity>0.5?'#fff':'#e6edf3'}`;
+}
+
+function renderTable() {
+  const list = getSorted(getFiltered());
+  document.getElementById('count').textContent = `(${list.length} itens)`;
+
+  // Determine sort focus column for highlighting
+  const sortMonth = state.month !== 'ALL' ? parseInt(state.month) : null;
+
+  const tbody = document.getElementById('prod-body');
+  tbody.innerHTML = '';
+
+  for (const p of list) {
+    const maxVal = Math.max(...p.months);
+    const inCampaign = state.campaign.has(p.name);
+
+    const cells = p.months.map((v,i) => {
+      const style = v ? heatColor(v, maxVal, p.brand) : '';
+      const focus = (sortMonth !== null && sortMonth === i) ? 'outline:2px solid rgba(88,166,255,.4);' : '';
+      return `<td class="month-cell" style="${style};${focus}">${v || ''}</td>`;
+    }).join('');
+
+    const brandColor = BRAND_COLORS[p.brand] || '#6b7280';
+    const row = `<tr>
+      <td><span class="badge" style="background:${brandColor}">${p.brand}</span></td>
+      <td class="name-col" title="${p.name}">${p.name}</td>
+      ${cells}
+      <td class="total-cell">${p.total}</td>
+      <td><button class="add-btn${inCampaign?' in-campaign':''}" onclick="toggleCampaign('${p.name.replace(/'/g,"\\'")}', this)">${inCampaign?'✓':'+'}</button></td>
+    </tr>`;
+    tbody.insertAdjacentHTML('beforeend', row);
+  }
+}
+
+function toggleCampaign(name, btn) {
+  if (state.campaign.has(name)) {
+    state.campaign.delete(name);
+    btn.classList.remove('in-campaign');
+    btn.textContent = '+';
+  } else {
+    state.campaign.add(name);
+    btn.classList.add('in-campaign');
+    btn.textContent = '✓';
+  }
+  renderCampaignBar();
+}
+
+function renderCampaignBar() {
+  const bar = document.getElementById('campaign-bar');
+  const tags = document.getElementById('campaign-tags');
+  if (state.campaign.size === 0) { bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+  tags.innerHTML = [...state.campaign].map(n =>
+    `<span class="ctag">${n.substring(0,30)}${n.length>30?'…':''} <button onclick="removeCampaignItem('${n.replace(/'/g,"\\'")}')">×</button></span>`
+  ).join('');
+}
+
+function removeCampaignItem(name) {
+  state.campaign.delete(name);
+  renderCampaignBar();
+  renderTable();
+}
+
+function clearCampaign() {
+  state.campaign.clear();
+  renderCampaignBar();
+  renderTable();
+}
+
+function exportCampaign() {
+  const items = [...state.campaign];
+  const byBrand = {};
+  for (const name of items) {
+    const p = products.find(x => x.name === name);
+    if (p) {
+      if (!byBrand[p.brand]) byBrand[p.brand] = [];
+      byBrand[p.brand].push(p);
+    }
+  }
+  let text = `LISTA DE CAMPANHA — IVA QUÍMICA\nGerado em: ${new Date().toLocaleDateString('pt-BR')}\nTotal: ${items.length} itens\n\n`;
+  for (const [brand, list] of Object.entries(byBrand).sort()) {
+    text += `━━━ ${brand} ━━━\n`;
+    for (const p of list) {
+      const monthStr = p.months.map((v,i) => v ? `${MONTHS[i]}:${v}` : '').filter(Boolean).join(' | ');
+      text += `• ${p.name}\n  Total: ${p.total} pedidos | ${monthStr}\n`;
+    }
+    text += '\n';
+  }
+  document.getElementById('modal-content').textContent = text;
+  document.getElementById('modal').classList.add('open');
+}
+
+function copyModal() {
+  const text = document.getElementById('modal-content').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('#modal-actions .btn-primary');
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => { btn.textContent = 'Copiar Texto'; }, 2000);
+  });
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+function render() {
+  renderKPIs();
+  renderCharts();
+  renderTable();
+  renderCampaignBar();
+}
+
+// Event listeners
+document.querySelectorAll('[data-brand]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const brand = btn.dataset.brand;
+    if (brand === 'TODOS') {
+      state.brands = new Set(['TODOS']);
+    } else {
+      state.brands.delete('TODOS');
+      if (state.brands.has(brand)) state.brands.delete(brand);
+      else state.brands.add(brand);
+      if (state.brands.size === 0) state.brands.add('TODOS');
+    }
+    document.querySelectorAll('[data-brand]').forEach(b => {
+      b.classList.toggle('active', state.brands.has(b.dataset.brand));
+    });
+    render();
+  });
+});
+
+document.querySelectorAll('[data-month]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.month = btn.dataset.month;
+    document.querySelectorAll('[data-month]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (state.month !== 'ALL') {
+      state.sort = { col: state.month, dir: 'desc' };
+      document.querySelectorAll('th').forEach(th => { th.classList.remove('sort-asc','sort-desc'); });
+      const th = document.querySelector(`th[data-col="${state.month}"]`);
+      if (th) th.classList.add('sort-desc');
+    }
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  state.search = e.target.value;
+  render();
+});
+
+document.querySelectorAll('th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (state.sort.col === col) state.sort.dir = state.sort.dir === 'desc' ? 'asc' : 'desc';
+    else { state.sort = { col, dir: 'desc' }; }
+    document.querySelectorAll('th').forEach(t => t.classList.remove('sort-asc','sort-desc'));
+    th.classList.add(state.sort.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+    render();
+  });
+});
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+// Init
+render();
+</script>
+</body>
+</html>

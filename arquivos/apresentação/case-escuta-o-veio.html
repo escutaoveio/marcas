@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case — Escuta o Véio!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --veio-preto: #2D2D2B;
+  --veio-preto-soft: #1F1F1E;
+  --veio-branco: #FFFFFF;
+  --veio-cinza: #EEEDEE;
+  --veio-cinza-2: #D9D9D9;
+  --veio-cinza-3: #B4B3B3;
+  --veio-amarelo: #FEBF13;
+  --veio-laranja: #FAA900;
+
+  --bg-page: var(--veio-branco);
+  --bg-soft: var(--veio-cinza);
+  --bg-dark: var(--veio-preto);
+  --fg-1: var(--veio-preto);
+  --fg-2: #4A4A48;
+  --fg-3: var(--veio-cinza-3);
+  --accent: var(--veio-amarelo);
+  --border-1: var(--veio-cinza-2);
+  --fg-on-dark: var(--veio-branco);
+
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  --text-xs: 12px; --text-sm: 14px; --text-base: 16px; --text-md: 18px;
+  --text-xl: 24px; --text-2xl: 32px; --text-3xl: 44px; --text-4xl: 60px;
+
+  --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
+  --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
+
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 999px;
+
+  --shadow-rest: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.04);
+  --shadow-hover: 0 2px 4px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.08);
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-normal: 180ms;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg-page); color: var(--fg-1); line-height: 1.6; }
+
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--space-32); height: 64px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-1);
+}
+.header__logo { height: 36px; font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--veio-preto); text-decoration: none; letter-spacing: -0.02em; }
+.header__logo span { color: var(--veio-amarelo); }
+.header__nav { display: flex; gap: var(--space-32); }
+.header__nav a { font-size: var(--text-sm); font-weight: 500; color: var(--fg-2); text-decoration: none; transition: color var(--dur-normal); }
+.header__nav a:hover { color: var(--veio-preto); }
+.header__badge { font-size: var(--text-xs); font-weight: 600; background: var(--veio-cinza); padding: 6px 14px; border-radius: var(--radius-pill); color: var(--fg-2); }
+.header__badge strong { color: var(--veio-preto); }
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: var(--space-96) var(--space-32); }
+.eyebrow { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: var(--space-8); }
+.eyebrow--dark { color: var(--fg-3); }
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 32px); color: var(--fg-1); margin-bottom: var(--space-48); }
+.bg-soft { background: var(--bg-soft); }
+.placeholder { color: var(--veio-cinza-2); font-style: italic; opacity: .7; }
+
+/* ── Hero ── */
+.hero {
+  min-height: 88vh; background: var(--veio-preto); color: var(--fg-on-dark);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: var(--space-96) var(--space-32); position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; bottom: -200px; left: 50%;
+  transform: translateX(-50%); width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(254,191,19,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero__inner { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; }
+.hero__meta { display: flex; gap: var(--space-8); flex-wrap: wrap; margin-bottom: var(--space-32); }
+.hero__tag { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; border-radius: var(--radius-pill); background: rgba(255,255,255,.1); color: var(--veio-cinza-3); }
+.hero__tag--accent { background: var(--veio-amarelo); color: var(--veio-preto); }
+.hero h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 5vw, 60px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: var(--space-24); max-width: 800px; }
+.hi { color: var(--veio-amarelo); }
+.hero__sub { font-size: var(--text-md); color: var(--veio-cinza-3); max-width: 640px; margin-bottom: var(--space-48); line-height: 1.7; }
+.hero__mockup { width: 100%; max-width: 900px; aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center; color: var(--veio-cinza-3); font-size: var(--text-sm); margin-bottom: var(--space-48); }
+.hero__info { display: flex; gap: var(--space-48); flex-wrap: wrap; }
+.hero__info-item { font-size: var(--text-sm); color: var(--veio-cinza-3); }
+.hero__info-item strong { color: var(--fg-on-dark); font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* ── Resultados ── */
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); margin-bottom: var(--space-48); }
+.result-card { background: var(--veio-branco); border-radius: var(--radius-lg); padding: var(--space-32); border: 1px solid var(--border-1); }
+.result-card__num { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5vw, 52px); color: var(--veio-preto); letter-spacing: -0.02em; margin-bottom: var(--space-8); }
+.result-card__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; }
+.results-note { background: rgba(254,191,19,.08); border-left: 3px solid var(--veio-amarelo); padding: var(--space-16) var(--space-24); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: var(--text-sm); color: var(--fg-2); }
+
+/* ── Sobre ── */
+.sobre-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-48); align-items: start; }
+.sobre-descricao { font-size: var(--text-md); color: var(--fg-2); border-left: 3px solid var(--veio-amarelo); padding-left: var(--space-24); margin-bottom: var(--space-32); line-height: 1.8; }
+.sobre-meta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.meta-item__label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3); font-weight: 600; margin-bottom: 4px; }
+.meta-item__value { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.desafio-card { background: var(--veio-preto); border-radius: var(--radius-xl); padding: var(--space-32); }
+.desafio-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--veio-amarelo); margin-bottom: var(--space-16); }
+.desafio-card p { font-size: var(--text-sm); color: var(--veio-cinza-3); margin-bottom: var(--space-16); line-height: 1.7; }
+.objetivo-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.objetivo-list li { font-size: var(--text-sm); color: var(--veio-cinza-3); padding-left: var(--space-24); position: relative; line-height: 1.6; }
+.objetivo-list li::before { content: '→'; position: absolute; left: 0; color: var(--veio-amarelo); font-weight: 700; }
+
+/* ── Marca ── */
+.proposito-block {
+  background: var(--veio-preto); border-radius: var(--radius-xl);
+  padding: var(--space-48); margin-bottom: var(--space-48); position: relative; overflow: hidden;
+}
+.proposito-block::after {
+  content: ''; position: absolute; top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(254,191,19,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.proposito-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--veio-amarelo); margin-bottom: var(--space-16); }
+.proposito-text { font-family: var(--font-display); font-size: clamp(16px, 2vw, 22px); color: var(--veio-branco); line-height: 1.6; max-width: 720px; }
+.proposito-text em { color: var(--veio-amarelo); font-style: normal; font-weight: 700; }
+
+.personalidade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); margin-bottom: var(--space-48); }
+.personalidade-card { border: 1.5px solid var(--border-1); border-radius: var(--radius-xl); padding: var(--space-32); }
+.personalidade-card__icon { font-size: 28px; margin-bottom: var(--space-16); }
+.personalidade-card__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--fg-1); margin-bottom: var(--space-8); }
+.personalidade-card__role { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--veio-amarelo); margin-bottom: var(--space-12); }
+.personalidade-card__desc { font-size: var(--text-sm); color: var(--fg-2); line-height: 1.7; }
+
+.mantras-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-16); margin-bottom: var(--space-48); }
+.mantra-item { background: var(--veio-cinza); border-radius: var(--radius-lg); padding: var(--space-24); }
+.mantra-item__quote { font-family: var(--font-display); font-weight: 700; font-size: var(--text-md); color: var(--fg-1); margin-bottom: var(--space-8); }
+.mantra-item__desc { font-size: var(--text-sm); color: var(--fg-2); line-height: 1.6; }
+
+.vozes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.voz-card { border-radius: var(--radius-xl); padding: var(--space-32); }
+.voz-card--veio { background: var(--veio-amarelo); }
+.voz-card--equipe { background: var(--veio-preto); }
+.voz-card__titulo { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--space-8); }
+.voz-card--veio .voz-card__titulo { color: var(--veio-preto); }
+.voz-card--equipe .voz-card__titulo { color: var(--veio-branco); }
+.voz-card__quando { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-16); }
+.voz-card--veio .voz-card__quando { color: rgba(45,45,43,.6); }
+.voz-card--equipe .voz-card__quando { color: var(--veio-cinza-3); }
+.voz-card__exemplos { list-style: none; display: flex; flex-direction: column; gap: var(--space-8); }
+.voz-card__exemplos li { font-size: var(--text-sm); font-style: italic; line-height: 1.6; }
+.voz-card--veio .voz-card__exemplos li { color: var(--veio-preto-soft); }
+.voz-card--equipe .voz-card__exemplos li { color: var(--veio-cinza-3); }
+
+/* ── Personas ── */
+.personas-tabs { display: flex; gap: var(--space-8); margin-bottom: var(--space-32); }
+.persona-tab { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 18px; border-radius: var(--radius-pill); background: var(--veio-cinza-2); color: var(--fg-2); border: none; cursor: default; }
+.persona-tab--active { background: var(--veio-preto); color: var(--veio-branco); }
+
+.personas-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-16); margin-bottom: var(--space-48); }
+.persona-card { border: 1.5px solid var(--border-1); border-radius: var(--radius-lg); padding: var(--space-24); background: var(--veio-branco); }
+.persona-card__name { font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm); color: var(--fg-1); margin-bottom: var(--space-8); }
+.persona-card__desc { font-size: 13px; color: var(--fg-2); line-height: 1.6; }
+.persona-card--pro { border-color: var(--veio-amarelo); background: rgba(254,191,19,.04); }
+
+/* ── Posicionamento ── */
+.posicionamento-block { background: var(--veio-preto); border-radius: var(--radius-xl); padding: var(--space-48); margin-bottom: var(--space-48); }
+.posicionamento-declaracao { font-size: var(--text-base); color: var(--veio-cinza-3); line-height: 1.8; display: flex; flex-direction: column; gap: var(--space-16); }
+.pos-linha { display: grid; grid-template-columns: 180px 1fr; gap: var(--space-24); align-items: start; }
+.pos-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--veio-amarelo); padding-top: 2px; }
+.pos-texto { font-size: var(--text-sm); color: var(--veio-cinza-3); line-height: 1.7; }
+
+/* ── Processo ── */
+.processo-steps { display: flex; flex-direction: column; }
+.step { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-24); }
+.step__num { width: 48px; height: 48px; background: var(--veio-amarelo); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm); color: var(--veio-preto); flex-shrink: 0; }
+.step__body { border-bottom: 1px solid var(--border-1); padding-bottom: var(--space-32); margin-bottom: var(--space-32); }
+.step:last-child .step__body { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.step__title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--fg-1); margin-bottom: var(--space-8); padding-top: 10px; }
+.step__desc { font-size: var(--text-base); color: var(--fg-2); line-height: 1.7; margin-bottom: var(--space-16); }
+.step__tags { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+.step__tag { font-size: var(--text-xs); font-weight: 500; background: var(--veio-branco); border: 1px solid var(--border-1); padding: 4px 12px; border-radius: var(--radius-pill); color: var(--fg-2); }
+
+/* ── Detalhes ── */
+.detalhes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.detalhe-card { background: var(--veio-branco); border: 1px solid var(--border-1); border-radius: var(--radius-xl); padding: var(--space-32); box-shadow: var(--shadow-rest); }
+.detalhe-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--fg-1); margin-bottom: var(--space-24); }
+.ferramentas-list { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.ferramenta-chip { font-size: var(--text-sm); font-weight: 500; border: 1.5px solid var(--veio-preto); padding: 6px 16px; border-radius: var(--radius-pill); color: var(--veio-preto); background: transparent; }
+.cronograma-bars { display: flex; flex-direction: column; gap: var(--space-16); }
+.crono-item__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; margin-bottom: 6px; }
+.crono-item__bar { height: 8px; background: var(--veio-cinza-2); border-radius: var(--radius-pill); overflow: hidden; }
+.crono-item__fill { height: 100%; background: var(--veio-amarelo); border-radius: var(--radius-pill); }
+.agentes-grid { display: flex; flex-direction: column; gap: var(--space-12); }
+.agente-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-8) 0; border-bottom: 1px solid var(--veio-cinza); }
+.agente-row:last-child { border-bottom: none; }
+.agente-row__name { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.agente-row__role { font-size: var(--text-sm); color: var(--fg-3); text-align: right; max-width: 55%; }
+.desafio-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.desafio-list li { font-size: var(--text-sm); color: var(--fg-2); border-left: 2px solid var(--veio-cinza-2); padding-left: var(--space-16); line-height: 1.6; }
+
+/* ── Conclusão ── */
+.conclusao-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
+.conclusao-card { border-radius: var(--radius-xl); padding: var(--space-32); }
+.conclusao-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--space-16); }
+.conclusao-card p { font-size: var(--text-sm); line-height: 1.7; }
+.conclusao-card--reflexao { background: var(--veio-cinza); }
+.conclusao-card--reflexao h3 { color: var(--fg-2); }
+.conclusao-card--reflexao p { color: var(--fg-2); }
+.conclusao-card--impacto { background: var(--veio-preto); }
+.conclusao-card--impacto h3 { color: var(--veio-amarelo); }
+.conclusao-card--impacto p { color: var(--veio-cinza-3); }
+.conclusao-card--proximos { background: var(--veio-amarelo); }
+.conclusao-card--proximos h3 { color: var(--veio-preto); }
+.conclusao-card--proximos p { color: var(--veio-preto); opacity: .75; }
+
+.footer { background: var(--veio-preto); color: var(--veio-cinza-3); padding: var(--space-32); text-align: center; font-size: var(--text-sm); }
+.footer strong { color: var(--veio-branco); }
+
+@media (max-width: 900px) {
+  .results-grid, .conclusao-grid, .personalidade-grid { grid-template-columns: 1fr; }
+  .sobre-layout, .detalhes-grid, .vozes-grid { grid-template-columns: 1fr; }
+  .personas-grid { grid-template-columns: repeat(2, 1fr); }
+  .mantras-grid { grid-template-columns: 1fr; }
+  .header__nav { display: none; }
+  .wrap { padding: var(--space-64) var(--space-24); }
+  .pos-linha { grid-template-columns: 1fr; gap: var(--space-8); }
+}
+@media (max-width: 480px) {
+  .sobre-meta { grid-template-columns: 1fr; }
+  .personas-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header__logo">Escuta o <span>Véio!</span></span>
+  <nav class="header__nav">
+    <a href="#resultados">Resultados</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#marca">Marca</a>
+    <a href="#personas">Personas</a>
+    <a href="#processo">Processo</a>
+    <a href="#detalhes">Detalhes</a>
+    <a href="#conclusao">Conclusão</a>
+  </nav>
+  <div class="header__badge">Case <strong>E-commerce</strong></div>
+</header>
+
+<!-- 01 Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__meta">
+      <span class="hero__tag hero__tag--accent">Case de Portfólio</span>
+      <span class="hero__tag">Escuta o Véio!</span>
+      <span class="hero__tag">IVA Química</span>
+      <span class="hero__tag">2024 – 2025</span>
+    </div>
+    <h1>E-commerce do <span class="hi">Zero</span> ao Ar.</h1>
+    <p class="hero__sub">
+      De catálogo disperso e dependência de canal a um e-commerce com identidade própria, personagem vivo, operação multicanal e linguagem que tira o medo da construção. De indústria invisível ao consumidor final a companheiro phygital de quem quer resolver de verdade.
+    </p>
+    <div class="hero__mockup">
+      [ Screenshot da loja Escuta o Véio! — substituir por &lt;img&gt; após lançamento ]
+    </div>
+    <div class="hero__info">
+      <div class="hero__info-item"><strong>Projeto</strong> Escuta o Véio!</div>
+      <div class="hero__info-item"><strong>Segmento</strong> E-commerce B2C</div>
+      <div class="hero__info-item"><strong>Catálogo</strong> IVA Química completo + terceiros</div>
+      <div class="hero__info-item"><strong>Posicionamento</strong> Varejo phygital de construção</div>
+      <div class="hero__info-item"><strong>Link</strong> <span class="placeholder">— a publicar —</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Resultados -->
+<section id="resultados" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Big Numbers</p>
+    <p class="section-title">Resultados</p>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-card__num">1.200<span style="font-size:.5em">+</span></div>
+        <div class="result-card__label">Produtos ativos no catálogo da loja</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">3</div>
+        <div class="result-card__label">Frentes de operação — loja, marketplaces e WhatsApp</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">10</div>
+        <div class="result-card__label">Personas de cliente mapeadas em profundidade</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Pedidos no primeiro mês</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Ticket médio</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Taxa de conversão</div>
+      </div>
+    </div>
+    <div class="results-note">
+      <strong>Nota.</strong> Dados operacionais (pedidos, ticket médio, conversão) serão preenchidos após as primeiras semanas de operação. Os dados de catálogo e estrutura refletem o estado no lançamento.
+    </div>
+  </div>
+</section>
+
+<!-- 03 Sobre -->
+<section id="sobre">
+  <div class="wrap">
+    <p class="eyebrow">Contexto</p>
+    <p class="section-title">Sobre o projeto</p>
+    <div class="sobre-layout">
+      <div>
+        <p class="sobre-descricao">
+          O Escuta o Véio! é o e-commerce principal da IVA Química — a loja que tem o produto certo e o conselho certo, sem complicação. Criado para democratizar o acesso ao catálogo completo da IVA e de fornecedores parceiros, com uma linguagem que tira o medo da construção e trata o cliente como amigo.
+        </p>
+        <div class="sobre-meta">
+          <div class="meta-item">
+            <div class="meta-item__label">Objetivo</div>
+            <div class="meta-item__value">Canal de venda direta ao cliente final e profissional</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Público-alvo</div>
+            <div class="meta-item__value">Cliente final e profissional (pintor, artesão, mestre de obras)</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Personagem</div>
+            <div class="meta-item__value">O Véio — conselheiro de confiança</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Slogan</div>
+            <div class="meta-item__value">Novas Soluções para Velhos Problemas</div>
+          </div>
+        </div>
+      </div>
+      <div class="desafio-card">
+        <h3>O problema real</h3>
+        <p>A IVA não tinha canal próprio de venda ao cliente final. O e-commerce precisava ir além de uma vitrine de produtos — precisava ter voz, personalidade e a capacidade de guiar o cliente que não domina construção.</p>
+        <ul class="objetivo-list">
+          <li>Catálogo técnico complexo com mais de 1.200 produtos sem curadoria para o leigo</li>
+          <li>Ausência de identidade digital própria — sem personagem, sem voz, sem diferencial</li>
+          <li>Cliente final sem referência de onde comprar o produto IVA diretamente</li>
+          <li>Operação de venda concentrada no B2B sem presença onde o consumidor está</li>
+          <li>Mercado dominado por grandes redes que vendem produto sem contexto, sem ensino, sem relação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Marca -->
+<section id="marca" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Brand Platform</p>
+    <p class="section-title">A construção da marca</p>
+
+    <!-- Propósito -->
+    <div class="proposito-block">
+      <div class="proposito-label">Declaração de Propósito</div>
+      <div class="proposito-text">
+        Nós existimos para <em>dar dignidade, autonomia e qualidade de vida às pessoas</em> através de soluções que realmente funcionam — e buscamos ajudar pessoas comuns a resolverem seus problemas cotidianos com <em>confiança, conhecimento e empoderamento.</em>
+      </div>
+    </div>
+
+    <!-- Arquétipos / Personalidade -->
+    <p style="font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--fg-1); margin-bottom: var(--space-24);">Arquétipos — as três facetas da marca</p>
+    <div class="personalidade-grid">
+      <div class="personalidade-card">
+        <div class="personalidade-card__icon">🧠</div>
+        <div class="personalidade-card__title">O Sábio</div>
+        <div class="personalidade-card__role">Singularidade · Regularidade</div>
+        <div class="personalidade-card__desc">Guia pelo conhecimento. O Véio que sabe, ensina e orienta. Manifesta-se nos tutoriais, calculadoras, atendimento técnico e descrições de produto — a voz de quem sabe e explica com clareza.</div>
+      </div>
+      <div class="personalidade-card">
+        <div class="personalidade-card__icon">🤝</div>
+        <div class="personalidade-card__title">O Companheiro</div>
+        <div class="personalidade-card__role">Coletividade · Regularidade</div>
+        <div class="personalidade-card__desc">Está do lado quando o cliente mais precisa. Parceiro de obra, leal e acessível. Manifesta-se no pós-venda, campanhas de fidelização e redes sociais — a voz que pergunta como foi e comemora o resultado.</div>
+      </div>
+      <div class="personalidade-card">
+        <div class="personalidade-card__icon">🧭</div>
+        <div class="personalidade-card__title">O Explorador</div>
+        <div class="personalidade-card__role">Singularidade · Liberdade</div>
+        <div class="personalidade-card__desc">Vai onde outros não vão. Incomum, aventureiro. Manifesta-se nos lançamentos, abertura de novos canais e comunicação de inovação — a voz que diz "fomos onde ninguém foi ainda".</div>
+      </div>
+    </div>
+
+    <!-- Mantras -->
+    <p style="font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--fg-1); margin-bottom: var(--space-24);">Os 4 mantras</p>
+    <div class="mantras-grid">
+      <div class="mantra-item">
+        <div class="mantra-item__quote">"O Barato Sai Caro!"</div>
+        <div class="mantra-item__desc">Não recomendamos gambiarras nem soluções que não resolvem. A honestidade é inegociável — mesmo que custe a venda imediata.</div>
+      </div>
+      <div class="mantra-item">
+        <div class="mantra-item__quote">"Escuta o Véio que é Sucesso!"</div>
+        <div class="mantra-item__desc">Comprovamos e testamos tudo. Aprovado por quem entende — não é slogan, é compromisso com o resultado do cliente.</div>
+      </div>
+      <div class="mantra-item">
+        <div class="mantra-item__quote">"Diferente dos Iguais"</div>
+        <div class="mantra-item__desc">Autênticos, vamos onde outras empresas não vão. Empresa familiar brasileira com orgulho — sem corporativismo nem distância.</div>
+      </div>
+      <div class="mantra-item">
+        <div class="mantra-item__quote">"Sabido / Sabida"</div>
+        <div class="mantra-item__desc">O cliente em primeiro lugar. Entendemos suas necessidades, características e dores antes de oferecer qualquer produto ou solução.</div>
+      </div>
+    </div>
+
+    <!-- Duas vozes -->
+    <p style="font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--fg-1); margin-bottom: var(--space-24);">As duas vozes — tom de voz por contexto</p>
+    <div class="vozes-grid">
+      <div class="voz-card voz-card--veio">
+        <div class="voz-card__titulo">O Véio</div>
+        <div class="voz-card__quando">Lúdico · Próximo · Afetivo</div>
+        <ul class="voz-card__exemplos">
+          <li>"Ei, meu amigo, é o Véio aqui!"</li>
+          <li>"O Véio mandou dar um desconto de 10% no PIX"</li>
+          <li>"O Véio ficou muito feliz com a sua compra"</li>
+          <li>"Conta aqui para o Véio como foi sua experiência"</li>
+        </ul>
+      </div>
+      <div class="voz-card voz-card--equipe">
+        <div class="voz-card__titulo">A Equipe EOV</div>
+        <div class="voz-card__quando">Profissional · Técnico · Empático</div>
+        <ul class="voz-card__exemplos">
+          <li>"Bom dia! Aqui é do atendimento técnico do Escuta o Véio!"</li>
+          <li>"Analisamos o seu caso e a solução indicada é..."</li>
+          <li>"Para este tipo de aplicação, recomendamos..."</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 05 Personas -->
+<section id="personas">
+  <div class="wrap">
+    <p class="eyebrow">Públicos</p>
+    <p class="section-title">Personas mapeadas</p>
+
+    <div class="personas-tabs" style="margin-bottom: var(--space-16);">
+      <span class="persona-tab persona-tab--active">Cliente Final</span>
+    </div>
+    <div class="personas-grid">
+      <div class="persona-card">
+        <div class="persona-card__name">A Decoradora Criativa</div>
+        <div class="persona-card__desc">Busca produtos que ampliam o que ela já faz, com estética e resultado garantido.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-card__name">O Artesão Apaixonado</div>
+        <div class="persona-card__desc">Precisa de insumos de qualidade e conteúdo que inspire novas técnicas.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-card__name">O Faz-Tudo Determinado</div>
+        <div class="persona-card__desc">Quer resolver o problema da casa com autonomia — precisa de clareza e segurança.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-card__name">O Jovem DIY</div>
+        <div class="persona-card__desc">Nativo digital, compra pelo celular, decide por conteúdo e avaliação.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-card__name">A Dona de Casa Prática</div>
+        <div class="persona-card__desc">Quer praticidade, resultado rápido e atendimento humano.</div>
+      </div>
+    </div>
+
+    <div class="personas-tabs" style="margin-bottom: var(--space-16);">
+      <span class="persona-tab persona-tab--active">Profissional</span>
+    </div>
+    <div class="personas-grid">
+      <div class="persona-card persona-card--pro">
+        <div class="persona-card__name">A Empreendedora do Artesanato</div>
+        <div class="persona-card__desc">Usa os produtos como insumo do negócio, valoriza qualidade e consistência.</div>
+      </div>
+      <div class="persona-card persona-card--pro">
+        <div class="persona-card__name">O Condomínio</div>
+        <div class="persona-card__desc">Compra em volume para manutenção — precisa de confiança técnica e entrega rápida.</div>
+      </div>
+      <div class="persona-card persona-card--pro">
+        <div class="persona-card__name">O Pintor Profissional</div>
+        <div class="persona-card__desc">Conhece produtos, é exigente, pode ser embaixador se ganhar confiança.</div>
+      </div>
+      <div class="persona-card persona-card--pro">
+        <div class="persona-card__name">O Mestre de Obras Organizado</div>
+        <div class="persona-card__desc">Planeja, precisa de produto certo na hora certa, valoriza clareza técnica.</div>
+      </div>
+      <div class="persona-card persona-card--pro">
+        <div class="persona-card__name">A Pequena Grande Construtora</div>
+        <div class="persona-card__desc">Escala pequena, demanda profissional — busca parceiro, não só fornecedor.</div>
+      </div>
+    </div>
+
+    <!-- Posicionamento -->
+    <p style="font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--fg-1); margin-bottom: var(--space-24);">Declaração de posicionamento</p>
+    <div class="posicionamento-block">
+      <div class="posicionamento-declaracao">
+        <div class="pos-linha">
+          <span class="pos-label">Em um momento em que…</span>
+          <span class="pos-texto">O mercado de construção civil é dominado por grandes redes que vendem produto sem contexto, e o consumidor está mais digitalizado e exigente do que nunca — querendo resolver com autonomia e dignidade.</span>
+        </div>
+        <div class="pos-linha">
+          <span class="pos-label">Nós somos…</span>
+          <span class="pos-texto" style="color: var(--veio-branco); font-weight: 600;">O Escuta o Véio! — o companheiro phygital da construção, reforma e criação.</span>
+        </div>
+        <div class="pos-linha">
+          <span class="pos-label">Que oferece…</span>
+          <span class="pos-texto">Produtos de alta performance + conteúdo educativo + atendimento técnico especializado + kits e calculadoras que eliminam a insegurança da compra.</span>
+        </div>
+        <div class="pos-linha">
+          <span class="pos-label">Diferente de…</span>
+          <span class="pos-texto">Grandes varejistas que vendem produto sem ensinamento, e marketplaces que são vitrine sem relação.</span>
+        </div>
+        <div class="pos-linha">
+          <span class="pos-label">Porque acreditamos…</span>
+          <span class="pos-texto">A casa é uma extensão da identidade de cada pessoa. Cuidar da casa das pessoas é cuidar das próprias pessoas. O Barato Sai Caro — e as pessoas merecem o melhor.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 06 Processo -->
+<section id="processo" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Como foi feito</p>
+    <p class="section-title">Processo</p>
+    <div class="processo-steps">
+
+      <div class="step">
+        <div class="step__num">01</div>
+        <div class="step__body">
+          <div class="step__title">Brand Platform Canvas — fundação estratégica</div>
+          <div class="step__desc">
+            Antes de qualquer pixel ou descrição de produto, construiu-se a plataforma de marca: os 7 pilares (Contexto, Valores, Propósito, Promessa, Posicionamento, Personalidade e Universalidade). Mapeamento do cenário competitivo, personas, arquétipos, tom de voz, mantras e declaração de posicionamento. O documento que faz o EOV escalar sem perder identidade — independente de quem entrou ontem na equipe.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Brand Platform Canvas</span>
+            <span class="step__tag">Posicionamento</span>
+            <span class="step__tag">Arquétipos</span>
+            <span class="step__tag">Tom de voz</span>
+            <span class="step__tag">Personas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">02</div>
+        <div class="step__body">
+          <div class="step__title">Identidade visual e DNA criativo</div>
+          <div class="step__desc">
+            Construção do DNA criativo do Escuta o Véio! do zero: paleta de cores (amarelo como cor-símbolo, preto como âncora), tipografia, direção fotográfica em três modos — catálogo, campanha e contexto real. O slogan "Novas Soluções para Velhos Problemas" como norte permanente da comunicação.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">DNA criativo</span>
+            <span class="step__tag">Identidade visual</span>
+            <span class="step__tag">Direção fotográfica</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">03</div>
+        <div class="step__body">
+          <div class="step__title">Criação do personagem — O Véio</div>
+          <div class="step__desc">
+            O Véio não é um mascote — é um conselheiro de confiança. O amigo experiente que você liga quando não sabe o que comprar. Definição de onde ele aparece (respostas de comentários, WhatsApp, mensagens do site), como fala, quais assinaturas usa e, principalmente, onde não aparece. A escassez intencional é o que dá peso ao personagem: máximo 1 em cada 4 peças de conteúdo.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Personagem</span>
+            <span class="step__tag">Tom de voz</span>
+            <span class="step__tag">Estratégia de uso</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">04</div>
+        <div class="step__body">
+          <div class="step__title">Loja virtual — estrutura e catálogo</div>
+          <div class="step__desc">
+            Configuração da loja virtual com catálogo completo da IVA Química e produtos de terceiros. Desenvolvimento de templates HTML de descrição de produto (5 variantes: padrão, banner, calculadora de rendimento, adendo de reformulação e kit/combo). Integração com sistema de gestão e organização do portfólio por marca, linha e aplicação.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">E-commerce</span>
+            <span class="step__tag">HTML de produto</span>
+            <span class="step__tag">Catálogo</span>
+            <span class="step__tag">Templates</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">05</div>
+        <div class="step__body">
+          <div class="step__title">Presença em marketplaces</div>
+          <div class="step__desc">
+            Estruturação da presença nos principais marketplaces onde o cliente já está. Adaptação das fichas de produto para cada plataforma, respeitando as especificações técnicas e o tom de voz da marca. Estratégia de precificação e posicionamento por canal para evitar conflito com a loja própria.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Marketplaces</span>
+            <span class="step__tag">Fichas de produto</span>
+            <span class="step__tag">Precificação</span>
+            <span class="step__tag">em andamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">06</div>
+        <div class="step__body">
+          <div class="step__title">Time de vendas via WhatsApp</div>
+          <div class="step__desc">
+            Estruturação da operação de venda consultiva via WhatsApp — terceira frente do canal. Scripts de atendimento com o tom do Véio, fluxo de qualificação do cliente, argumentário por tipo de problema (reforma, construção, artesanato, decoração) e integração com o catálogo da loja.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">WhatsApp Business</span>
+            <span class="step__tag">Venda consultiva</span>
+            <span class="step__tag">Scripts</span>
+            <span class="step__tag">em andamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">07</div>
+        <div class="step__body">
+          <div class="step__title">Estratégia de conteúdo e calendário promocional</div>
+          <div class="step__desc">
+            Definição dos pilares de conteúdo (Solução, Antes e Depois, Dica do Véio, Produto em uso) e estruturação do calendário promocional 2026 com datas comerciais mapeadas para cada marca e segmento. Regra de ouro: conteúdo parte sempre da transformação — nunca do produto.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Conteúdo</span>
+            <span class="step__tag">Calendário 2026</span>
+            <span class="step__tag">Campanhas sazonais</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 07 Detalhes Técnicos -->
+<section id="detalhes">
+  <div class="wrap">
+    <p class="eyebrow">Técnico</p>
+    <p class="section-title">Detalhes do projeto</p>
+    <div class="detalhes-grid">
+
+      <div class="detalhe-card">
+        <h3>Ferramentas utilizadas</h3>
+        <div class="ferramentas-list">
+          <span class="ferramenta-chip">Wake Commerce</span>
+          <span class="ferramenta-chip">Notion</span>
+          <span class="ferramenta-chip">Claude Code</span>
+          <span class="ferramenta-chip">Meta Ads</span>
+          <span class="ferramenta-chip">WhatsApp Business</span>
+          <span class="ferramenta-chip">Mercado Livre</span>
+          <span class="ferramenta-chip">Shopee</span>
+          <span class="ferramenta-chip">GitHub</span>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Cronograma estimado</h3>
+        <div class="cronograma-bars">
+          <div class="crono-item">
+            <div class="crono-item__label">Brand Platform Canvas</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:100%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">DNA e identidade visual</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:100%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Loja virtual e catálogo</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:85%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Templates de produto (HTML)</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:90%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Marketplaces</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:50%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Time de vendas WhatsApp</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:40%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Arquitetura de operação</h3>
+        <div class="agentes-grid">
+          <div class="agente-row">
+            <span class="agente-row__name">Brand Platform</span>
+            <span class="agente-row__role">Fundação estratégica — 7 pilares</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Loja Virtual</span>
+            <span class="agente-row__role">Catálogo completo + checkout</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Marketplaces</span>
+            <span class="agente-row__role">Presença onde o cliente já está</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">WhatsApp</span>
+            <span class="agente-row__role">Venda consultiva — tom do Véio</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">O Véio</span>
+            <span class="agente-row__role">Personagem — voz da marca</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Conteúdo</span>
+            <span class="agente-row__role">Transformação — 4 pilares</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Principais desafios</h3>
+        <ul class="desafio-list">
+          <li>Criar identidade memorável para um e-commerce de produtos técnicos sem soar distante ou árido</li>
+          <li>Desenvolver um personagem com uso estratégico — presente o suficiente para criar vínculo, escasso o suficiente para ter peso</li>
+          <li>Organizar catálogo de 1.200+ produtos com curadoria para diferentes perfis de cliente</li>
+          <li>Competir em marketplaces com players genéricos sem perder a identidade da marca</li>
+          <li>Manter coerência de tom em três frentes operacionais simultâneas (loja, marketplaces, WhatsApp)</li>
+          <li>Escalar a equipe com a marca definida — o BPC como manual de cultura, não só de comunicação</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 08 Conclusão -->
+<section id="conclusao" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Encerramento</p>
+    <p class="section-title">Conclusão</p>
+    <div class="conclusao-grid">
+
+      <div class="conclusao-card conclusao-card--reflexao">
+        <h3>Aprendizados</h3>
+        <p>E-commerce de produto técnico exige mais que vitrine — exige orientação. O Véio surgiu como resposta a isso: um guia de confiança que reduz o medo de errar na compra. A escassez intencional do personagem foi o maior acerto: aparecer em todo lugar mata o personagem; aparecer nos momentos certos cria autoridade. E a marca documentada no BPC foi o que tornou tudo isso replicável.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--impacto">
+        <h3>Impacto</h3>
+        <p>O Escuta o Véio! transformou a IVA de indústria invisível ao consumidor final em canal de relacionamento direto. O cliente final agora tem onde encontrar o produto, entender o que comprar e receber orientação — tudo com a voz de quem sabe o que está falando. <em style="color: var(--veio-amarelo); font-style: normal;">Humana. Honesta. Transformadora.</em></p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--proximos">
+        <h3>Próximos passos</h3>
+        <p>Completar a operação de marketplaces e WhatsApp. Publicar o link da loja e iniciar as primeiras campanhas sazonais. Medir conversão por frente operacional. Produzir conteúdo do Véio em vídeo. Criar guia de tom de voz por canal a partir do BPC.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>Escuta o Véio!</strong> — Case E-commerce · IVA Química · Brand Platform Canvas v1
+</footer>
+
+</body>
+</html>

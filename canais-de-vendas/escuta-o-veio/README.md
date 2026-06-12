@@ -10,11 +10,12 @@ E-commerce principal da IVA Química. Catálogo completo de produtos próprios +
 
 | Pasta | O que entra aqui |
 |---|---|
-| `identidade/` | Voz, posicionamento, guia visual e tom de comunicação do canal |
+| `marca/` | DNA, voz, posicionamento, guia visual e tom de comunicação do canal |
 | `loja-virtual/` | Configurações de loja, banners, categorias, páginas de produto, campanhas |
 | `loja-virtual/campanhas/` | Uma pasta por campanha: `AAAA-MM-DD-nome-da-campanha/` |
+| `loja-fisica/` | PDI, layout, identidade visual no PDV, operações e treinamentos da loja física |
 | `marketplaces/` | Fichas e configurações para Mercado Livre, Amazon, Shopee, Magalu etc. |
-| `time-de-vendas/` | Scripts, argumentários, materiais de apoio para o time comercial |
+| `marketing/` | Campanhas e ações de marketing do canal |
 
 ---
 

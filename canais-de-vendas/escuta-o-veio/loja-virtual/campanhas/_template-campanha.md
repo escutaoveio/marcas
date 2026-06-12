@@ -20,9 +20,12 @@ _Descreva o desconto, bundle, frete grátis, brinde ou condição especial._
 
 ## Produtos em Destaque
 
-| SKU | Nome | Preço Normal | Preço Campanha | Estoque |
-|---|---|---|---|---|
-|  |  |  |  |  |
+> Preencher com dados do Notion (campos Preço de Custo e Preço de Venda). Desconto máximo: 15%.
+> Verificar: Preço Campanha ≥ Preço de Custo com margem mínima de 20% sobre o custo.
+
+| SKU | Nome | Preço de Custo | Preço de Venda | Desconto % | Preço Campanha | Margem Resultante | Estoque |
+|---|---|---|---|---|---|---|---|
+|  |  | R$ | R$ | % | R$ | % | |
 
 ## Canais de Ativação
 

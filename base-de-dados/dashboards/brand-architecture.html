@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitetura de Marcas — IVA Química</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #EDEBE5;
+      --card-bg: #FFFFFF;
+      --border: #E0DBD3;
+      --text-primary: #1A1A1A;
+      --text-muted: #9B9287;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 44px 36px 100px;
+    }
+
+    /* ── Page Header ─────────────────────────────────────────── */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .header-left { display: flex; flex-direction: column; gap: 3px; }
+
+    .label-iva {
+      font-size: 0.5625rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      color: #111;
+    }
+
+    .header-meta {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    .header-meta-date {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .header-meta-count {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: #777;
+    }
+
+    /* ── Brand Quick Nav ─────────────────────────────────────── */
+    .brand-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .brand-nav-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px 6px 10px;
+      border-radius: 100px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: border-color 0.12s, box-shadow 0.12s;
+      font-family: inherit;
+    }
+
+    .brand-nav-pill:hover {
+      border-color: var(--pill-color);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--pill-color) 15%, transparent);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--pill-color);
+      flex-shrink: 0;
+    }
+
+    /* ── Brand Section ───────────────────────────────────────── */
+    .brand-section {
+      margin-bottom: 16px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.06);
+    }
+
+    .brand-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 28px;
+      background: var(--bc);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-header:hover { filter: brightness(1.08); }
+
+    .bh-left { display: flex; flex-direction: column; gap: 5px; }
+
+    .bh-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bh-name {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--bt);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .bh-badge {
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bt);
+      opacity: 0.65;
+      background: rgba(255,255,255,0.18);
+      padding: 2px 9px;
+      border-radius: 100px;
+    }
+
+    .bh-tagline {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--bt);
+      opacity: 0.72;
+      line-height: 1.4;
+    }
+
+    .bh-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .bh-stats {
+      display: flex;
+      gap: 12px;
+    }
+
+    .bh-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .bh-stat-num {
+      font-size: 1.125rem;
+      font-weight: 900;
+      color: var(--bt);
+      line-height: 1;
+    }
+
+    .bh-stat-label {
+      font-size: 0.4375rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bt);
+      opacity: 0.55;
+    }
+
+    .bh-info-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: var(--bt);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: Georgia, serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s;
+    }
+
+    .bh-info-btn:hover { background: rgba(255,255,255,0.35); }
+
+    /* ── Brand Body ──────────────────────────────────────────── */
+    .brand-body {
+      background: var(--card-bg);
+    }
+
+    .lines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    }
+
+    .line-col {
+      padding: 18px 20px 20px;
+      border-right: 1px solid #F2EEE8;
+      border-bottom: 1px solid #F2EEE8;
+    }
+
+    .line-col:last-child { border-right: none; }
+
+    .line-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 11px;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    .line-label:hover .line-label-text { opacity: 0.7; }
+
+    .line-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--bc);
+      flex-shrink: 0;
+    }
+
+    .line-label-text {
+      font-size: 0.5625rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bc);
+      transition: opacity 0.12s;
+    }
+
+    .products-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .product-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      background: none;
+      border: 1px solid #E8E3DC;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: #333;
+      text-align: left;
+      transition: all 0.12s;
+      font-family: inherit;
+      line-height: 1.35;
+    }
+
+    .product-btn:hover {
+      background: var(--blight);
+      border-color: var(--bc);
+      color: var(--bc);
+    }
+
+    .product-btn:hover .pdot { opacity: 0.8; }
+
+    .pdot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--bc);
+      opacity: 0.35;
+      flex-shrink: 0;
+      transition: opacity 0.12s;
+    }
+
+    /* ── Platforms Section ───────────────────────────────────── */
+    .platforms-section {
+      margin-top: 28px;
+    }
+
+    .section-label {
+      font-size: 0.5625rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .platform-card {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+
+    .platform-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12), 0 0 0 1.5px rgba(0,0,0,0.05);
+    }
+
+    .pc-header {
+      padding: 18px 20px 14px;
+      background: var(--pc);
+    }
+
+    .pc-type {
+      font-size: 0.4375rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 4px;
+    }
+
+    .pc-name {
+      font-size: 0.9375rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .pc-tagline {
+      font-size: 0.625rem;
+      color: rgba(255,255,255,0.68);
+      margin-top: 2px;
+    }
+
+    .pc-body {
+      padding: 14px 20px 16px;
+      background: var(--card-bg);
+    }
+
+    .pc-desc {
+      font-size: 0.6875rem;
+      color: #555;
+      line-height: 1.55;
+    }
+
+    .pc-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      font-size: 0.5625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .page-footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: 0.5rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #B8B0A4;
+    }
+
+    /* ── Detail Panel ────────────────────────────────────────── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.28);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .overlay.on {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .detail-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 400px;
+      max-width: 100vw;
+      height: 100vh;
+      background: var(--card-bg);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.14);
+    }
+
+    .detail-panel.open { transform: translateX(0); }
+
+    .dp-header {
+      padding: 24px 24px 22px;
+      background: var(--dp-color, #1a1a1a);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .dp-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.12s;
+    }
+
+    .dp-close:hover { background: rgba(255,255,255,0.3); }
+
+    .dp-type {
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 5px;
+    }
+
+    .dp-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      padding-right: 44px;
+    }
+
+    .dp-sub {
+      font-size: 0.6875rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+
+    .dp-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .dp-field { display: flex; flex-direction: column; gap: 5px; }
+
+    .dp-field-label {
+      font-size: 0.5rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #AAA49D;
+    }
+
+    .dp-field-value {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #222;
+      line-height: 1.55;
+    }
+
+    .dp-divider {
+      height: 1px;
+      background: #F0EDE8;
+    }
+
+    .dp-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dp-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 9px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.12s;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+    }
+
+    .dp-link-primary {
+      background: var(--dp-color, #1a1a1a);
+      color: #fff;
+    }
+
+    .dp-link-primary:hover { filter: brightness(1.15); }
+
+    .dp-link-secondary {
+      background: transparent;
+      color: var(--dp-color, #1a1a1a);
+      border: 1.5px solid var(--dp-color, #1a1a1a);
+    }
+
+    .dp-link-secondary:hover {
+      background: color-mix(in srgb, var(--dp-color) 8%, transparent);
+    }
+
+    .dp-product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .dp-product-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 7px;
+      border: 1px solid #EAE6E0;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: #2a2a2a;
+      cursor: pointer;
+      background: none;
+      font-family: inherit;
+      text-align: left;
+      transition: all 0.12s;
+    }
+
+    .dp-product-item:hover {
+      background: color-mix(in srgb, var(--dp-color) 8%, white);
+      border-color: var(--dp-color);
+      color: var(--dp-color);
+    }
+
+    .dp-product-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--dp-color);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .page { padding: 24px 16px 80px; }
+      .brand-header { grid-template-columns: 1fr; }
+      .bh-right { flex-direction: row; align-items: center; }
+      .detail-panel { width: 100vw; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── Page Header ── -->
+  <header class="page-header">
+    <div class="header-left">
+      <span class="label-iva">IVA Química</span>
+      <h1 class="page-title">Arquitetura de Marcas</h1>
+    </div>
+    <div class="header-meta">
+      <span class="header-meta-date">2026</span>
+      <span class="header-meta-count" id="global-count">—</span>
+    </div>
+  </header>
+
+  <!-- ── Brand Nav Pills ── -->
+  <nav class="brand-nav" id="brand-nav"></nav>
+
+  <!-- ── Brand Sections ── -->
+  <div id="brands-container"></div>
+
+  <!-- ── Platforms ── -->
+  <section class="platforms-section">
+    <div class="section-label">Plataformas &amp; Canais de Venda</div>
+    <div class="platforms-grid" id="platforms-grid"></div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="page-footer">
+    <span class="footer-text">IVA Química · Arquitetura de Marcas 2026</span>
+    <span class="footer-text">Uso interno</span>
+  </footer>
+
+</div>
+
+<!-- ── Overlay ── -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ── Detail Panel ── -->
+<aside class="detail-panel" id="detail-panel">
+  <div class="dp-header" id="dp-header">
+    <button class="dp-close" id="dp-close">✕</button>
+    <div class="dp-type" id="dp-type"></div>
+    <div class="dp-title" id="dp-title"></div>
+    <div class="dp-sub" id="dp-sub"></div>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+</aside>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════ */
+const BRANDS = [
+  {
+    id: 'drylevis',
+    name: 'Drylevis',
+    tagline: 'Inovação tecnológica para a construção civil',
+    description: 'Alta performance para novas tecnologias construtivas — steel frame, drywall e ICF. Soluções técnicas para quem constrói com precisão e exigência.',
+    site: 'drylevis.com.br',
+    audience: 'Engenheiros, mestres de obra e profissionais da construção civil',
+    channel: 'Home centers, construtoras e plataformas digitais',
+    color: '#1B3C8A',
+    colorLight: 'rgba(27,60,138,0.08)',
+    textColor: '#fff',
+    lines: [
+      {
+        id: 'zero-trinca',
+        name: 'Zero Trinca',
+        description: 'Linha completa para tratamento e prevenção de fissuras, trincas e juntas.',
+        products: [
+          { name: 'Selante Acrílico', desc: 'Selante flexível para trincas, fissuras e juntas. Alta elasticidade e resistência UV.', path: '../../marketing/marcas/drylevis/zero-trinca/selante-acrilico/selante-acrilico.html' },
+          { name: 'Tapa Tudo 5000', desc: 'Massa corrida profissional para preenchimento de imperfeições e nivelamento de superfícies.', path: '../../marketing/marcas/drylevis/zero-trinca/tapa-tudo-5000/tapa-tudo-5000.html' },
+          { name: 'Espuma Turbo DW240', desc: 'Espuma expansiva de poliuretano para vedação, fixação e isolamento térmico/acústico.', path: '../../marketing/marcas/drylevis/zero-trinca/espuma-turbo-dw240/espuma-turbo-dw240.html' },
+          { name: 'Base Preparadora', desc: 'Preparador de superfície para garantir aderência em sistemas Drylevis.', path: '../../marketing/marcas/drylevis/zero-trinca/base-preparadora/base-preparadora.html' },
+        ]
+      },
+      {
+        id: 'preparo',
+        name: 'Preparo',
+        description: 'Sistemas de preparação de base para obras de alta performance.',
+        products: [
+          { name: 'Base Coat Cimentício', desc: 'Revestimento base cimentício para sistemas construtivos modernos.', path: '../../marketing/marcas/drylevis/preparo/base-coat-cimenticio/base-coat-cimenticio.html' },
+        ]
+      },
+      {
+        id: 'colas-rejuntes',
+        name: 'Colas & Rejuntes',
+        description: 'Adesivos e selantes para juntas, fixações e acabamentos técnicos.',
+        products: [
+          { name: 'Selante Adesivo DW240', desc: 'Adesivo e selante em um produto. Para juntas de dilatação e fixações em aço, vidro e concreto.', path: '../../marketing/marcas/drylevis/colas-e-rejuntes/dw240-selante-adesivo/selante-adesivo-dw240.html' },
+        ]
+      },
+      {
+        id: 'reparos',
+        name: 'Reparos',
+        description: 'Soluções para reparo e nivelamento de pisos e substratos.',
+        products: [
+          { name: 'Cimento Autonivelante Nivela Mais', desc: 'Contrapiso autonivelante de alta performance para acabamento liso e rápida liberação.', path: '../../marketing/marcas/drylevis/reparos/cimento-autonivelante-nivela-mais.html' },
+        ]
+      },
+      {
+        id: 'aditivos',
+        name: 'Aditivos',
+        description: 'Aditivos tecnológicos para melhora de desempenho em argamassas e sistemas.',
+        products: [
+          { name: 'Smart Additive', desc: 'Aditivo tecnológico para melhora de aderência, flexibilidade e resistência em argamassas.', path: '../../marketing/marcas/drylevis/aditivos/smart-additive/smart-additive.html' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'elastment',
+    name: 'Elastment',
+    badge: 'by Drylevis',
+    tagline: 'Impermeabilização com cimento elástico pioneiro',
+    description: 'Referência em impermeabilização com cimento elástico. Proteção duradoura contra infiltração para qualquer tipo de obra e substrato.',
+    site: 'drylevis.com.br',
+    audience: 'Profissionais de obra, engenheiros e aplicadores',
+    channel: 'Home centers e construtoras',
+    color: '#0E6E8B',
+    colorLight: 'rgba(14,110,139,0.08)',
+    textColor: '#fff',
+    lines: [
+      {
+        id: 'reparos-sos',
+        name: 'Reparos & SOS',
+        description: 'Soluções rápidas para umidade, infiltração e trincas em alvenaria.',
+        products: [
+          { name: 'SOS Umidade Inject Gel', desc: 'Gel de injeção para tratamento de umidade ascendente por capilaridade.', path: '../../marketing/marcas/elastment/reparos/sos-umidade-inject-gel/sos-umidade-inject-gel.html' },
+          { name: 'SOS Umidade Bloco', desc: 'Bloco de cristalização para tratamento definitivo de umidade em alvenaria.', path: '../../marketing/marcas/elastment/reparos/sos-umidade-bloco/sos-umidade-bloco.html' },
+          { name: 'SOS Umidade Gel Tix', desc: 'Gel tixotrópico para vedação e bloqueio de umidade em superfícies verticais.', path: '../../marketing/marcas/elastment/reparos/sos-umidade-gel-tix/sos-umidade-gel-tix.html' },
+          { name: 'SOS Telhas', desc: 'Impermeabilizante líquido para selagem e proteção de telhas e coberturas.', path: '../../marketing/marcas/elastment/reparos/sos-telhas/sos-telhas.html' },
+          { name: 'Seca Parede', desc: 'Impermeabilizante para paredes com umidade — bloqueia a infiltração por dentro ou fora.', path: '../../marketing/marcas/elastment/reparos/seca-parede/seca-parede.html' },
+          { name: 'Crack Filler', desc: 'Massa rígida de alta resistência para preenchimento de trincas e rachaduras.', path: '../../marketing/marcas/elastment/reparos/crack-filler/crack-filler.html' },
+        ]
+      },
+      {
+        id: 'cimento-elastico',
+        name: 'Cimento Elástico + Baldrame',
+        description: 'Sistema pioneiro de impermeabilização com cimento elástico.',
+        products: [
+          { name: 'Cimento Elástico', desc: 'Impermeabilizante elástico à base de cimento. Acompanha movimentação da estrutura sem rachar.', path: '../../marketing/marcas/elastment/cimento-elastico-mais-baldrame/impermeabilizacao-sem-trinca/cimento-elastico/cimento-elastico.html' },
+        ]
+      },
+      {
+        id: 'mantas',
+        name: 'Mantas Impermeabilizantes',
+        description: 'Mantas técnicas para proteção total contra infiltração.',
+        products: [
+          { name: 'Manta Hidrofóbica', desc: 'Manta impermeabilizante hidrófoba para proteção de coberturas e terraços.', path: '../../marketing/marcas/elastment/mantas-impermeabilizantes/manta-hidrofobica/manta-hidrofobica.html' },
+        ]
+      },
+      {
+        id: 'tintas-imp',
+        name: 'Tintas Impermeabilizantes',
+        description: 'Tintas de alta performance com função impermeabilizante.',
+        products: [
+          { name: 'Scudo Pro', desc: 'Tinta impermeabilizante de alta performance para fachadas e áreas expostas.', path: '../../marketing/marcas/elastment/tintas/scudo-pro/scudo-pro.html' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'hold-stone',
+    name: 'Hold Stone',
+    tagline: 'Paisagismo e tecnologia para jardins que impressionam',
+    description: 'Pioneiros no primeiro fixador de pedras do Brasil. Tecnologia, performance e estética para paisagismo e jardinagem de alto padrão.',
+    site: 'holdstone.com.br',
+    audience: 'Consumidor final, arquitetos, designers e jardineiros',
+    channel: 'Grandes lojas, mercado garden e plataformas digitais',
+    color: '#145229',
+    colorLight: 'rgba(20,82,41,0.07)',
+    textColor: '#fff',
+    lines: [
+      {
+        id: 'garden',
+        name: 'Garden',
+        description: 'Fixação de pedras e solo drenante — maior potencial viral do portfólio.',
+        products: [
+          { name: 'Fixador de Pedras', desc: 'Primeiro fixador de pedras do Brasil. Fórmula atóxica para fixar pedras ao solo de forma definitiva.', path: '../../marketing/marcas/hold-stone/garden/fixador-de-pedras/fixador-de-pedras.html' },
+        ]
+      },
+      {
+        id: 'pro-hs',
+        name: 'PRO',
+        description: 'Pisos drenantes e resinas de alta resistência para alto tráfego.',
+        products: [
+          { name: 'Resina para Pedras', desc: 'Resina de alta resistência para fixação e proteção de pisos de pedra em alto tráfego.', path: '../../marketing/marcas/hold-stone/pro/resina-para-pedras/resina-para-pedras.html' },
+          { name: 'Resina TIX', desc: 'Resina tixotrópica para aplicação em superfícies verticais e irregulares.', path: '../../marketing/marcas/hold-stone/pro/resina-tix/resina-tix.html' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'lt-shine',
+    name: 'LT Shine',
+    tagline: 'Acabamento, sofisticação e elegância para todo ambiente',
+    description: 'Transforma ambientes com pintura decorativa e revestimentos de design. Distribuída exclusivamente via Fácil Decor.',
+    site: 'ltshine.com.br',
+    audience: 'Consumidor final, arquitetos e designers de interiores',
+    channel: 'Lojas Fácil Decor (digital e físicas)',
+    color: '#7A2F0A',
+    colorLight: 'rgba(122,47,10,0.07)',
+    textColor: '#fff',
+    lines: [
+      {
+        id: 'efeitos',
+        name: 'Efeitos',
+        description: 'Texturas e efeitos decorativos para ambientes únicos.',
+        products: [
+          { name: 'Perolatto', desc: 'Tinta perolada decorativa com efeito metálico suave para paredes internas.', path: '../../marketing/marcas/lt-shine/linha-efeitos/perolatto/perolatto.html' },
+          { name: 'GranniStone Pedras Naturais', desc: 'Revestimento texturizado que reproduz a beleza de pedras naturais.', path: '../../marketing/marcas/lt-shine/linha-efeitos/grannistone/pedras-naturais/pedras-naturais.html' },
+          { name: 'GranniStone Fine', desc: 'Textura fina com efeito granilite para acabamentos sofisticados e contemporâneos.', path: '../../marketing/marcas/lt-shine/linha-efeitos/grannistone/fine/fine.html' },
+          { name: 'GranniStone Pedras & Cristais', desc: 'Revestimento decorativo com pedras e cristais para efeito premium e exclusivo.', path: '../../marketing/marcas/lt-shine/linha-efeitos/grannistone/pedras-e-cristais/pedras-e-cristais.html' },
+          { name: 'GranniStone Primer', desc: 'Primer específico para o sistema GranniStone — garante aderência e base uniforme.', path: '../../marketing/marcas/lt-shine/linha-efeitos/grannistone/primer/primer.html' },
+        ]
+      },
+      {
+        id: 'pisos',
+        name: 'Pisos',
+        description: 'Acabamento e renovação de pisos com estética de design.',
+        products: [
+          { name: 'LT-300', desc: 'Tinta de alta qualidade para pisos internos e externos, alta resistência ao tráfego.', path: '../../marketing/marcas/lt-shine/linha-pisos/lt-300/lt-300.html' },
+          { name: 'Microcimento', desc: 'Sistema de microcimento decorativo para pisos e paredes — acabamento sofisticado e contemporâneo.', path: '../../marketing/marcas/lt-shine/linha-pisos/microcimento/microcimento.html' },
+        ]
+      },
+      {
+        id: 'marmorite',
+        name: 'Marmorite',
+        description: 'Estética sofisticada inspirada em pedras e mármores.',
+        products: [
+          { name: 'Cera Natural de Abelha', desc: 'Cera natural de abelha para acabamento, proteção e brilho de revestimentos Marmorite.', path: '../../marketing/marcas/lt-shine/linha-marmorite/cera/natural-de-abelha/natural-de-abelha.html' },
+        ]
+      },
+      {
+        id: 'complementos-lt',
+        name: 'Complementos',
+        description: 'Preparo, aderência e proteção para o sistema LT Shine.',
+        products: [
+          { name: 'Película Líquida', desc: 'Verniz protetor em película líquida para proteção e vedação de revestimentos.', path: '../../marketing/marcas/lt-shine/complementos/pelicula-liquida/pelicula-liquida.html' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'cristal',
+    name: 'Cristal',
+    tagline: 'Alto giro, versatilidade e presença forte no PDV',
+    description: 'Marca de entrada da IVA. Alta rotatividade, portfólio amplo e embalagens que se destacam no varejo. A porta de entrada para o ecossistema IVA Química.',
+    site: 'linhacristal.com.br',
+    audience: 'Pintores, aplicadores e profissionais da construção civil',
+    channel: 'Varejo de materiais de construção',
+    color: '#4C1D95',
+    colorLight: 'rgba(76,29,149,0.07)',
+    textColor: '#fff',
+    lines: [
+      {
+        id: 'tintas-e-complementos',
+        name: 'Tintas e Complementos',
+        description: 'Tintas e complementos para pintura, acabamento e soluções decorativas.',
+        products: [
+          { name: 'Skin Color', desc: 'Tinta acrílica premium com cobertura superior e acabamento liso. Disponível em diversas cores.', path: '../../marketing/marcas/cristal/tintas-e-complementos/skin-color/skin-color.html' },
+          { name: 'Tinta Magnética', desc: 'Tinta com propriedades magnéticas para criar superfícies funcionais e criativas.', path: '../../marketing/marcas/cristal/tintas-e-complementos/tinta-magnetica/tinta-magnetica.html' },
+          { name: 'Tira Tintas', desc: 'Removedor de tinta para limpeza e preparação de superfícies diversas.', path: '../../marketing/marcas/cristal/tintas-e-complementos/tira-tinta/tira-tinta.html' },
+        ]
+      },
+      {
+        id: 'skim-coat',
+        name: 'Skim Coat',
+        description: 'Massa de acabamento superfino para paredes internas.',
+        products: [
+          { name: 'Skim Coat', desc: 'Massa de acabamento superfino para paredes internas. Acabamento liso e profissional.', path: '../../marketing/marcas/cristal/skim-coat/skim-coat/skim-coat.html' },
+        ]
+      },
+      {
+        id: 'pro-piso',
+        name: 'Pro Piso',
+        description: 'Sistemas completos para preparo, nivelamento e acabamento de pisos.',
+        products: [
+          { name: 'Nex Floor Granito Líquido', desc: 'Revestimento epóxi com efeito granito líquido para pisos sofisticados.', path: '../../marketing/marcas/cristal/pro-piso/nex-floor/granito-líquido/nex-floor.html' },
+          { name: 'Nex Floor Prep Piso', desc: 'Preparador e primer para piso, base essencial para o sistema Nex Floor.', path: '../../marketing/marcas/cristal/pro-piso/nex-floor/prep-piso/prep-piso.html' },
+          { name: 'Nex Floor Nivela & Primer', desc: 'Nivelador e primer combinados para preparação do substrato antes do Nex Floor.', path: '../../marketing/marcas/cristal/pro-piso/nex-floor/nivela-e-primer/nivela-e-primer.html' },
+          { name: 'AC5000', desc: 'Adesivo cimentício de alta performance para assentamento de pisos e revestimentos.', path: '../../marketing/marcas/cristal/pro-piso/ac5000/ac5000.html' },
+        ]
+      },
+      {
+        id: 'protelha',
+        name: 'Protelha',
+        description: 'Linha completa para proteção, impermeabilização e manutenção de telhados.',
+        products: [
+          { name: 'Protelha Fast Tape', desc: 'Fita adesiva selante para reparos rápidos em telhados, calhas e rufos.', path: '../../marketing/marcas/cristal/protelha/fast/tape/tape.html' },
+          { name: 'Protelha Selante Adesivo', desc: 'Selante adesivo para vedação de telhas, calhas e juntas em telhados.', path: '../../marketing/marcas/cristal/protelha/fast/selante-adesivo/selante-adesivo.html' },
+          { name: 'Protelha Plus', desc: 'Tinta impermeabilizante reforçada para telhados com alta durabilidade.', path: '../../marketing/marcas/cristal/protelha/plus/plus.html' },
+          { name: 'Protelha Powerlastic', desc: 'Manta elástica impermeabilizante de alta elasticidade para telhados.', path: '../../marketing/marcas/cristal/protelha/powerlastic/powerlastic.html' },
+          { name: 'Protetor de Parafuso', desc: 'Protetor anticorrosivo para parafusos e fixações de telhas metálicas.', path: '../../marketing/marcas/cristal/protelha/fast/protetor-de-parafuso/protetor-de-parafuso.html' },
+          { name: 'Power Shower', desc: 'Limpador alcalino concentrado para lavagem e manutenção de telhas e telhados.', path: '../../marketing/marcas/cristal/protelha/power-shower/power-shower.html' },
+        ]
+      },
+      {
+        id: 'umi-block',
+        name: 'Umi Block',
+        description: 'Impermeabilizantes de alta performance contra umidade.',
+        products: [
+          { name: 'Umi Block', desc: 'Impermeabilizante bloqueador de umidade para paredes e substratos cimentícios.', path: '../../marketing/marcas/cristal/umi-block/umi-block/umi-block.html' },
+        ]
+      },
+      {
+        id: 'preparos-e-cuidados',
+        name: 'Preparos e Cuidados',
+        description: 'Produtos para preparação de superfície e cuidados com a obra.',
+        products: [
+          { name: 'Ultra Resina', desc: 'Resina acrílica multiuso para obras. Melhora aderência, impermeabiliza e protege.', path: '../../marketing/marcas/cristal/preparos-e-cuidados/ultra-resina/ultra-resina.html' },
+        ]
+      },
+      {
+        id: 'limpeza-jardim',
+        name: 'Limpeza e Jardim',
+        description: 'Produtos de limpeza e cuidados para jardins e ambientes externos.',
+        products: [
+          { name: 'Xô-Cola', desc: 'Removedor de cola e adesivos para superfícies diversas — rápido e eficaz.', path: '../../marketing/marcas/cristal/limpeza-e-jardim/xo-cola/xo-cola.html' },
+        ]
+      },
+      {
+        id: 'wood-wood',
+        name: 'Wood Wood',
+        description: 'Linha especializada em colas e cuidados para madeira e artesanato.',
+        products: [
+          { name: 'Cola Atóxica 3', desc: 'Cola atóxica para madeira, artesanato e trabalhos manuais. Segura para uso doméstico.', path: '../../marketing/marcas/cristal/wood-wood/colas-e-rejuntes/cola-atoxica.html' },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'profixx',
+    name: 'Profixx',
+    tagline: 'Adesivos e fixações profissionais de alta performance',
+    description: 'Marca especializada em adesivos e fixações profissionais para construção civil, marcenaria e superfícies especiais. Marca mãe em desenvolvimento.',
+    site: null,
+    audience: 'Profissionais da construção, marceneiros e aplicadores',
+    channel: 'Materiais de construção e distribuição técnica',
+    color: '#1C1917',
+    colorLight: 'rgba(28,25,23,0.07)',
+    textColor: '#fff',
+    lines: [
+      {
+        id: 'adesivos-pfix',
+        name: 'Adesivos',
+        description: 'Adesivos de alta performance para superfícies especiais.',
+        products: [
+          { name: 'Adesivo para Superfícies Sólidas', desc: 'Adesivo estrutural de alta resistência para superfícies sólidas — granito, mármore, Corian e similares.', path: '../../marketing/marcas/profixx/adesivo-para-superficies-solidas/adesivo-para-superficies-solidas.html' },
+        ]
+      },
+    ]
+  },
+];
+
+const PLATFORMS = [
+  {
+    id: 'qualifica',
+    type: 'Plataforma de Qualificação',
+    name: 'Qualifica PRO',
+    tagline: '"Quem Faz Aprende, Quem Aprende Cresce!"',
+    description: 'Cursos e eventos presenciais de qualificação profissional em construção civil, marcenaria e pintura decorativa.',
+    color: '#881337',
+    status: 'ativo',
+    site: null,
+  },
+  {
+    id: 'confia',
+    type: 'Programa de Afiliados',
+    name: 'Confia!',
+    tagline: 'Indique, venda, ganhe',
+    description: 'Programa de afiliados que permite a qualquer pessoa gerar renda extra recomendando produtos IVA Química.',
+    color: '#0C4A6E',
+    status: 'ativo',
+    site: null,
+  },
+  {
+    id: 'escuta-o-veio',
+    type: 'E-commerce Principal',
+    name: 'Escuta o Véio!',
+    tagline: '"Novas Soluções para Velhos Problemas"',
+    description: 'E-commerce principal do grupo. Catálogo IVA completo + fornecedores terceiros. Marketplace + Loja Virtual + Time de Vendas via WhatsApp.',
+    color: '#7A3200',
+    status: 'ativo',
+    site: 'escutaoveio.com.br',
+  },
+  {
+    id: 'facil-decor',
+    type: 'Loja Física + E-commerce',
+    name: 'Fácil Decor',
+    tagline: '"A Etiqueta da Sua Casa"',
+    description: 'Loja física ativa e e-commerce em desenvolvimento. Catálogo LT Shine. Modelo de franquia com sistema OMS.',
+    color: '#4A1942',
+    status: 'ativo',
+    site: null,
+  },
+];
+
+/* ═══════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════ */
+function totalProducts(brand) {
+  return brand.lines.reduce((s, l) => s + l.products.length, 0);
+}
+
+function buildBrandNav() {
+  const nav = document.getElementById('brand-nav');
+  BRANDS.forEach(b => {
+    const pill = document.createElement('button');
+    pill.className = 'brand-nav-pill';
+    pill.style.setProperty('--pill-color', b.color);
+    pill.innerHTML = `<span class="pill-dot"></span>${b.name}`;
+    pill.addEventListener('click', () => {
+      document.getElementById('brand-' + b.id)
+        .scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    nav.appendChild(pill);
+  });
+}
+
+function buildBrands() {
+  const container = document.getElementById('brands-container');
+  let totalP = 0, totalL = 0;
+
+  BRANDS.forEach(b => {
+    totalP += totalProducts(b);
+    totalL += b.lines.length;
+
+    const section = document.createElement('section');
+    section.className = 'brand-section';
+    section.id = 'brand-' + b.id;
+    section.style.setProperty('--bc', b.color);
+    section.style.setProperty('--bt', b.textColor || '#fff');
+    section.style.setProperty('--blight', b.colorLight);
+
+    /* header */
+    const hdr = document.createElement('div');
+    hdr.className = 'brand-header';
+    hdr.innerHTML = `
+      <div class="bh-left">
+        <div class="bh-name-row">
+          <span class="bh-name">${b.name}</span>
+          ${b.badge ? `<span class="bh-badge">${b.badge}</span>` : ''}
+        </div>
+        <span class="bh-tagline">${b.tagline}</span>
+      </div>
+      <div class="bh-right">
+        <div class="bh-stats">
+          <div class="bh-stat">
+            <span class="bh-stat-num">${b.lines.length}</span>
+            <span class="bh-stat-label">Linhas</span>
+          </div>
+          <div class="bh-stat" style="opacity:.5; font-size:1.2rem; align-self:center; font-weight:300; color:var(--bt)">·</div>
+          <div class="bh-stat">
+            <span class="bh-stat-num">${totalProducts(b)}</span>
+            <span class="bh-stat-label">Produtos</span>
+          </div>
+        </div>
+        <button class="bh-info-btn" title="Detalhes da marca">i</button>
+      </div>
+    `;
+    hdr.querySelector('.bh-info-btn').addEventListener('click', e => { e.stopPropagation(); openBrand(b); });
+    hdr.addEventListener('click', () => openBrand(b));
+
+    /* body */
+    const body = document.createElement('div');
+    body.className = 'brand-body';
+    const grid = document.createElement('div');
+    grid.className = 'lines-grid';
+
+    b.lines.forEach(line => {
+      const col = document.createElement('div');
+      col.className = 'line-col';
+
+      const lbl = document.createElement('div');
+      lbl.className = 'line-label';
+      lbl.innerHTML = `<span class="line-dot"></span><span class="line-label-text">${line.name}</span>`;
+      lbl.addEventListener('click', () => openLine(line, b));
+
+      const stack = document.createElement('div');
+      stack.className = 'products-stack';
+
+      line.products.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'product-btn';
+        btn.innerHTML = `<span class="pdot"></span>${p.name}`;
+        btn.addEventListener('click', e => { e.stopPropagation(); openProduct(p, line, b); });
+        stack.appendChild(btn);
+      });
+
+      col.appendChild(lbl);
+      col.appendChild(stack);
+      grid.appendChild(col);
+    });
+
+    body.appendChild(grid);
+    section.appendChild(hdr);
+    section.appendChild(body);
+    container.appendChild(section);
+  });
+
+  document.getElementById('global-count').textContent =
+    `${BRANDS.length} marcas · ${totalL} linhas · ${totalP} produtos com HTML`;
+}
+
+function buildPlatforms() {
+  const grid = document.getElementById('platforms-grid');
+  PLATFORMS.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'platform-card';
+    const statusColor = p.status === 'ativo' ? '#16A34A' : '#D97706';
+    const statusLabel = p.status === 'ativo' ? 'Ativo' : 'Pausado';
+    card.innerHTML = `
+      <div class="pc-header" style="background:${p.color}">
+        <div class="pc-type">${p.type}</div>
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-tagline">${p.tagline}</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-desc">${p.description}</div>
+        <div class="pc-status" style="color:${statusColor}">
+          <span class="status-dot" style="background:${statusColor}"></span>${statusLabel}
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => openPlatform(p));
+    grid.appendChild(card);
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   DETAIL PANEL
+═══════════════════════════════════════════════════ */
+function openPanel(color) {
+  const panel = document.getElementById('detail-panel');
+  const overlay = document.getElementById('overlay');
+  const header = document.getElementById('dp-header');
+  panel.style.setProperty('--dp-color', color);
+  header.style.background = color;
+  panel.classList.add('open');
+  overlay.classList.add('on');
+}
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('on');
+}
+
+function setPanel(type, title, sub) {
+  document.getElementById('dp-type').textContent = type;
+  document.getElementById('dp-title').textContent = title;
+  document.getElementById('dp-sub').textContent = sub || '';
+}
+
+function openBrand(b) {
+  openPanel(b.color);
+  setPanel('Marca', b.name, b.tagline);
+  document.getElementById('dp-body').innerHTML = `
+    <div class="dp-field">
+      <div class="dp-field-label">Posicionamento</div>
+      <div class="dp-field-value">${b.description}</div>
+    </div>
+    <div class="dp-divider"></div>
+    <div class="dp-field">
+      <div class="dp-field-label">Público</div>
+      <div class="dp-field-value">${b.audience}</div>
+    </div>
+    <div class="dp-field">
+      <div class="dp-field-label">Canal</div>
+      <div class="dp-field-value">${b.channel}</div>
+    </div>
+    <div class="dp-divider"></div>
+    <div class="dp-field">
+      <div class="dp-field-label">Portfólio com HTML</div>
+      <div class="dp-field-value">${b.lines.length} linhas · ${totalProducts(b)} produtos</div>
+    </div>
+    ${b.site ? `
+    <div class="dp-links">
+      <a href="https://www.${b.site}" target="_blank" class="dp-link dp-link-primary">↗ ${b.site}</a>
+    </div>` : ''}
+  `;
+}
+
+function openLine(line, brand) {
+  openPanel(brand.color);
+  setPanel(`Linha · ${brand.name}`, line.name, `${line.products.length} produto${line.products.length !== 1 ? 's' : ''}`);
+  document.getElementById('dp-body').innerHTML = `
+    <div class="dp-field">
+      <div class="dp-field-label">Sobre a linha</div>
+      <div class="dp-field-value">${line.description}</div>
+    </div>
+    <div class="dp-divider"></div>
+    <div class="dp-field">
+      <div class="dp-field-label">Produtos</div>
+      <div class="dp-product-list">
+        ${line.products.map(p => `
+          <button class="dp-product-item" onclick="openProductById('${p.name}','${line.id}','${brand.id}')">
+            <span class="dp-product-dot"></span>${p.name}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function openProduct(p, line, brand) {
+  openPanel(brand.color);
+  setPanel(`${brand.name} · ${line.name}`, p.name, '');
+  document.getElementById('dp-body').innerHTML = `
+    <div class="dp-field">
+      <div class="dp-field-label">Descrição</div>
+      <div class="dp-field-value">${p.desc}</div>
+    </div>
+    <div class="dp-divider"></div>
+    <div class="dp-field">
+      <div class="dp-field-label">Marca</div>
+      <div class="dp-field-value">${brand.name}</div>
+    </div>
+    <div class="dp-field">
+      <div class="dp-field-label">Linha</div>
+      <div class="dp-field-value">${line.name}</div>
+    </div>
+    <div class="dp-divider"></div>
+    <div class="dp-links">
+      <a href="${p.path}" target="_blank" class="dp-link dp-link-primary">📄 Abrir Descrição HTML</a>
+      ${brand.site ? `<a href="https://www.${brand.site}" target="_blank" class="dp-link dp-link-secondary">↗ ${brand.site}</a>` : ''}
+    </div>
+  `;
+}
+
+function openPlatform(p) {
+  openPanel(p.color);
+  setPanel(p.type, p.name, p.tagline);
+  document.getElementById('dp-body').innerHTML = `
+    <div class="dp-field">
+      <div class="dp-field-label">Sobre</div>
+      <div class="dp-field-value">${p.description}</div>
+    </div>
+    ${p.site ? `
+    <div class="dp-divider"></div>
+    <div class="dp-links">
+      <a href="https://www.${p.site}" target="_blank" class="dp-link dp-link-primary">↗ ${p.site}</a>
+    </div>` : ''}
+  `;
+}
+
+/* helper for inline onclick in dp-body */
+window.openProductById = function(pname, lineId, brandId) {
+  const brand = BRANDS.find(b => b.id === brandId);
+  if (!brand) return;
+  const line = brand.lines.find(l => l.id === lineId);
+  if (!line) return;
+  const p = line.products.find(pr => pr.name === pname);
+  if (p) openProduct(p, line, brand);
+};
+
+/* ═══════════════════════════════════════════════════
+   EVENTS
+═══════════════════════════════════════════════════ */
+document.getElementById('dp-close').addEventListener('click', closePanel);
+document.getElementById('overlay').addEventListener('click', closePanel);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+buildBrandNav();
+buildBrands();
+buildPlatforms();
+</script>
+</body>
+</html>

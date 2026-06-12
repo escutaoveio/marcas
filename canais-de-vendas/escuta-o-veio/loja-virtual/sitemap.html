@@ -1,0 +1,720 @@
+<div class="product-desc-page">
+
+  <style>
+    /* Source: https://raw.githubusercontent.com/escutaoveio/e-commerce/main/product-info/product-description.css */
+    /* Variant: sitemap */
+
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+    .product-desc-page {
+      box-sizing: border-box;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 32px 24px 40px;
+    }
+
+    .product-desc-page *,
+    .product-desc-page *::before,
+    .product-desc-page *::after {
+      box-sizing: border-box;
+    }
+
+    /* ── Sitemap layout ───────────────────────────────────────────── */
+
+    .sitemap-card {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sitemap-section {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 28px 32px;
+    }
+
+    .sitemap-section-title {
+      margin: 0 0 24px;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .sitemap-section-title::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 3px;
+      background: #F9B20E;
+      border-radius: 0px;
+      margin-top: 7px;
+    }
+
+    /* ── Brands grid ─────────────────────────────────────────────── */
+
+    .sitemap-brands-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px 24px;
+      align-items: start;
+    }
+
+    .sitemap-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .sitemap-brand-link {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .sitemap-brand-link:hover {
+      color: #6a5b16;
+    }
+
+    /* ── Category list (sub-itens) ───────────────────────────────── */
+
+    .sitemap-brand-sub {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .sitemap-brand-sub > li > a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #8c8c8c;
+      text-decoration: none;
+      display: block;
+      padding: 2px 0;
+      transition: color 0.15s;
+    }
+
+    .sitemap-brand-sub > li > a:hover { color: #6a5b16; }
+
+    /* ── Product list (nível 3) ──────────────────────────────────── */
+
+    .sitemap-product-list {
+      list-style: none;
+      padding: 4px 0 2px 8px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .sitemap-product-list a {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: #b0b0b0;
+      text-decoration: none;
+      display: block;
+      padding: 2px 0;
+      transition: color 0.15s;
+    }
+
+    .sitemap-product-list a:hover { color: #6a5b16; }
+
+    /* ── Sub-product list (nível 4) ─────────────────────────────── */
+
+    .sitemap-subproduct-list {
+      list-style: none;
+      padding: 2px 0 2px 12px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .sitemap-subproduct-list a {
+      font-size: 0.625rem;
+      font-weight: 500;
+      color: #c8c8c8;
+      text-decoration: none;
+      display: block;
+      padding: 2px 0;
+      transition: color 0.15s;
+    }
+
+    .sitemap-subproduct-list a:hover { color: #6a5b16; }
+
+    /* ── Flat list (Departamentos / Categorias) ──────────────────── */
+
+    .sitemap-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px 16px;
+    }
+
+    .sitemap-list--md {
+      display: block;
+      columns: 4;
+      column-gap: 16px;
+    }
+
+    .sitemap-list--md li {
+      margin-bottom: 8px;
+      break-inside: avoid;
+    }
+
+    .sitemap-list li {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #4d4d4d;
+    }
+
+    .sitemap-list li a {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #4d4d4d;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .sitemap-list li a:hover { color: #6a5b16; }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+
+    @media (max-width: 640px) {
+      .product-desc-page { padding: 24px 16px 32px; }
+      .sitemap-section   { padding: 20px; }
+      .sitemap-card      { gap: 12px; }
+
+      .sitemap-brands-grid  { grid-template-columns: repeat(2, 1fr); }
+      .sitemap-list--md     { columns: 2; }
+    }
+  </style>
+
+  <div class="sitemap-card">
+
+    <!-- ── Todas as Marcas ───────────────────────────────────────── -->
+    <div class="sitemap-section">
+      <h2 class="sitemap-section-title">Todas as Marcas</h2>
+      <div class="sitemap-brands-grid">
+
+        <div>
+          <div class="sitemap-brand-header">
+            <a href="https://www.escutaoveio.com/todas-as-marcas/elastment" class="sitemap-brand-link">Elastment</a>
+          </div>
+          <ul class="sitemap-brand-sub">
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos">Aditivos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/chapisco-flex">Chapisco Flex</a></li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-concreto">SOS Concreto</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-concreto/hard-structural">Hard Structural</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-concreto/hidrofugante-para-concreto">Hidrofugante para Concreto</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-gesso">SOS Gesso</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-gesso/concentrado">Concentrado</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-gesso/perfect-cola">Perfect Cola+</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/aditivos/sos-gesso/perfect-finish">Perfect Finish</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers">Bases e Primers</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/hidro-air">Hidro Air</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/pr10">PR10</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/smart-primer">Smart Primer</a></li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/ultragrip">UltraGrip</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/ultragrip/primer">Primer</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/bases-e-primers/ultragrip/smooth">Smooth</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame">Cimento Elástico + Baldrame</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/stabilizer">Stabilizer</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/baldrame-areas-frias">Baldrame + Áreas Frias</a></li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/impermeabilizacao-sem-trincas">Impermeabilização Sem Trincas</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/impermeabilizacao-sem-trincas/azul-piscina">Azul Piscina</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/impermeabilizacao-sem-trincas/cimento-elastico">Cimento Elástico</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/impermeabilizacao-sem-trincas/transit">Transit</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/cimento-elastico-baldrame/impermeabilizacao-sem-trincas/white">White</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/colas-e-rejuntes">Colas e Rejuntes</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/colas-e-rejuntes/argamassa-colante">Argamassa Colante</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/colas-e-rejuntes/high-flex">High Flex</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/colas-e-rejuntes/rejunte-elastico">Rejunte Elástico</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/colas-e-rejuntes/scudo-rejunte">Scudo-rejunte</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/mantas-impermeabilizantes">Mantas Impermeabilizantes</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/mantas-impermeabilizantes/acqua-zero">Acqua Zero</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/mantas-impermeabilizantes/manta-hidrofobica">Manta Hidrofóbica</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/mantas-impermeabilizantes/rapid-pur">Rapid Pur</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos">Reparos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/concre-fast">Concre Fast</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/magic-imper">Magic Imper</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/seca-parede">Seca Parede</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-piso">SOS Piso</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-rufo-liquido">Sos Rufo Líquido</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-telhas">SOS Telhas</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-trincas">SOS Trincas</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/vitro">Vitro</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/zero-obra">Zero Obra</a></li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-umidade">SOS Umidade</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-umidade/bloco">Bloco</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-umidade/gel-tix">Gel Tix</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/sos-umidade/inject-gel">Inject Gel</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/rapid-cure">Rapid Cure</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/rapid-cure/argamassa-de-regularizacao">Argamassa de Regularização</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/rapid-cure/crack-filler">Crack Filler</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/rapid-cure/protetor-de-armadura">Protetor de Armadura</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/drymanta">Drymanta</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/drymanta/g60">G60</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/reparos/drymanta/telhados">Telhados</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/elastment/tintas">Tintas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/elastment/tintas/scudo-pro">Scudo PRO</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis" class="sitemap-brand-link" style="margin-bottom:8px">Drylevis</a>
+          <ul class="sitemap-brand-sub">
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/aditivos">Aditivos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/aditivos/smart-additive">Smart Additive</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/aditivos/desmoldante">Desmoldante</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/colas-e-rejuntes">Colas e Rejuntes</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/colas-e-rejuntes/selante-adesivo-dw240">Selante Adesivo DW240</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/estruturantes">Estruturantes</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/estruturantes/dryfit">Dryfit</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/preparo">Preparo</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/preparo/base-coat">Base Coat</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/preparo/drymix">Drymix</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/preparo/hidroveck">Hidroveck</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/preparo/massa-acrilica">Massa Acrílica</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/preparo/nivela-mais">Nivela-mais</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/tintas">Tintas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/tintas/contra-quedas">Contra Quedas*</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca">Zero Trinca</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/base-coat-render">Base Coat Render</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/base-preparadora">Base Preparadora</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/espuma-turbo">Espuma Turbo</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/massa-cimenticia">Massa Cimentícia</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/massa-niveladora">Massa Niveladora</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/selante-acrilico">Selante Acrílico</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/drylevis/zero-trinca/tapa-tudo-5000">Tapa Tudo 5000</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="https://www.escutaoveio.com/todas-as-marcas/smart" class="sitemap-brand-link" style="margin-bottom:8px">Smart</a>
+          <ul class="sitemap-brand-sub">
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/smart/resinas">Resinas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/resinas/5-em-1">5em1</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/resinas/6-em-1">6 em 1</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/resinas/dryfull">DryFull</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/smart/reparos">Reparos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/reparos/sos-ferrugem">SOS Ferrugem</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/smart/revestimento">Revestimento</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/revestimento/cimento-queimado">Cimento Queimado</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/revestimento/concrete-stain">Concrete Stain</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/revestimento/smart-color-design">Smart Color Design</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/smart/tintas-acrilicas">Tintas Acrílicas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/tintas-acrilicas/smart-color-finish">Smart Color Finish</a></li>
+              </ul>
+            </li>
+            <li><a href="https://www.escutaoveio.com/todas-as-marcas/smart/tintas-pud">Tintas PUD*</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine" class="sitemap-brand-link" style="margin-bottom:8px">LT Shine</a>
+          <ul class="sitemap-brand-sub">
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-cimento-queimado">Linha Cimento Queimado</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-cimento-queimado/concrete-shine">Concrete Shine</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-cimento-queimado/diamante-shine">Diamante Shine</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-cimento-queimado/multi-efeitos">Multi Efeitos</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-complementos">Linha Complementos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-complementos/pelicula-liquida">Película Líquida</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-complementos/primer-universal">Primer Universal</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-complementos/reparador-universal">Reparador Universal</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-complementos/resina-5em1">Resina 5em1</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos">Linha Efeitos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/concreto-aparente">Concreto Aparente</a></li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/grannistone">Grannistone</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/grannistone/fine">Fine</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/grannistone/pedras-e-cristais">Pedras e Cristais</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/grannistone/pedras-naturais">Pedras Naturais</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/grannistone/primer">Primer</a></li>
+                  </ul>
+                </li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/revestwall">Revestwall</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/sand-shine">Sand Shine</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-efeitos/stone-make">Stone Make</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite">Linha Marmorite</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/acqua-shine">Acqua Shine</a></li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/cera">Cera</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/cera/natural-de-abelha">Natural de Abelha</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/cera/super-shine">Super Shine</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/massas-de-efeito-decorativo">Massas de Efeito Decorativo</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/massas-de-efeito-decorativo/base">Base</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/massas-de-efeito-decorativo/floor">Floor</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/massas-de-efeito-decorativo/veneziano">Veneziano</a></li>
+                  </ul>
+                </li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-marmorite/pasta-metalizada">Pasta Metalizada</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos">Linha Pisos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos/lt-300">LT 300</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos/microcimento">Microcimento</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos/piso-liquido">Piso Líquido</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-pisos/porcelanato-liquido">Porcelanato Líquido</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-tintas">Linha Tintas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-tintas/cortina-liquida">Cortina Líquida</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-tintas/dual-cryl">Dual Cryl</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/lt-shine/linha-tintas/massa-niveladora">Massa Niveladora</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone" class="sitemap-brand-link" style="margin-bottom:8px">Hold Stone</a>
+          <ul class="sitemap-brand-sub">
+            <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/revest">Revest</a></li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/pro">Pro</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/pro/clean-tool">Clean Tool</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/pro/carpets">Carpets</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/pro/hold-manta">Hold Manta</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/pro/resina-para-pedras">Resina para Pedras</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/garden">Garden</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/garden/colors">Colors</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/garden/hold-manta">Hold Manta</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/garden/color-stone">Color Stone</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/garden/fixador-de-pedras-soltas">Fixador de Pedras Soltas</a></li>
+              </ul>
+            </li>
+            <li><a href="https://www.escutaoveio.com/todas-as-marcas/hold-stone/pedras">Pedras</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="https://www.escutaoveio.com/todas-as-marcas/cristal" class="sitemap-brand-link" style="margin-bottom:8px">Cristal</a>
+          <ul class="sitemap-brand-sub">
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/impermeabilizantes">Impermeabilizantes</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/impermeabilizantes/umi-block">Umi Block</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/limpeza-e-jardim">Limpeza e Jardim</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/limpeza-e-jardim/shampoo-para-telhas">Shampoo para Telhas</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/limpeza-e-jardim/tira-tintas">Tira Tintas</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/profixx">Profixx</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/profixx/adesivo-para-superficies-solidas">Adesivo para Superfícies Sólidas</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/revestimentos">Revestimentos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/revestimentos/azulejo-liquido">Azulejo Líquido</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/revestimentos/nex-floor">Nex Floor</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas">Telhas e Trincas</a>
+              <ul class="sitemap-product-list">
+                <li>
+                  <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha">Protelha</a>
+                  <ul class="sitemap-subproduct-list">
+                    <li>
+                      <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha/fast">Fast</a>
+                      <ul class="sitemap-subproduct-list">
+                        <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha/fast/protetor-de-parafuso">Protetor de Parafuso</a></li>
+                        <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha/fast/selante-adesivo">Selante Adesivo</a></li>
+                        <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha/fast/tape">Tape</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha/plus">Plus</a></li>
+                    <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/telhas-e-trincas/protelha/powerlastic">Powerlastic</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/tintas-e-acessorios">Tintas e Acessórios</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/tintas-e-acessorios/skin-color">Skin-Color</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/tintas-e-acessorios/tinta-magnetica">Tinta Magnética</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/cristal/zero-mofo">Zero Mofo</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/zero-mofo/skim-coat">Skim Coat</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/cristal/zero-mofo/ultra-resina">Ultra Resina</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato" class="sitemap-brand-link" style="margin-bottom:8px">O Pulo do Gato</a>
+          <ul class="sitemap-brand-sub">
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/tintas-e-efeitos">Tintas e Efeitos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/tintas-e-efeitos/conversor-de-ferrugem">Conversor de Ferrugem</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/tintas-e-efeitos/planeta-tinta">Planeta Tinta</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/tintas-e-efeitos/sobre-ferrugem">Sobre Ferrugem</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/rodape">Rodapé</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/rodape/inject-gel">Inject Gel</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/preparativos-e-reforcos">Preparativos e Reforços</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/preparativos-e-reforcos/pu40">PU40</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/preparativos-e-reforcos/tech-manta">Tech Manta</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/preparativos-e-reforcos/tech-resina">Tech Resina</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/telhados-e-trincas">Telhados e Trincas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/telhados-e-trincas/crack-filler">Crack Filler</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/telhados-e-trincas/salva-rufo">Salva Rufo</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/telhados-e-trincas/salva-telha">Salva Telha</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/limpeza-e-jardim">Limpeza e Jardim</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/limpeza-e-jardim/fixador-de-pedras">Fixador de Pedras</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/limpeza-e-jardim/limpa-tinta">Limpa Tinta</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/lajes-e-piscinas">Lajes e Piscinas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/lajes-e-piscinas/membrana-facil">Membrana Fácil</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/lajes-e-piscinas/para-agua">Pára Água</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/lajes-e-piscinas/ultra-flex">Ultra Flex</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/fachadas">Fachadas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/fachadas/blinda-umidade">Blinda Umidade</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas">Aditivos e Estruturas</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/blinda-cimento">Blinda Cimento</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/blinda-gesso">Blinda Gesso</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/chapiskola">Chapiskola</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/salva-massa">Salva Massa</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/tech-cola-bloco">Tech Cola Bloco</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/tech-concreto">Tech Concreto</a></li>
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/aditivos-e-estruturas/tech-liga">Tech Liga</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/pisos">Pisos</a>
+              <ul class="sitemap-product-list">
+                <li><a href="https://www.escutaoveio.com/todas-as-marcas/o-pulo-do-gato/pisos/rejunte-acrilico">Rejunte Acrílico</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Todos os Produtos ─────────────────────────────────────── -->
+    <div class="sitemap-section">
+      <h2 class="sitemap-section-title">Todos os Produtos</h2>
+      <ul class="sitemap-list sitemap-list--md">
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/aditivos">Aditivos</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/anticorrosivos">Anticorrosivos</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/argamassas">Argamassas</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/ceras-e-vernizes">Ceras &amp; Vernizes</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/cimenticios">Cimentícios</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/colas-e-adesivos">Colas &amp; Adesivos</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/complementos">Complementos</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/ferramentas-e-acessorios">Ferramentas &amp; Acessórios</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/formas-e-moldes">Formas e Moldes</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/hidrofugantes">Hidrofugantes</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/impermeabilizantes">Impermeabilizantes</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/laca-e-vernizes">Laca &amp; Vernizes</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/mantas-drenantes">Mantas Drenantes</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/massas-corretivas">Massas Corretivas</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/massas-decorativas">Massas Decorativas</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/papeis-e-transfer">Papeis &amp; Transfer</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/pedras-decorativas">Pedras Decorativas</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/primers-e-bases">Primers &amp; Bases</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/produtos-de-limpeza">Produtos de Limpeza</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/resinas">Resinas</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/selante-e-reparos">Selante e Reparos</a></li>
+        <li><a href="https://www.escutaoveio.com/todos-os-produtos/tintas">Tintas</a></li>
+      </ul>
+    </div>
+
+    <!-- ── Todos os Departamentos ────────────────────────────────── -->
+    <div class="sitemap-section">
+      <h2 class="sitemap-section-title">Todos os Departamentos</h2>
+      <ul class="sitemap-list sitemap-list--md">
+        <li><a href="https://www.escutaoveio.com/alvenaria">Alvenaria</a></li>
+        <li><a href="https://www.escutaoveio.com/artesanato">Artesanato</a></li>
+        <li><a href="https://www.escutaoveio.com/construcao-a-seco">Construção a Seco</a></li>
+        <li><a href="https://www.escutaoveio.com/efeitos-decorativos">Efeitos Decorativos</a></li>
+        <li><a href="https://www.escutaoveio.com/gesso-e-drywall">Gesso &amp; Drywall</a></li>
+        <li><a href="https://www.escutaoveio.com/impermeabilizacao">Impermeabilização</a></li>
+        <li><a href="https://www.escutaoveio.com/jardinagem">Jardinagem</a></li>
+        <li><a href="https://www.escutaoveio.com/limpeza-e-pos-obra">Limpeza e Pós Obra</a></li>
+        <li><a href="https://www.escutaoveio.com/marcenaria">Marcenaria</a></li>
+        <li><a href="https://www.escutaoveio.com/pequenos-reparos">Pequenos Reparos</a></li>
+        <li><a href="https://www.escutaoveio.com/pintura-e-acabamento">Pintura e Acabamento</a></li>
+        <li><a href="https://www.escutaoveio.com/revestimentos">Revestimentos</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>

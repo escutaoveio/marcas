@@ -3,7 +3,7 @@
 ## A Empresa
 IVA Química é uma indústria química brasileira focada em inovação para construção civil, decoração, marcenaria, limpeza e artesanato. Catálogo com mais de 1.200 produtos ativos. **Independente de ponta a ponta:** fabrica, distribui e vende diretamente ao cliente final.
 
-**Documentação completa do ecossistema:** `docs/ecossistema-iva-quimica.md`
+**Documentação completa do ecossistema:** `arquivos/ecossistema-iva-quimica.md`
 
 ---
 
@@ -77,6 +77,7 @@ arquivos/                      → documentação, conhecimento e relatórios
   workflows/                   → contextos de trabalho (lidos com "Retome o contexto de X")
   agents/                      → definições de agentes
   skills/                      → skills adicionais
+  templates/                   → templates HTML de produto (T1, T2, T3, T4, T5)
 ```
 
 ---
@@ -84,11 +85,35 @@ arquivos/                      → documentação, conhecimento e relatórios
 ## Interconexões Chave
 
 ```
+Notion (Catálogo de Produtos)   → alimenta → marketing/marcas/{marca}/{linha}/*.html
 arquivos/                       → alimenta → todos os briefings e campanhas
 marketing/marcas/               → define posicionamento → marketing/campanhas/ e anúncios pagos
-marketing/redes-sociais/        → gera alcance e leads → canais-de-vendas/
 canais-de-vendas/               → dados de venda → arquivos/reports/
 ```
+
+---
+
+## Processos de Trabalho
+
+### Descrição HTML de Produto
+
+Fluxo padrão para gerar a descrição de produto para e-commerce:
+
+1. **Fonte:** Notion — Catálogo de Produtos (`notion.so/iva-digital/342c28ee80ae80d2bc59fc52c73f2450`)
+2. **Template:** `.claude/templates/product-description-template.html` (T1 padrão)
+3. **Saída:** `marketing/marcas/{marca-slug}/{linha-slug}/{produto-slug}.html`
+4. **Workflow completo:** `.claude/workflows/workflow-descricao-html.md`
+5. **Agente executor:** `.claude/agents/agente-html-description.md`
+
+Decisão de template:
+
+| Condição | Template |
+|---|---|
+| Produto padrão | T1 — `product-description-template.html` |
+| Produto com banner dedicado | T2 — `product-description-banner-template.html` |
+| Reformulação de rótulo/embalagem | T3 — `packaging-change-adendo.html` (inserido no T1 ou T2) |
+| Produto com rendimento mensurável | T4 — `product-calculator-template.html` (arquivo separado `calculator.html`) |
+| Kit / combo | T5 — `kits-description-template.html` |
 
 ---
 
@@ -99,6 +124,7 @@ canais-de-vendas/               → dados de venda → arquivos/reports/
 | `/marketing` | Campanhas e estratégia de marketing por marca |
 | `/social` | Conteúdo para redes sociais por plataforma e marca |
 | `/marca` | Posicionamento, narrativa e identidade de marca |
+| `/vendas` | Relatório semanal de vendas por produto + plano de ação |
 | `/sales` | Vendas por público (cliente final, profissional, B2B) |
 | `/crm` | Segmentação, réguas e relacionamento com clientes |
 | `/ecommerce` | Operações de Escuta o Véio! e Fácil Decor |

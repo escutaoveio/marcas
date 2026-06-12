@@ -1,0 +1,877 @@
+<!--
+  product-calculator-template.html — Template padrão de calculadora de rendimento
+  Versão de referência: cimento-autonivelante-nivela-mais (v2.1)
+-->
+<div class="product-calc">
+<style type="text/css">@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+    .product-calc .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    .product-calc {
+      box-sizing: border-box;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #ffffff;
+      padding: 32px 24px 40px;
+    }
+
+    .product-calc *,
+    .product-calc *::before,
+    .product-calc *::after {
+      box-sizing: border-box;
+    }
+
+    .calc-card {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .calc-panel {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+      padding: 40px 32px;
+    }
+
+    .calc-context-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      margin-bottom: 6px;
+    }
+
+    .calc-select-wrap {
+      position: relative;
+    }
+
+    .calc-select {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      padding: 10px 36px 10px 14px;
+      border: 1.5px solid #e6e6e6;
+      border-radius: 8px;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .calc-select:focus {
+      border-color: #999999;
+      outline: none;
+    }
+
+    .calc-select-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 18px !important;
+      color: #8c8c8c;
+    }
+
+    .calc-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .calc-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #1a1a1a;
+    }
+
+    .calc-subtitle {
+      margin: 0 0 28px;
+      font-size: 0.8125rem;
+      color: #8c8c8c;
+      text-align: center;
+    }
+
+    .calc-divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 28px 0;
+    }
+
+    .calc-layout {
+      display: flex;
+      gap: 0;
+    }
+
+    .calc-col-left {
+      flex: 1;
+      min-width: 0;
+      padding-right: 28px;
+      border-right: 1px solid #f0f0f0;
+    }
+
+    .calc-col-right {
+      flex: 1;
+      min-width: 0;
+      padding-left: 28px;
+    }
+
+    .calc-step-group {
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-step-group:first-child { padding-top: 0; }
+    .calc-step-group:last-child  { padding-bottom: 0; }
+
+    .calc-step-group + .calc-step-group {
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-full {
+      margin-top: 24px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .calc-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .calc-step-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      color: #8c8c8c;
+      font-size: 0.625rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-step-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .calc-toggle-group input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .calc-toggle-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #e6e6e6;
+      background: #ffffff;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+      user-select: none;
+    }
+
+    .calc-toggle-group label:hover {
+      border-color: #999999;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label {
+      border-color: #4d4d4d;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-toggle-group input[type="radio"]:checked + label:hover {
+      border-color: #333333;
+      background: #e8e8e8;
+    }
+
+    .calc-toggle-group input[type="radio"]:focus-visible + label {
+      outline: 2px solid #4d4d4d;
+      outline-offset: 2px;
+    }
+
+    .calc-toggle-group--mode {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--mode label {
+      flex: 1;
+      justify-content: center;
+      padding: 11px 12px;
+      font-size: 0.875rem;
+    }
+
+    .calc-input-area {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calc-dim-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+
+    .calc-dim-field {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .calc-dim-input {
+      width: 110px;
+      font-family: inherit;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      border: none;
+      border-bottom: 2px solid #e6e6e6;
+      border-radius: 0;
+      padding: 2px 0 6px;
+      background: transparent;
+      outline: none;
+      text-align: center;
+      transition: border-color 0.15s ease;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .calc-dim-input::-webkit-outer-spin-button,
+    .calc-dim-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .calc-dim-input::placeholder { color: #d9d9d9; }
+    .calc-dim-input:focus { border-bottom-color: #999999; }
+
+    .calc-dim-unit {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+
+    .calc-dim-sep {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #cccccc;
+      line-height: 1;
+      padding-bottom: 4px;
+    }
+
+    .calc-area-total {
+      margin: 14px 0 0;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #cccccc;
+      text-align: center;
+      transition: color 0.2s ease;
+      min-height: 1.4em;
+    }
+
+    .calc-area-total.has-value { color: #4d4d4d; }
+
+    .calc-rend-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      min-height: 1.2em;
+      text-align: center;
+      width: 100%;
+    }
+
+    .calc-rend-note.is-warning { color: #b45309; }
+
+    .calc-field-tip {
+      margin: 10px 0 0;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: #8c8c8c;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .calc-toggle-group--substrato {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    .calc-toggle-group--substrato label {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .calc-result { display: none; }
+    .calc-result.is-visible { display: block; }
+
+    .calc-result-main {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 24px 22px;
+      text-align: center;
+    }
+
+    .calc-result-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.15;
+    }
+
+    .calc-result-breakdown {
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .calc-alerts {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .calc-alert {
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .calc-alert-required {
+      background: #f7f7f7;
+    }
+
+    .calc-alert-info {
+      background: #f5f5f5;
+      border: 1px solid #e6e6e6;
+    }
+
+    .calc-alert-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 1px;
+      color: #6a5b16;
+    }
+
+    .calc-alert-info .calc-alert-icon { color: #8c8c8c; }
+
+    .calc-alert-body { flex: 1; min-width: 0; }
+
+    .calc-alert-title {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: #6a5b16;
+      margin: 0 0 8px;
+    }
+
+    .calc-alert-info .calc-alert-title { color: #4d4d4d; }
+
+    .calc-alert-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .calc-alert-items li {
+      font-size: 0.8125rem;
+      color: #4d4d4d;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.4;
+    }
+
+    .calc-alert-items li::before {
+      content: "•";
+      color: #6a5b16;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    .calc-alert-info .calc-alert-items li::before { color: #8c8c8c; }
+
+    .calc-safety-note {
+      margin: 12px 0 0;
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .calc-support {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      background: #f9f9f9;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+    }
+
+    .calc-support-icon {
+      flex-shrink: 0;
+      font-size: 22px;
+      color: #8c8c8c;
+      line-height: 1;
+    }
+
+    .calc-support-text { flex: 1; min-width: 0; }
+
+    .calc-support-title {
+      margin: 0 0 2px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .calc-support-sub {
+      margin: 0;
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      line-height: 1.4;
+    }
+
+    .calc-support-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: none;
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .calc-support-btn:hover { background: #20b858; }
+
+    .calc-support-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .calc-alert--cards {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .calc-alert--cards .calc-alert-body { width: 100%; }
+
+    .calc-products-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .calc-product-or {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #b5a060;
+    }
+
+    .calc-product-or::before,
+    .calc-product-or::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e8c84a;
+      opacity: 0.4;
+    }
+
+    .calc-product-card {
+      background: #ffffff;
+      border: 1px solid #e6e6e6;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .calc-product-thumb {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      border: 1px solid #f0f0f0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-product-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .calc-product-content {
+      flex: 1;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      row-gap: 10px;
+      column-gap: 12px;
+    }
+
+    .calc-product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .calc-product-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: block;
+      line-height: 1.3;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .calc-product-price {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #FAA900;
+      line-height: 1.2;
+      min-height: 1.1em;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .calc-product-hint {
+      font-size: 0.75rem;
+      color: #8c8c8c;
+      display: block;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .calc-product-price-from {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: #b0b0b0;
+      text-decoration: line-through;
+      margin-right: 4px;
+    }
+
+    .calc-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      grid-column: 1 / -1;
+    }
+
+    .calc-swatches-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8c8c8c;
+    }
+
+    .calc-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px 4px 5px;
+      border-radius: 6px;
+      border: 1.5px solid #d9d9d9;
+      background: #ffffff;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      transition: border-color 0.12s ease;
+      user-select: none;
+    }
+
+    .calc-swatch.is-active {
+      border-color: #4d4d4d;
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .calc-swatch__chip {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+    }
+
+    .calc-product-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      grid-column: 1 / -1;
+    }
+
+    .calc-btn-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      height: 34px;
+      line-height: 1;
+      border-radius: 8px;
+      border: 1.5px solid #d9b800;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #6a5b16;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .calc-btn-view:hover {
+      background: #fef9e0;
+      border-color: #b89900;
+    }
+
+    .calc-btn-cart {
+      flex: 0 0 auto;
+      min-width: 120px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      height: 34px;
+      line-height: 1;
+      border-radius: 8px;
+      border: none;
+      background: #1a1a1a;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .calc-btn-cart:hover { background: #333333; }
+
+    @media (max-width: 640px) {
+      .product-calc { padding: 24px 16px 32px; }
+      .calc-panel { padding: 28px 20px; }
+      .calc-dim-input { width: 90px; font-size: 2.5rem; }
+      .calc-layout { flex-direction: column; }
+      .calc-col-left {
+        padding-right: 0;
+        border-right: none;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+      }
+      .calc-col-right {
+        padding-left: 0;
+        padding-top: 24px;
+        width: 100%;
+      }
+    }
+</style>
+<div class="calc-card">
+<div class="calc-panel"><!-- Header -->
+<div class="calc-header">
+<h2>Calculadora de Rendimento</h2>
+</div>
+
+<p class="calc-subtitle">[[NOME DO PRODUTO]] &middot; [[EMBALAGEM/CONSUMO]]</p>
+
+<div class="calc-divider">&nbsp;</div>
+<!-- Contexto da aplicação -->
+
+<div><label class="calc-context-label" for="[[ID]]-uso">[[LABEL CONTEXTO]]</label>
+
+<div class="calc-select-wrap"><select class="calc-select" id="[[ID]]-uso"><option value="">Selecione</option><!-- opções --> </select> <span aria-hidden="true" class="material-symbols-outlined calc-select-arrow">expand_more</span></div>
+</div>
+
+<div class="calc-divider">&nbsp;</div>
+<!-- Formulário em 3 passos -->
+
+<form id="calc-[[ID]]-form" novalidate="">
+<div class="calc-layout"><!-- Coluna esquerda: Passo 1 — Área -->
+<div class="calc-col-left">
+<div class="calc-step-group">
+<div class="calc-step-header"><span aria-hidden="true" class="calc-step-num">1</span> <span class="calc-step-title">&Aacute;rea do ambiente</span></div>
+
+<div aria-label="Modo de cálculo" class="calc-toggle-group calc-toggle-group--mode" role="radiogroup"><input checked="checked" id="[[ID]]-modo-ambiente" name="[[ID]]-modo" type="radio" value="ambiente" /> <label for="[[ID]]-modo-ambiente"><span aria-hidden="true" class="material-symbols-outlined" style="font-size:16px;line-height:1">straighten</span> Tamanho do Ambiente</label> <input id="[[ID]]-modo-m2" name="[[ID]]-modo" type="radio" value="m2" /> <label for="[[ID]]-modo-m2"><span aria-hidden="true" class="material-symbols-outlined" style="font-size:16px;line-height:1">square_foot</span> Metros Quadrados</label></div>
+
+<div class="calc-input-area" id="[[ID]]-field-dims">
+<div class="calc-dim-row">
+<div class="calc-dim-field"><input aria-label="Comprimento em metros" autocomplete="off" class="calc-dim-input" id="[[ID]]-comprimento" inputmode="decimal" min="0.1" placeholder="5" step="0.1" type="number" /> <span class="calc-dim-unit">m</span></div>
+<span aria-hidden="true" class="calc-dim-sep">&times;</span>
+
+<div class="calc-dim-field"><input aria-label="Largura em metros" autocomplete="off" class="calc-dim-input" id="[[ID]]-largura" inputmode="decimal" min="0.1" placeholder="6" step="0.1" type="number" /> <span class="calc-dim-unit">m</span></div>
+</div>
+
+<p aria-live="polite" class="calc-area-total" id="[[ID]]-area-display">= &mdash; m&sup2;</p>
+</div>
+
+<div class="calc-input-area" id="[[ID]]-field-m2" style="display:none;">
+<div class="calc-dim-field"><input aria-label="Área em metros quadrados" autocomplete="off" class="calc-dim-input" id="[[ID]]-m2-input" inputmode="decimal" min="0.1" placeholder="30" step="0.1" type="number" /> <span class="calc-dim-unit">m&sup2;</span></div>
+</div>
+</div>
+</div>
+<!-- Coluna direita: Passo 2 — variável por produto (espessura, embalagem, etc.) -->
+
+<div class="calc-col-right">
+<div class="calc-step-group">
+<div class="calc-step-header"><span aria-hidden="true" class="calc-step-num">2</span> <span class="calc-step-title">[[TÍTULO PASSO 2]]</span></div>
+<!-- Passo 2: adaptar por produto -->
+<p aria-live="polite" class="calc-rend-note" id="[[ID]]-rend-note">&nbsp;</p>
+</div>
+</div>
+</div>
+<!-- Passo 3 — Substrato -->
+
+<div class="calc-step-group calc-step-full">
+<div class="calc-step-header"><span aria-hidden="true" class="calc-step-num">3</span> <span class="calc-step-title" id="[[ID]]-label-substrato">[[TÍTULO PASSO 3]]</span></div>
+<!-- Passo 3: adaptar por produto -->
+</div>
+</form>
+<!-- Resultado -->
+
+<div aria-label="Resultado do cálculo" aria-live="polite" class="calc-result" id="calc-[[ID]]-result">
+<div class="calc-divider">&nbsp;</div>
+
+<div class="calc-result-main">
+<div class="calc-result-count" id="[[ID]]-result-count">&nbsp;</div>
+
+<div class="calc-result-breakdown" id="[[ID]]-result-breakdown">&nbsp;</div>
+</div>
+
+<div class="calc-alerts">
+<div class="calc-alert calc-alert-required calc-alert--cards">
+<div class="calc-alert-body">
+<p class="calc-alert-title">Compre tamb&eacute;m para essa aplica&ccedil;&atilde;o</p>
+
+<div class="calc-products-grid" id="[[ID]]-primer-list">&nbsp;</div>
+</div>
+</div>
+
+<div class="calc-alert calc-alert-info"><span aria-hidden="true" class="material-symbols-outlined calc-alert-icon">handyman</span>
+
+<div class="calc-alert-body">
+<p class="calc-alert-title">O que voc&ecirc; vai precisar para aplicar</p>
+
+<ul class="calc-alert-items">
+<!-- ferramentas por produto -->
+</ul>
+</div>
+</div>
+</div>
+
+<p class="calc-safety-note">* Margem de seguran&ccedil;a de 10% j&aacute; inclu&iacute;da no resultado. [[NOTA ADICIONAL]]</p>
+</div>
+<!-- Atendimento -->
+
+<div class="calc-divider">&nbsp;</div>
+
+<div class="calc-support"><span aria-hidden="true" class="material-symbols-outlined calc-support-icon">support_agent</span>
+
+<div class="calc-support-text">
+<p class="calc-support-title">Ainda com d&uacute;vidas?</p>
+
+<p class="calc-support-sub">Nossa equipe pode ajudar voc&ecirc; a escolher os produtos certos para o seu projeto.</p>
+</div>
+<a aria-label="Chamar atendimento pelo WhatsApp" class="calc-support-btn" href="[[WHATSAPP URL]]" rel="noopener" target="_blank"> <svg aria-hidden="true" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg> </a></div>
+
+<p style="margin: 20px 0 0; font-size: 0.6875rem; color: #cccccc; text-align: center;">Vers&atilde;o [[VER]]</p>
+</div>
+<!-- /calc-panel --></div>
+<!-- /calc-card --></div>
+<!-- /product-calc -->
+
+<!-- SCRIPT: adaptar por produto. Injetar cards via buildProductCard(name, hint, imgSrc, url) -->

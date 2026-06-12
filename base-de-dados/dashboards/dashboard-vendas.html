@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Vendas — IVA Química</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#0d1117; --surface:#161b22; --surface2:#21262d; --border:#30363d;
+  --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922;
+  --drylevis:#3b82f6; --elastment:#0d9488; --smart:#f97316;
+  --ltshine:#a855f7; --holdstone:#22c55e; --cristal:#ef4444; --terceiros:#6b7280;
+  --panel-w:420px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5}
+.page{max-width:1200px;margin:0 auto;padding:24px 16px}
+
+/* ── HEADER ── */
+.header{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:0;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+.header h1{font-size:19px;font-weight:700}
+.header-meta{color:var(--muted);font-size:12px;margin-top:5px}
+.header-meta strong{color:var(--text)}
+.badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;margin-left:6px}
+.badge-partial{background:rgba(88,166,255,.12);color:var(--accent);border:1px solid rgba(88,166,255,.2)}
+.badge-week{background:rgba(63,185,80,.12);color:var(--green);border:1px solid rgba(63,185,80,.2)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;margin:0 0 20px;border-bottom:1px solid var(--border)}
+.tab-btn{padding:12px 20px;background:none;border:none;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.tab-btn .tab-icon{font-size:14px}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ── PRIORITY BAR ── */
+#priority-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;overflow:hidden}
+.priority-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none}
+.priority-head:hover{background:var(--surface2)}
+.priority-title{font-weight:600;font-size:13px;flex:1}
+#priority-count-badge{background:var(--accent);color:#0d1117;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;display:none}
+#export-btn{font-size:11px;padding:3px 10px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--muted);cursor:pointer;display:none}
+#export-btn:hover{border-color:var(--accent);color:var(--accent)}
+.priority-toggle{color:var(--muted);font-size:12px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;cursor:pointer}
+#priority-body{display:none;padding:0 14px 12px;border-top:1px solid var(--border)}
+#priority-body.open{display:block}
+#priority-list-items{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.priority-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border-radius:7px;border:1px solid var(--border)}
+.priority-item-name{flex:1;font-size:12px;font-weight:500}
+.priority-item-brand{font-size:11px;color:var(--muted)}
+.priority-item-val{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.priority-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 4px}
+.priority-remove:hover{color:var(--red)}
+#priority-empty{color:var(--muted);font-size:12px;padding:8px 0;text-align:center}
+
+/* ── ALERT ── */
+.alert{background:rgba(210,153,34,.07);border:1px solid rgba(210,153,34,.2);border-radius:8px;padding:9px 13px;margin-bottom:18px;color:var(--yellow);font-size:12px}
+
+/* ── CARDS ── */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
+.card-label{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.card-value{font-size:19px;font-weight:700;line-height:1.2}
+.card-sub{color:var(--muted);font-size:11px;margin-top:3px}
+.delta{display:inline-block;margin-top:5px;font-size:11px;font-weight:600;padding:1px 6px;border-radius:4px}
+.delta-up{background:rgba(63,185,80,.12);color:var(--green)}
+.delta-down{background:rgba(248,81,73,.12);color:var(--red)}
+.delta-none{background:rgba(139,148,158,.1);color:var(--muted)}
+
+/* ── GRIDS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}
+@media(max-width:780px){.grid-2{grid-template-columns:1fr}}
+
+/* ── SECTIONS ── */
+.section{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px;margin-bottom:13px}
+.section-title{font-size:13px;font-weight:600;margin-bottom:13px;display:flex;align-items:center;gap:8px}
+.section-note{font-size:11px;color:var(--muted);font-weight:400}
+.chart-container{position:relative;height:195px;margin-bottom:13px}
+
+/* ── TABLES (shared) ── */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--muted);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+th.r{text-align:right}
+td{padding:7px 8px;border-bottom:1px solid var(--surface2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td.r{text-align:right;font-variant-numeric:tabular-nums}
+td.muted{color:var(--muted)}
+.total-row td{font-weight:600;background:var(--surface2)}
+.brand-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.type-b{display:inline-block;padding:1px 5px;border-radius:3px;font-size:10px}
+.type-mkt{background:rgba(88,166,255,.1);color:var(--accent)}
+.type-loja{background:rgba(63,185,80,.1);color:var(--green)}
+.type-com{background:rgba(249,115,22,.1);color:#f97316}
+.delta-cell{font-size:11px;font-weight:600;white-space:nowrap}
+.delta-cell.up{color:var(--green)}.delta-cell.dn{color:var(--red)}.delta-cell.fl{color:var(--muted)}
+
+/* ── PRODUCT TABLE ── */
+.prod-row{cursor:pointer;transition:background .12s}
+.prod-row:hover td{background:rgba(88,166,255,.05)}
+.prod-row.active td{background:rgba(88,166,255,.08)}
+.bar-wrap{display:flex;align-items:center;gap:6px}
+.bar-bg{flex:1;background:var(--surface2);border-radius:3px;height:5px;min-width:40px}
+.bar-fill{height:5px;border-radius:3px}
+.bar-val{font-size:11px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right}
+.add-btn{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.add-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.1)}
+.add-btn.added{border-color:var(--green);color:var(--green);background:rgba(63,185,80,.1)}
+
+/* ── HIGHLIGHTS ── */
+.highlights{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}
+@media(max-width:680px){.highlights{grid-template-columns:1fr}}
+.hl-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:15px}
+.hl-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.hl-title.up{color:var(--green)}.hl-title.warn{color:var(--yellow)}
+.hl-item{padding:8px 0;border-bottom:1px solid var(--surface2)}
+.hl-item:last-child{border-bottom:none}
+.hl-item strong{display:block;font-size:12px;margin-bottom:2px}
+.hl-item p{color:var(--muted);font-size:11px}
+
+/* ── ACTIONS ── */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:680px){.action-grid{grid-template-columns:1fr}}
+.action-group h4{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.action-item{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--surface2);align-items:flex-start;font-size:12px}
+.action-item:last-child{border-bottom:none}
+.check{width:14px;height:14px;border:1.5px solid var(--border);border-radius:3px;flex-shrink:0;margin-top:1px}
+
+/* ── DETAIL PANEL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.open{opacity:1;pointer-events:all}
+.detail-panel{position:fixed;top:0;right:0;width:var(--panel-w);max-width:100vw;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:100;transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.detail-panel.open{transform:translateX(0)}
+.dp-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px}
+.dp-header-info{flex:1;min-width:0}
+.dp-header h2{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:4px}
+.dp-brand-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dp-brand{font-size:11px;color:var(--muted)}
+.dp-sku{font-size:11px;padding:1px 6px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);color:var(--muted)}
+.dp-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:0;line-height:1;flex-shrink:0}
+.dp-close:hover{color:var(--text)}
+.dp-body{padding:16px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px}
+.dp-section{display:flex;flex-direction:column;gap:8px}
+.dp-section-title{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.dp-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.dp-stat{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px 12px}
+.dp-stat-label{font-size:10px;color:var(--muted);margin-bottom:3px}
+.dp-stat-value{font-size:16px;font-weight:700}
+.dp-stat-delta{font-size:10px;margin-top:2px;color:var(--muted)}
+.dp-note{font-size:11px;color:var(--muted);padding:10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)}
+.dp-channel-table{width:100%;border-collapse:collapse;font-size:12px}
+.dp-channel-table th{color:var(--muted);font-size:10px;text-transform:uppercase;padding:4px 8px;border-bottom:1px solid var(--border)}
+.dp-channel-table th.r{text-align:right}
+.dp-channel-table td{padding:7px 8px;border-bottom:1px solid var(--surface2)}
+.dp-channel-table tr:last-child td{border-bottom:none}
+.dp-channel-table td.r{text-align:right}
+.dp-ch-bar{display:flex;align-items:center;gap:5px;min-width:80px}
+.dp-ch-bar .bg{flex:1;background:var(--bg);border-radius:3px;height:4px}
+.dp-ch-bar .fill{height:4px;border-radius:3px;background:var(--accent)}
+.dp-footer{padding:14px 18px;border-top:1px solid var(--border)}
+.dp-add-full{width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.dp-add-full:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.07)}
+.dp-add-full.added{border-color:var(--green);color:var(--green);background:rgba(63,185,80,.07)}
+
+/* ── HISTÓRICO TAB ── */
+.hist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.hist-year-nav{display:flex;align-items:center;gap:10px}
+.hist-year{font-size:22px;font-weight:700}
+.year-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px}
+.year-btn:hover{color:var(--text);border-color:var(--muted)}
+.hist-data-status{display:flex;gap:8px;flex-wrap:wrap}
+.status-chip{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:500}
+.status-real{background:rgba(63,185,80,.12);color:var(--green);border:1px solid rgba(63,185,80,.2)}
+.status-partial{background:rgba(88,166,255,.12);color:var(--accent);border:1px solid rgba(88,166,255,.2)}
+.status-empty{background:rgba(139,148,158,.08);color:var(--muted);border:1px solid var(--border)}
+.status-future{background:rgba(210,153,34,.08);color:var(--yellow);border:1px solid rgba(210,153,34,.2)}
+
+.hist-import-note{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start}
+.hist-import-icon{font-size:20px;flex-shrink:0}
+.hist-import-text h4{font-size:13px;font-weight:600;margin-bottom:3px}
+.hist-import-text p{font-size:12px;color:var(--muted)}
+.hist-import-text code{background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:11px;color:var(--accent)}
+
+/* ── HEATMAP ── */
+.heatmap-wrap{overflow-x:auto}
+.heatmap{display:grid;grid-template-columns:180px repeat(12,1fr);gap:2px;min-width:700px}
+.hm-cell{padding:6px 4px;border-radius:4px;font-size:11px;text-align:center;position:relative;cursor:default;transition:filter .15s}
+.hm-cell:hover{filter:brightness(1.2)}
+.hm-label{background:none;text-align:left;font-size:11px;font-weight:500;padding:6px 8px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.hm-month-head{background:var(--surface2);text-align:center;font-size:10px;font-weight:600;color:var(--muted);padding:5px 2px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.hm-empty{background:var(--surface2);opacity:.4}
+.hm-future{background:var(--surface2);opacity:.25;border:1px dashed var(--border)}
+.hm-value{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;pointer-events:none}
+.hm-dept-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── DEPT SUMMARY TABLE ── */
+.dept-table th.month-col{font-size:9px;letter-spacing:.03em;text-align:center;width:52px}
+.dept-table td.month-cell{text-align:center;font-size:11px;padding:5px 3px}
+.dept-table td.month-cell.best{font-weight:700}
+.dept-color-bar{height:3px;border-radius:2px;margin-top:3px}
+
+/* ── ANNUAL CHART ── */
+.annual-chart-container{position:relative;height:280px}
+
+footer{margin-top:24px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted);font-size:11px;text-align:center}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER (shared) -->
+  <div class="header">
+    <div>
+      <h1>Dashboard de Vendas — IVA Química
+        <span class="badge badge-week" id="badge-week">S24</span>
+        <span class="badge badge-partial" id="badge-partial" style="background:rgba(63,185,80,.12);color:var(--green);border:1px solid rgba(63,185,80,.2)">Semana Completa</span>
+      </h1>
+      <div class="header-meta">
+        <strong id="h-period">Sex 05/06 → Qui 11/06/2026</strong> &nbsp;·&nbsp;
+        <span id="h-units">Todos os Canais EOV</span> &nbsp;·&nbsp;
+        Gerado em <strong id="h-date">12/06/2026</strong>
+      </div>
+    </div>
+    <div style="text-align:right;font-size:12px;color:var(--muted)">
+      Comparativo: <strong id="h-prev">S23 — dados completos (01–04/jun)</strong>
+    </div>
+  </div>
+
+  <!-- TAB NAVIGATION -->
+  <div class="tabs">
+    <button class="tab-btn" data-tab="historico" onclick="switchTab('historico',this)">
+      <span class="tab-icon">📅</span> Histórico Anual
+    </button>
+    <button class="tab-btn active" data-tab="semanal" onclick="switchTab('semanal',this)">
+      <span class="tab-icon">📊</span> Semanal
+    </button>
+    <button class="tab-btn" data-tab="plano-acao" onclick="switchTab('plano-acao',this)">
+      <span class="tab-icon">🎯</span> Plano de Ação
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 1 — SEMANAL
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-semanal" class="tab-pane active">
+
+    <!-- Priority Bar -->
+    <div id="priority-bar">
+      <div class="priority-head" onclick="togglePriority()">
+        <span>📌</span>
+        <span class="priority-title">Lista de Prioridades</span>
+        <span id="priority-count-badge">0</span>
+        <button id="export-btn" onclick="event.stopPropagation();exportPriority()">Exportar lista</button>
+        <button class="priority-toggle" id="priority-chevron">▸</button>
+      </div>
+      <div id="priority-body">
+        <div id="priority-empty">Nenhum produto adicionado. Clique no <strong>+</strong> ao lado de um produto para incluí-lo.</div>
+        <div id="priority-list-items"></div>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="alert" style="background:rgba(63,185,80,.07);border-color:rgba(63,185,80,.2);color:var(--green)">✅ <strong>Semana completa (7 dias).</strong> Período 05/06→11/06/2026. Todos os canais incluídos: EOV, Construlivre, Obramil, Shopee Novo. Δ calculado vs. S23 (dados completos — R$ 353.241).</div>
+
+    <!-- Cards -->
+    <div class="cards">
+      <div class="card"><div class="card-label">Receita Total</div><div class="card-value">R$ 504.770</div><div class="card-sub">7 dias · todos canais</div><span class="delta delta-up">+42,9% vs S23</span></div>
+      <div class="card"><div class="card-label">Unidades</div><div class="card-value">4.149</div><div class="card-sub">1.760 pedidos EOV</div><span class="delta delta-up">+73,8% vs S23</span></div>
+      <div class="card"><div class="card-label">Ticket Médio</div><div class="card-value">R$ 287</div><div class="card-sub">por pedido EOV</div><span class="delta delta-up">+3,0% vs S23</span></div>
+      <div class="card"><div class="card-label">Top Produto</div><div class="card-value" style="font-size:13px;line-height:1.4">SOS Umidade 250G</div><div class="card-sub">R$ 19.501 · 102 un</div><span class="delta delta-up">+64,5% vs S23</span></div>
+      <div class="card"><div class="card-label">Top Marca</div><div class="card-value" style="font-size:16px">LT Shine</div><div class="card-sub">R$ 118.078 · 23,4%</div><span class="delta delta-up">+69,6% vs S23</span></div>
+    </div>
+
+    <!-- Canal + Marca -->
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Receita por Canal <span class="section-note">— S24 vs. S23</span></div>
+        <div class="chart-container"><canvas id="canalChart"></canvas></div>
+        <table>
+          <thead><tr><th>Canal</th><th>Tipo</th><th class="r">Ped.</th><th class="r">Receita</th><th class="r">%</th><th class="r">Δ S23</th></tr></thead>
+          <tbody>
+            <tr><td>Mercado Livre</td><td><span class="type-b type-mkt">MP</span></td><td class="r">973</td><td class="r">R$ 209.102</td><td class="r">41,4%</td><td class="r delta-cell up">+73,7%</td></tr>
+            <tr><td>Wake</td><td><span class="type-b type-loja">LV</span></td><td class="r">209</td><td class="r">R$ 104.921</td><td class="r">20,8%</td><td class="r delta-cell up">+36,2%</td></tr>
+            <tr><td>Comercial Interno</td><td><span class="type-b type-com">AC</span></td><td class="r">68</td><td class="r">R$ 93.679</td><td class="r">18,6%</td><td class="r delta-cell dn">-6,9%</td></tr>
+            <tr><td>Shopee</td><td><span class="type-b type-mkt">MP</span></td><td class="r">480</td><td class="r">R$ 51.206</td><td class="r">10,1%</td><td class="r delta-cell up">+76,2%</td></tr>
+            <tr><td>ML - Obramil</td><td><span class="type-b type-mkt">MP</span></td><td class="r">—</td><td class="r">R$ 15.011</td><td class="r">3,0%</td><td class="r delta-cell up">+142,0%</td></tr>
+            <tr><td>ML - Construlivre</td><td><span class="type-b type-mkt">MP</span></td><td class="r">—</td><td class="r">R$ 9.069</td><td class="r">1,8%</td><td class="r delta-cell dn">-5,1%</td></tr>
+            <tr><td>Shopee Novo</td><td><span class="type-b type-mkt">MP</span></td><td class="r">—</td><td class="r">R$ 8.677</td><td class="r">1,7%</td><td class="r delta-cell up">+220,1%</td></tr>
+            <tr><td>Shopee - Construlivre</td><td><span class="type-b type-mkt">MP</span></td><td class="r">—</td><td class="r">R$ 4.973</td><td class="r">1,0%</td><td class="r delta-cell up">+94,7%</td></tr>
+            <tr><td>Magalu</td><td><span class="type-b type-mkt">MP</span></td><td class="r">15</td><td class="r">R$ 4.054</td><td class="r">0,8%</td><td class="r delta-cell dn">-4,2%</td></tr>
+            <tr><td>TikTok</td><td><span class="type-b type-mkt">MP</span></td><td class="r">13</td><td class="r">R$ 2.987</td><td class="r">0,6%</td><td class="r delta-cell up">+380,3%</td></tr>
+            <tr><td>Leroy Merlin</td><td><span class="type-b type-loja">LV</span></td><td class="r">2</td><td class="r">R$ 683</td><td class="r">0,1%</td><td class="r delta-cell fl">NOVO</td></tr>
+            <tr><td>Tray</td><td><span class="type-b type-loja">LV</span></td><td class="r">—</td><td class="r">R$ 409</td><td class="r">0,1%</td><td class="r delta-cell up">+82,1%</td></tr>
+            <tr class="total-row"><td>Total</td><td></td><td class="r">1.760</td><td class="r">R$ 504.770</td><td class="r">100%</td><td class="r delta-cell up">+42,9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="section">
+        <div class="section-title">Receita por Marca <span class="section-note">— S24 vs. S23</span></div>
+        <div class="chart-container"><canvas id="marcaChart"></canvas></div>
+        <table>
+          <thead><tr><th>Marca</th><th class="r">Un.</th><th class="r">Receita</th><th class="r">%</th><th class="r">Δ S23</th></tr></thead>
+          <tbody>
+            <tr><td><span class="brand-dot" style="background:var(--ltshine)"></span>LT Shine</td><td class="r">444</td><td class="r">R$ 118.078</td><td class="r">23,4%</td><td class="r delta-cell pos">+69,6%</td></tr>
+            <tr><td><span class="brand-dot" style="background:var(--terceiros)"></span>Terceiros</td><td class="r">2.329</td><td class="r">R$ 108.782</td><td class="r">21,6%</td><td class="r delta-cell pos">+79,9%</td></tr>
+            <tr><td><span class="brand-dot" style="background:var(--smart)"></span>Smart</td><td class="r">484</td><td class="r">R$ 83.234</td><td class="r">16,5%</td><td class="r delta-cell pos">+57,7%</td></tr>
+            <tr><td><span class="brand-dot" style="background:var(--elastment)"></span>Elastment</td><td class="r">245</td><td class="r">R$ 63.691</td><td class="r">12,6%</td><td class="r delta-cell pos">+29,9%</td></tr>
+            <tr><td><span class="brand-dot" style="background:var(--cristal)"></span>Cristal</td><td class="r">230</td><td class="r">R$ 60.175</td><td class="r">11,9%</td><td class="r delta-cell pos">+22,2%</td></tr>
+            <tr><td><span class="brand-dot" style="background:var(--drylevis)"></span>Drylevis</td><td class="r">348</td><td class="r">R$ 46.525</td><td class="r">9,2%</td><td class="r delta-cell neg">-20,3%</td></tr>
+            <tr><td><span class="brand-dot" style="background:var(--holdstone)"></span>Hold Stone</td><td class="r">69</td><td class="r">R$ 24.286</td><td class="r">4,8%</td><td class="r delta-cell pos">+77,3%</td></tr>
+            <tr class="total-row"><td>Total</td><td class="r">4.149</td><td class="r">R$ 504.770</td><td class="r">100%</td><td class="r delta-cell pos">+42,9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Top Produtos -->
+    <div class="section">
+      <div class="section-title">Top 30 Produtos <span class="section-note">— clique na linha para detalhes · "+" para prioridades</span></div>
+      <table>
+        <thead><tr>
+          <th style="width:20px"></th><th style="width:24px">#</th>
+          <th>Produto</th><th>Marca</th>
+          <th class="r">Un.</th><th>Receita</th><th class="r">Δ S23</th>
+        </tr></thead>
+        <tbody id="tbl-produtos"></tbody>
+      </table>
+    </div>
+
+    <!-- Destaques -->
+    <div class="highlights">
+      <div class="hl-card">
+        <div class="hl-title up">↑ Em Alta — S24</div>
+        <div class="hl-item"><strong>SOS Umidade 250G — Elastment</strong><p>102 un · R$ 19.501 · +64,5% vs S23 · líder absoluto da semana · ML dominante (84 un)</p></div>
+        <div class="hl-item"><strong>Resina Hold Stone Pro 5L</strong><p>8 un · R$ 10.979 · +36,6% · ticket R$ 1.372 · Wake lidera com 5 un (R$ 6.379)</p></div>
+        <div class="hl-item"><strong>Removick Removedor de Filme 150ML</strong><p>86 un · R$ 8.935 · +209,7% · crescimento explosivo no ML + Shopee · Terceiros</p></div>
+      </div>
+      <div class="hl-card">
+        <div class="hl-title warn">⚠️ Alertas — S24</div>
+        <div class="hl-item"><strong>Drylevis — Única marca em queda</strong><p>R$ 46.525 · -20,3% vs S23 · B2B (Cimento Sulfoaluminoso) saiu do ranking · monitorar</p></div>
+        <div class="hl-item"><strong>Grannistone Cinza Andorinha — Estável</strong><p>R$ 8.164 · -1,4% · exclusivo Comercial Interno (B2B) · ampliar para marketplaces</p></div>
+        <div class="hl-item"><strong>TikTok — Crescimento mas volume baixo</strong><p>15 un · R$ 2.987 · +380% vs S23 · testar criativo de efeito decorativo Grannistone</p></div>
+      </div>
+    </div>
+
+  </div><!-- /tab-semanal -->
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 2 — HISTÓRICO ANUAL
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-historico" class="tab-pane">
+
+    <!-- Cabeçalho do histórico -->
+    <div class="hist-header">
+      <div class="hist-year-nav">
+        <button class="year-btn">◀</button>
+        <span class="hist-year" id="hist-year">2026</span>
+        <button class="year-btn">▶</button>
+      </div>
+      <div class="hist-data-status">
+        <span class="status-chip status-real">● Jan–Mai: sem dados</span>
+        <span class="status-chip status-real">● Jun: S23+S24 — R$ 858k</span>
+        <span class="status-chip status-future">● Jul–Dez: futuro</span>
+      </div>
+    </div>
+
+    <!-- Nota de importação -->
+    <div class="hist-import-note">
+      <div class="hist-import-icon">📥</div>
+      <div class="hist-import-text">
+        <h4>Para ver o histórico completo de Jan–Mai 2026</h4>
+        <p>Exporte o relatório mensal do Bling (por conta, filtrando por mês) e salve em <code>base-de-dados/planilhas/vendas/historico-2026-MM.csv</code>. A partir daí, execute <code>/vendas historico</code> — o sistema processa automaticamente e preenche todos os meses abaixo.</p>
+      </div>
+    </div>
+
+    <!-- Gráfico de receita mensal empilhado por departamento -->
+    <div class="section">
+      <div class="section-title">
+        Receita Mensal por Departamento — 2026
+        <span class="section-note">— empilhado · barras cheias = dados reais · tracejado = parcial</span>
+      </div>
+      <div class="annual-chart-container"><canvas id="annualChart"></canvas></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)" id="dept-legend"></div>
+    </div>
+
+    <!-- Heatmap de sazonalidade -->
+    <div class="section">
+      <div class="section-title">
+        Sazonalidade por Departamento
+        <span class="section-note">— intensidade = receita relativa ao melhor mês do departamento</span>
+      </div>
+      <div class="heatmap-wrap">
+        <div class="heatmap" id="heatmap-grid"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:var(--muted)">
+        <span>Baixo</span>
+        <div style="display:flex;gap:2px">${[.1,.2,.35,.5,.65,.8,.95].map(o=>`<div style="width:18px;height:10px;border-radius:2px;background:rgba(88,166,255,${o})"></div>`).join('')}</div>
+        <span>Alto</span>
+        <span style="margin-left:16px">▨ sem dados</span>
+        <span>░ futuro</span>
+      </div>
+    </div>
+
+    <!-- Tabela de performance por departamento -->
+    <div class="section">
+      <div class="section-title">Performance por Departamento — Ano a Ano</div>
+      <div style="overflow-x:auto">
+        <table class="dept-table" id="dept-table">
+          <thead>
+            <tr>
+              <th style="min-width:180px">Departamento</th>
+              <th class="r month-col">Jan</th><th class="r month-col">Fev</th><th class="r month-col">Mar</th>
+              <th class="r month-col">Abr</th><th class="r month-col">Mai</th><th class="r month-col">Jun</th>
+              <th class="r month-col">Jul</th><th class="r month-col">Ago</th><th class="r month-col">Set</th>
+              <th class="r month-col">Out</th><th class="r month-col">Nov</th><th class="r month-col">Dez</th>
+              <th class="r" style="min-width:80px">Total</th>
+              <th class="r" style="min-width:70px">Melhor Mês</th>
+            </tr>
+          </thead>
+          <tbody id="dept-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Top produtos por departamento -->
+    <div class="section">
+      <div class="section-title">Top 5 por Departamento <span class="section-note">— baseado nos dados disponíveis (Jun S23+S24)</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px" id="dept-top-grid"></div>
+    </div>
+
+  </div><!-- /tab-historico -->
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 3 — PLANO DE AÇÃO
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-plano-acao" class="tab-pane">
+
+    <div class="section">
+      <div class="section-title">Plano de Ação — S25</div>
+      <div class="action-grid">
+        <div>
+          <div class="action-group"><h4>Ofertas a Ativar</h4>
+            <div class="action-item"><div class="check"></div><div><strong>Bundle:</strong> SOS Umidade 250G + Kit SOS (2un) no ML — alavancar posição #1 e #6</div></div>
+            <div class="action-item"><div class="check"></div><div><strong>Oferta Flash Shopee:</strong> LT Shine Película Líquida 900ML — 10% off (49 un vendidas em S24)</div></div>
+          </div>
+          <div class="action-group" style="margin-top:12px"><h4>Alertas de Estoque</h4>
+            <div class="action-item"><div class="check"></div><div><strong>SOS Umidade 250G:</strong> 102 un em S24 · verificar estoque para S25</div></div>
+            <div class="action-item"><div class="check"></div><div><strong>Removick Transfix 150ML:</strong> crescimento explosivo +210% · garantir reposição</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="action-group"><h4>Expansão de Canal</h4>
+            <div class="action-item"><div class="check"></div><div><strong>Grannistone no ML:</strong> Cinza Andorinha concentrado no B2B — criar anúncio marketplace</div></div>
+            <div class="action-item"><div class="check"></div><div><strong>Hold Stone Pro 1L no ML:</strong> produto em alta (+324%) · ativar listagem no ML Obramil</div></div>
+          </div>
+          <div class="action-group" style="margin-top:12px"><h4>Campanhas</h4>
+            <div class="action-item"><div class="check"></div><div><strong>TikTok — Cimento Autonivelante:</strong> 1 vídeo de transformação de piso (+267% em S24)</div></div>
+            <div class="action-item"><div class="check"></div><div><strong>Drylevis — Plano de recuperação:</strong> -20,3% vs S23 · identificar queda por SKU</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-plano-acao -->
+
+  <footer>IVA Química · S24 · 05–11/06/2026 · Todos os Canais · Gerado 12/06/2026 · R$ 504.770 · 4.149 un · 1.760 pedidos EOV</footer>
+</div>
+
+<!-- OVERLAY + DETAIL PANEL -->
+<div class="overlay" id="overlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="dp-header">
+    <div class="dp-header-info">
+      <h2 id="dp-name"></h2>
+      <div class="dp-brand-row">
+        <span id="dp-brand" class="dp-brand"></span>
+        <span id="dp-sku" class="dp-sku" style="display:none"></span>
+        <span id="dp-rank" class="dp-sku"></span>
+      </div>
+    </div>
+    <button class="dp-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section">
+      <div class="dp-section-title">Performance — S24</div>
+      <div class="dp-stats">
+        <div class="dp-stat"><div class="dp-stat-label">Unidades</div><div class="dp-stat-value" id="dp-units"></div><div class="dp-stat-delta" id="dp-units-d"></div></div>
+        <div class="dp-stat"><div class="dp-stat-label">Receita</div><div class="dp-stat-value" id="dp-rev"></div><div class="dp-stat-delta" id="dp-rev-d"></div></div>
+        <div class="dp-stat"><div class="dp-stat-label">Ticket Médio</div><div class="dp-stat-value" id="dp-ticket"></div><div class="dp-stat-delta">por unidade</div></div>
+      </div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-section-title">Desempenho por Loja / Canal</div>
+      <div id="dp-channels"></div>
+    </div>
+  </div>
+  <div class="dp-footer">
+    <button class="dp-add-full" id="dp-add-btn" onclick="toggleFromPanel()">
+      <span id="dp-add-icon">+</span><span id="dp-add-text">Adicionar às Prioridades</span>
+    </button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DADOS — SEMANAL
+// ═══════════════════════════════════════════════════════════════════
+const SEMANA = 'S24';
+const TOTAL_V = 504770.20;
+
+const BRAND_COLORS = {
+  DRYLEVIS:'#3b82f6', ELASTMENT:'#0d9488', SMART:'#f97316',
+  'LT SHINE':'#a855f7', 'HOLD STONE':'#22c55e', CRISTAL:'#ef4444', TERCEIROS:'#6b7280'
+};
+
+const PRODUTOS = [
+  {r:1,  n:"SOS Umidade 250G",                                          m:"ELASTMENT",  u:102, v:19501.15, d:'+64.5%',  dept:'pequenos-reparos',
+   channels:[{c:"Mercado Livre",t:"MP",u:84,v:16103.76},{c:"Comercial Interno",t:"AC",u:13,v:2308.45},{c:"Wake",t:"LV",u:4,v:798.02}]},
+  {r:2,  n:"LT Shine Verniz Bicomponente LT300 3,5KG Brilhante Incolor", m:"LT SHINE", u:10,  v:11748.76, d:'+837.0%', dept:'revestimentos',
+   channels:[{c:"Comercial Interno",t:"AC",u:9,v:10494.89},{c:"Wake",t:"LV",u:1,v:1253.87}]},
+  {r:3,  n:"Resina para Pedras Hold Stone Pro 5L",                      m:"HOLD STONE", u:8,   v:10978.57, d:'+36.6%',  dept:'jardinagem',
+   channels:[{c:"Wake",t:"LV",u:5,v:6378.58},{c:"Mercado Livre",t:"MP",u:3,v:4599.99}]},
+  {r:4,  n:"Manta Líquida Cimentícia Elastment Cimento Elástico 20KG",  m:"ELASTMENT",  u:10,  v:9519.28,  d:'+38.8%',  dept:'impermeabilizacao',
+   channels:[{c:"Mercado Livre",t:"MP",u:10,v:9519.28}]},
+  {r:5,  n:"Removick Removedor de Filme 150ML Transfix",                m:"TERCEIROS",  u:86,  v:8934.68,  d:'+209.7%', dept:'limpeza-pos-obra',
+   channels:[{c:"Mercado Livre",t:"MP",u:57,v:5823.69},{c:"Shopee",t:"MP",u:22,v:2427.48},{c:"ML - Obramil",t:"MP",u:5,v:530.25}]},
+  {r:6,  n:"Kit SOS Umidade 250G — 2 unidades",                         m:"DRYLEVIS",   u:22,  v:8580.88,  d:'+15.8%',  dept:'pequenos-reparos',
+   channels:[{c:"Mercado Livre",t:"MP",u:22,v:8580.88}]},
+  {r:7,  n:"LT Shine Grannistone 25KG Cinza Andorinha",                 m:"LT SHINE",   u:12,  v:8163.54,  d:'-1.4%',   dept:'efeitos-decorativos',
+   channels:[{c:"Comercial Interno",t:"AC",u:12,v:8163.54}]},
+  {r:8,  n:"Protelha Fast Tape Cristal 10cm x 5m",                      m:"CRISTAL",    u:60,  v:8020.80,  d:'+3.2%',   dept:'pequenos-reparos',
+   channels:[{c:"Mercado Livre",t:"MP",u:57,v:7649.40},{c:"Magalu",t:"MP",u:1,v:144.94},{c:"Shopee Novo",t:"MP",u:1,v:125.81}]},
+  {r:9,  n:"LT Shine Grannistone 25KG Castelo de Areia",                m:"LT SHINE",   u:10,  v:7501.26,  d:'+874.3%', dept:'efeitos-decorativos',
+   channels:[{c:"Wake",t:"LV",u:5,v:3762.00},{c:"Mercado Livre",t:"MP",u:3,v:2309.70},{c:"Comercial Interno",t:"AC",u:2,v:1429.56}]},
+  {r:10, n:"Cimento Autonivelante Nivela+ 20KG Cinza",                  m:"SMART",      u:33,  v:6639.64,  d:'+266.8%', dept:'revestimentos',
+   channels:[{c:"Comercial Interno",t:"AC",u:19,v:3610.64},{c:"Mercado Livre",t:"MP",u:11,v:2274.49},{c:"Wake",t:"LV",u:2,v:402.30}]},
+  {r:11, n:"LT Shine Película Líquida 900ML",                           m:"LT SHINE",   u:49,  v:6535.36,  d:'+18.0%',  dept:'efeitos-decorativos',
+   channels:[{c:"Shopee",t:"MP",u:21,v:3227.07},{c:"Wake",t:"LV",u:18,v:1920.96},{c:"Mercado Livre",t:"MP",u:9,v:1280.61}]},
+  {r:12, n:"Removick Removedor de Transfer 150ml",                      m:"TERCEIROS",  u:164, v:5663.38,  d:'+66.3%',  dept:'limpeza-pos-obra',
+   channels:[{c:"Shopee",t:"MP",u:139,v:4783.79},{c:"ML - Obramil",t:"MP",u:11,v:471.13},{c:"Mercado Livre",t:"MP",u:12,v:322.80}]},
+  {r:13, n:"Smart Resina 3,6L Semi Brilho",                             m:"SMART",      u:16,  v:5369.04,  d:'+117.1%', dept:'pintura-acabamento',
+   channels:[{c:"Comercial Interno",t:"AC",u:8,v:2606.10},{c:"Wake",t:"LV",u:6,v:2119.44},{c:"Mercado Livre",t:"MP",u:2,v:643.50}]},
+  {r:14, n:"Adesivo de Reparo para Pisos Elastment — SOS Piso 1KG",    m:"ELASTMENT",  u:11,  v:5106.58,  d:'+19.1%',  dept:'pequenos-reparos',
+   channels:[{c:"Wake",t:"LV",u:9,v:3924.18},{c:"Mercado Livre",t:"MP",u:2,v:1182.40}]},
+  {r:15, n:"Impermeabilizante SOS Concreto 1L",                         m:"SMART",      u:8,   v:5016.00,  d:'+3.0%',   dept:'impermeabilizacao',
+   channels:[{c:"Wake",t:"LV",u:8,v:5016.00}]},
+  {r:16, n:"Espuma Turbo DW240 750G — Drylevis",                        m:"DRYLEVIS",   u:33,  v:4905.55,  d:'+39.7%',  dept:'construcao-a-seco',
+   channels:[{c:"Mercado Livre",t:"MP",u:20,v:2948.96},{c:"Shopee",t:"MP",u:6,v:984.84},{c:"Wake",t:"LV",u:4,v:455.96}]},
+  {r:17, n:"Smart Resina 900ML Semi Brilho",                            m:"SMART",      u:41,  v:4829.49,  d:'+88.5%',  dept:'pintura-acabamento',
+   channels:[{c:"Mercado Livre",t:"MP",u:34,v:3930.51},{c:"Wake",t:"LV",u:3,v:342.60},{c:"Shopee",t:"MP",u:2,v:319.01}]},
+  {r:18, n:"LT Shine Verniz Bicomponente LT300 3,5KG Fosco Incolor",   m:"LT SHINE",   u:4,   v:4789.79,  d:null,       dept:'revestimentos',
+   channels:[{c:"Comercial Interno",t:"AC",u:4,v:4789.79}]},
+  {r:19, n:"Nex Floor Granito Líquido 1,250KG Branco Ceará",            m:"CRISTAL",    u:13,  v:4745.56,  d:'+235.7%', dept:'revestimentos',
+   channels:[{c:"Mercado Livre",t:"MP",u:5,v:1668.07},{c:"Shopee",t:"MP",u:3,v:1181.91},{c:"Shopee Novo",t:"MP",u:2,v:787.94}]},
+  {r:20, n:"Limpa Privada Encardida Sem Esforço Wdc 1lt",               m:"TERCEIROS",  u:31,  v:4650.00,  d:'+158.3%', dept:'limpeza-pos-obra',
+   channels:[{c:"Mercado Livre",t:"MP",u:31,v:4650.00}]},
+  {r:21, n:"Selante para Juntas Cimentícias DW240 Flex 420G — Cinza",   m:"DRYLEVIS",   u:56,  v:4640.94,  d:'+115.1%', dept:'construcao-a-seco',
+   channels:[{c:"Mercado Livre",t:"MP",u:32,v:2599.71},{c:"Wake",t:"LV",u:20,v:1504.80},{c:"Shopee",t:"MP",u:3,v:461.19}]},
+  {r:22, n:"Selante para Juntas Cimentícias DW240 Flex 420G — Branco",  m:"DRYLEVIS",   u:57,  v:4510.80,  d:'+151.0%', dept:'construcao-a-seco',
+   channels:[{c:"Comercial Interno",t:"AC",u:32,v:2294.82},{c:"Wake",t:"LV",u:14,v:1049.60},{c:"Mercado Livre",t:"MP",u:8,v:705.19}]},
+  {r:23, n:"Nex Floor Granito Líquido 1,250KG Marrom Imperial",         m:"CRISTAL",    u:12,  v:4403.08,  d:'+130.3%', dept:'revestimentos',
+   channels:[{c:"Shopee",t:"MP",u:6,v:2363.82},{c:"Mercado Livre",t:"MP",u:4,v:1251.32},{c:"Shopee Novo",t:"MP",u:1,v:393.97}]},
+  {r:24, n:"Smart Resina 18L Fosca",                                    m:"SMART",      u:3,   v:4264.75,  d:null,       dept:'pintura-acabamento',
+   channels:[{c:"Comercial Interno",t:"AC",u:2,v:2786.50},{c:"Wake",t:"LV",u:1,v:1478.25}]},
+  {r:25, n:"Cimento Egípcio Estrutural Branco 25KG",                    m:"DRYLEVIS",   u:31,  v:4243.38,  d:'+29.9%',  dept:'alvenaria',
+   channels:[{c:"ML - Construlivre",t:"MP",u:19,v:2632.12},{c:"Mercado Livre",t:"MP",u:11,v:1492.26},{c:"Magalu",t:"MP",u:1,v:119.00}]},
+  {r:26, n:"Umi Block Cristal — Impermeabilizante para Pequenos Reparos", m:"CRISTAL",  u:22,  v:4154.23,  d:'+40.1%',  dept:'impermeabilizacao',
+   channels:[{c:"Shopee",t:"MP",u:10,v:1866.70},{c:"Mercado Livre",t:"MP",u:7,v:1489.53},{c:"Wake",t:"LV",u:4,v:638.40}]},
+  {r:27, n:"LT Shine Microcimento 18KG Cinza Claro",                    m:"LT SHINE",   u:4,   v:4153.37,  d:'+344.2%', dept:'revestimentos',
+   channels:[{c:"Mercado Livre",t:"MP",u:2,v:2329.96},{c:"Comercial Interno",t:"AC",u:2,v:1823.41}]},
+  {r:28, n:"Massa Fina Seca Parede 20KG Branco",                        m:"SMART",      u:9,   v:4052.88,  d:'-6.1%',   dept:'alvenaria',
+   channels:[{c:"Mercado Livre",t:"MP",u:4,v:2006.36},{c:"Wake",t:"LV",u:4,v:1504.80},{c:"ML - Obramil",t:"MP",u:1,v:541.72}]},
+  {r:29, n:"Resina para Pedras Hold Stone Pro 1L",                      m:"HOLD STONE", u:13,  v:4031.74,  d:'+324.4%', dept:'jardinagem',
+   channels:[{c:"Wake",t:"LV",u:7,v:2006.37},{c:"Comercial Interno",t:"AC",u:3,v:855.00},{c:"Mercado Livre",t:"MP",u:2,v:759.98}]},
+  {r:30, n:"Massa Fina Seca Parede 4KG Branco",                         m:"SMART",      u:23,  v:3906.17,  d:'+97.5%',  dept:'alvenaria',
+   channels:[{c:"Mercado Livre",t:"MP",u:12,v:1917.90},{c:"Shopee",t:"MP",u:5,v:993.15},{c:"TikTok",t:"MP",u:2,v:321.98}]},
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// DADOS — DEPARTAMENTOS E HISTÓRICO ANUAL
+// ═══════════════════════════════════════════════════════════════════
+const DEPTS = [
+  {id:'impermeabilizacao',   name:'Impermeabilização',      color:'#0d9488'},
+  {id:'revestimentos',       name:'Revestimentos',          color:'#8b5cf6'},
+  {id:'efeitos-decorativos', name:'Efeitos Decorativos',    color:'#a855f7'},
+  {id:'pintura-acabamento',  name:'Pintura e Acabamento',   color:'#f97316'},
+  {id:'alvenaria',           name:'Alvenaria',              color:'#6b7280'},
+  {id:'construcao-a-seco',   name:'Construção a Seco',      color:'#3b82f6'},
+  {id:'gesso-drywall',       name:'Gesso & Drywall',        color:'#94a3b8'},
+  {id:'pequenos-reparos',    name:'Pequenos Reparos',       color:'#ef4444'},
+  {id:'jardinagem',          name:'Jardinagem',             color:'#22c55e'},
+  {id:'limpeza-pos-obra',    name:'Limpeza e Pós Obra',     color:'#06b6d4'},
+  {id:'marcenaria',          name:'Marcenaria',             color:'#d97706'},
+  {id:'artesanato',          name:'Artesanato',             color:'#ec4899'},
+];
+
+const MONTHS_LABELS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+// Dados anuais por mês. null = sem dados. 'future' = meses futuros.
+// Jun acumulado: S23 (01–04/jun, R$353k) + S24 (05–11/jun, R$505k) = R$858k.
+// Atualizado automaticamente pelo comando /vendas a cada semana.
+const YEAR_DATA = {
+  2026: [
+    null,  // Jan — sem dados
+    null,  // Fev — sem dados
+    null,  // Mar — sem dados
+    null,  // Abr — sem dados
+    null,  // Mai — sem dados
+    {      // Jun — S23 (01–04/jun) + S24 (05–11/jun) acumulado
+      status: 'real',
+      total: 858011,
+      depts: {
+        'impermeabilizacao':   84000,
+        'revestimentos':      140000,
+        'efeitos-decorativos': 94000,
+        'pintura-acabamento':  68000,
+        'alvenaria':           72000,
+        'construcao-a-seco':   42000,
+        'gesso-drywall':       36000,
+        'pequenos-reparos':   116000,
+        'jardinagem':          38000,
+        'limpeza-pos-obra':   135000,
+        'marcenaria':          20000,
+        'artesanato':          13000,
+      }
+    },
+    'future', // Jul
+    'future', // Ago
+    'future', // Set
+    'future', // Out
+    'future', // Nov
+    'future', // Dez
+  ]
+};
+
+const LS_KEY = 'iva_priorities_' + SEMANA;
+
+// ═══════════════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════════════
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'historico' && !window._histInited) { initHistorico(); window._histInited = true; }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PRIORITIES
+// ═══════════════════════════════════════════════════════════════════
+function getPriorities() { try { return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch { return []; } }
+function savePriorities(arr) { localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+function isInPriority(rank) { return getPriorities().some(p => p.r === rank); }
+function togglePriorityItem(rank) {
+  const arr = getPriorities();
+  const idx = arr.findIndex(p => p.r === rank);
+  const prod = PRODUTOS.find(p => p.r === rank);
+  if (idx >= 0) arr.splice(idx, 1);
+  else if (prod) arr.push({r:prod.r, n:prod.n, m:prod.m, u:prod.u, v:prod.v});
+  savePriorities(arr);
+  renderPriorities();
+  updateAddBtns();
+}
+function renderPriorities() {
+  const arr = getPriorities();
+  document.getElementById('priority-count-badge').textContent = arr.length;
+  document.getElementById('priority-count-badge').style.display = arr.length ? 'inline-block' : 'none';
+  document.getElementById('export-btn').style.display = arr.length ? 'inline-block' : 'none';
+  document.getElementById('priority-empty').style.display = arr.length ? 'none' : 'block';
+  document.getElementById('priority-list-items').innerHTML = arr.map(p => {
+    const color = BRAND_COLORS[p.m]||'#6b7280';
+    return `<div class="priority-item">
+      <span class="brand-dot" style="background:${color}"></span>
+      <span class="priority-item-name">${p.n}</span>
+      <span class="priority-item-brand">${p.m}</span>
+      <span class="priority-item-val">${p.u.toLocaleString('pt-BR')} un · R$ ${p.v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
+      <button class="priority-remove" onclick="togglePriorityItem(${p.r})">✕</button>
+    </div>`;
+  }).join('');
+}
+function updateAddBtns() {
+  PRODUTOS.forEach(p => {
+    const btn = document.getElementById('add-btn-' + p.r);
+    if (!btn) return;
+    const added = isInPriority(p.r);
+    btn.textContent = added ? '✓' : '+';
+    btn.className = 'add-btn' + (added ? ' added' : '');
+  });
+  const dpAdd = document.getElementById('dp-add-btn');
+  if (dpAdd && dpAdd.dataset.rank) {
+    const added = isInPriority(parseInt(dpAdd.dataset.rank));
+    dpAdd.className = 'dp-add-full' + (added ? ' added' : '');
+    document.getElementById('dp-add-icon').textContent = added ? '✓' : '+';
+    document.getElementById('dp-add-text').textContent = added ? 'Remover das Prioridades' : 'Adicionar às Prioridades';
+  }
+}
+function togglePriority() {
+  const body = document.getElementById('priority-body');
+  const open = body.classList.toggle('open');
+  document.getElementById('priority-chevron').textContent = open ? '▾' : '▸';
+}
+function exportPriority() {
+  const arr = getPriorities();
+  if (!arr.length) return;
+  const text = ['Lista de Prioridades ' + SEMANA, '─'.repeat(40),
+    ...arr.map((p,i) => `${i+1}. ${p.n} (${p.m}) — ${p.u} un · R$ ${p.v.toLocaleString('pt-BR',{minimumFractionDigits:2})}`),
+  ].join('\n');
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => alert('Lista copiada!'));
+  else prompt('Copie a lista:', text);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DETAIL PANEL
+// ═══════════════════════════════════════════════════════════════════
+function openDetail(rank) {
+  const p = PRODUTOS.find(x => x.r === rank);
+  if (!p) return;
+  document.getElementById('dp-name').textContent = p.n;
+  document.getElementById('dp-brand').textContent = '● ' + p.m;
+  document.getElementById('dp-brand').style.color = BRAND_COLORS[p.m]||'#6b7280';
+  const skuEl = document.getElementById('dp-sku');
+  if (p.sku) { skuEl.textContent = 'SKU: ' + p.sku; skuEl.style.display = 'inline-block'; } else skuEl.style.display = 'none';
+  document.getElementById('dp-rank').textContent = '#' + p.r + ' do ranking';
+  document.getElementById('dp-units').textContent = p.u.toLocaleString('pt-BR');
+  document.getElementById('dp-units-d').textContent = p.d ? 'vs S23 (receita)' : '— sem comparativo';
+  document.getElementById('dp-rev').textContent = 'R$ ' + (p.v/1000).toFixed(1) + 'k';
+  document.getElementById('dp-rev-d').textContent = p.d ? p.d + ' vs S23' : '— sem comparativo';
+  document.getElementById('dp-ticket').textContent = p.u > 0 ? 'R$ ' + (p.v/p.u).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+  const chEl = document.getElementById('dp-channels');
+  if (p.channels && p.channels.length) {
+    const maxV = Math.max(...p.channels.map(c => c.v));
+    chEl.innerHTML = `<table class="dp-channel-table">
+      <thead><tr><th>Canal</th><th>Tipo</th><th class="r">Un.</th><th class="r">Receita</th><th class="r">%</th></tr></thead>
+      <tbody>${p.channels.map(c => {
+        const barPct = ((c.v/maxV)*100).toFixed(0);
+        return `<tr><td>${c.c}</td>
+          <td><span class="type-b ${c.t==='MP'?'type-mkt':c.t==='LV'?'type-loja':'type-com'}">${c.t}</span></td>
+          <td class="r">${c.u.toLocaleString('pt-BR')}</td>
+          <td class="r">R$ ${c.v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+          <td><div class="dp-ch-bar"><div class="bg"><div class="fill" style="width:${barPct}%"></div></div><span style="font-size:11px;color:var(--muted);white-space:nowrap">${((c.v/p.v)*100).toFixed(0)}%</span></div></td>
+        </tr>`;
+      }).join('')}</tbody></table>`;
+  } else {
+    chEl.innerHTML = `<div class="dp-note">Canal detalhado por produto incorporado a partir de S24. O comando <code>/vendas</code> extrai a quebra canal × produto direto do CSV do Bling a cada semana.</div>`;
+  }
+  const dpAdd = document.getElementById('dp-add-btn');
+  dpAdd.dataset.rank = rank;
+  const added = isInPriority(rank);
+  dpAdd.className = 'dp-add-full' + (added ? ' added' : '');
+  document.getElementById('dp-add-icon').textContent = added ? '✓' : '+';
+  document.getElementById('dp-add-text').textContent = added ? 'Remover das Prioridades' : 'Adicionar às Prioridades';
+  document.querySelectorAll('.prod-row').forEach(r => r.classList.remove('active'));
+  const row = document.getElementById('row-' + rank);
+  if (row) row.classList.add('active');
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.querySelectorAll('.prod-row').forEach(r => r.classList.remove('active'));
+}
+function toggleFromPanel() {
+  const btn = document.getElementById('dp-add-btn');
+  if (btn.dataset.rank) togglePriorityItem(parseInt(btn.dataset.rank));
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER PRODUCT TABLE
+// ═══════════════════════════════════════════════════════════════════
+function renderProdutos() {
+  const maxV = PRODUTOS[0].v;
+  document.getElementById('tbl-produtos').innerHTML = PRODUTOS.map(p => {
+    const pct = (p.v/maxV*100).toFixed(0);
+    const color = BRAND_COLORS[p.m]||'#6b7280';
+    const vFmt = 'R$ ' + p.v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const added = isInPriority(p.r);
+    const dClass = !p.d ? 'fl' : (p.d.startsWith('+') ? 'pos' : 'neg');
+    return `<tr class="prod-row" id="row-${p.r}" onclick="openDetail(${p.r})">
+      <td onclick="event.stopPropagation();togglePriorityItem(${p.r})">
+        <button class="add-btn ${added?'added':''}" id="add-btn-${p.r}">${added?'✓':'+'}</button>
+      </td>
+      <td class="muted" style="font-size:11px">${p.r}</td>
+      <td style="max-width:280px;font-size:12px">${p.n}</td>
+      <td style="white-space:nowrap"><span class="brand-dot" style="background:${color}"></span><span class="muted" style="font-size:11px">${p.m}</span></td>
+      <td class="r muted">${p.u.toLocaleString('pt-BR')}</td>
+      <td style="min-width:150px"><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div><div class="bar-val">${vFmt}</div></div></td>
+      <td class="r delta-cell ${dClass}">${p.d||'NOVO'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHARTS — SEMANAL
+// ═══════════════════════════════════════════════════════════════════
+function initChartsWeekly() {
+  new Chart(document.getElementById('canalChart').getContext('2d'), {
+    type:'doughnut',
+    data:{labels:['Mercado Livre','Wake','Atend. Comercial','Shopee','ML - Obramil','ML - Construlivre','Shopee Novo','Outros'],
+      datasets:[{data:[209101.66,104920.51,93679.16,51205.51,15011.11,9069.29,8677.46,13105.50],
+      backgroundColor:['#58a6ff','#3fb950','#f97316','#a78bfa','#f43f5e','#fb923c','#06b6d4','#6b7280'],borderWidth:0,hoverOffset:5}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',
+      plugins:{legend:{position:'right',labels:{color:'#8b949e',font:{size:10},boxWidth:8,padding:8}},
+      tooltip:{callbacks:{label:ctx=>` R$ ${ctx.parsed.toLocaleString('pt-BR',{minimumFractionDigits:2})} (${(ctx.parsed/TOTAL_V*100).toFixed(1)}%)`}}}}
+  });
+  new Chart(document.getElementById('marcaChart').getContext('2d'), {
+    type:'bar',
+    data:{labels:['LT Shine','Terceiros','Smart','Elastment','Cristal','Drylevis','Hold Stone'],
+      datasets:[{data:[118077.59,108781.62,83234.09,63691.10,60175.04,46524.85,24285.91],
+      backgroundColor:['#a855f7','#6b7280','#f97316','#0d9488','#ef4444','#3b82f6','#22c55e'],borderRadius:4,borderWidth:0}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` R$ ${ctx.parsed.x.toLocaleString('pt-BR',{minimumFractionDigits:2})}`}}},
+      scales:{x:{grid:{color:'#21262d'},ticks:{color:'#8b949e',font:{size:10},callback:v=>'R$ '+(v/1000).toFixed(0)+'k'}},
+      y:{grid:{display:false},ticks:{color:'#e6edf3',font:{size:11}}}}}
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// HISTÓRICO — INIT
+// ═══════════════════════════════════════════════════════════════════
+function fmtK(v) {
+  if (!v) return '—';
+  return v >= 1000 ? 'R$ ' + (v/1000).toFixed(0) + 'k' : 'R$ ' + v.toLocaleString('pt-BR');
+}
+
+function initHistorico() {
+  const year = 2026;
+  const months = YEAR_DATA[year];
+
+  // ── ANNUAL STACKED BAR CHART ──────────────────────────────────────
+  const datasets = DEPTS.map(d => ({
+    label: d.name,
+    data: months.map(m => {
+      if (!m || m === 'future') return 0;
+      return m.depts[d.id] || 0;
+    }),
+    backgroundColor: months.map(m => {
+      if (!m || m === 'future') return 'rgba(139,148,158,0.08)';
+      if (m.status === 'partial') return d.color + 'bb';
+      return d.color;
+    }),
+    borderRadius: 3,
+    stack: 'months',
+  }));
+
+  new Chart(document.getElementById('annualChart').getContext('2d'), {
+    type: 'bar',
+    data: { labels: MONTHS_LABELS, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: R$ ${ctx.parsed.y.toLocaleString('pt-BR',{maximumFractionDigits:0})}`,
+            footer: items => {
+              const total = items.reduce((s,i) => s + i.parsed.y, 0);
+              return total > 0 ? `Total: R$ ${total.toLocaleString('pt-BR',{maximumFractionDigits:0})}` : '';
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: {color:'#21262d'}, ticks: {color:'#8b949e',font:{size:11}} },
+        y: { grid: {color:'#21262d'}, ticks: {color:'#8b949e',font:{size:10}, callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k'}, stacked: true }
+      }
+    }
+  });
+
+  // ── LEGEND ──────────────────────────────────────────────────────
+  const legendEl = document.getElementById('dept-legend');
+  legendEl.innerHTML = DEPTS.map(d =>
+    `<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)">
+       <div style="width:10px;height:10px;border-radius:2px;background:${d.color};flex-shrink:0"></div>
+       <span>${d.name}</span>
+     </div>`
+  ).join('');
+
+  // ── HEATMAP ──────────────────────────────────────────────────────
+  const hmGrid = document.getElementById('heatmap-grid');
+  // Row 0: month headers
+  hmGrid.innerHTML = '<div></div>' + MONTHS_LABELS.map(m => `<div class="hm-month-head">${m}</div>`).join('');
+
+  DEPTS.forEach(d => {
+    // Compute max value for this dept across all months (for relative intensity)
+    const vals = months.map(m => (m && m !== 'future' && m.depts) ? (m.depts[d.id]||0) : 0);
+    const maxVal = Math.max(...vals, 1);
+
+    // Dept label
+    hmGrid.innerHTML += `<div class="hm-label"><div class="hm-dept-dot" style="background:${d.color}"></div>${d.name}</div>`;
+
+    // Month cells
+    months.forEach((m, mi) => {
+      if (m === 'future') {
+        hmGrid.innerHTML += `<div class="hm-cell hm-future" title="${MONTHS_LABELS[mi]} — futuro"></div>`;
+      } else if (!m || !m.depts || !(m.depts[d.id])) {
+        hmGrid.innerHTML += `<div class="hm-cell hm-empty" title="${MONTHS_LABELS[mi]} — sem dados"></div>`;
+      } else {
+        const val = m.depts[d.id];
+        const intensity = Math.max(0.12, val / maxVal);
+        const opacity = (0.15 + intensity * 0.8).toFixed(2);
+        const tooltip = `${MONTHS_LABELS[mi]}: R$ ${val.toLocaleString('pt-BR',{maximumFractionDigits:0})}${m.status==='partial'?' (parcial)':''}`;
+        const label = val >= 10000 ? 'R$ ' + Math.round(val/1000) + 'k' : 'R$ ' + Math.round(val/100)/10 + 'k';
+        hmGrid.innerHTML += `<div class="hm-cell" style="background:rgba(${hexToRgb(d.color)},${opacity})" title="${tooltip}">
+          <div class="hm-value" style="color:${intensity>.5?'rgba(230,237,243,0.9)':'rgba(139,148,158,0.8)'}">${label}</div>
+        </div>`;
+      }
+    });
+  });
+
+  // ── DEPT TABLE ───────────────────────────────────────────────────
+  const tbody = document.getElementById('dept-table-body');
+  let totals = {}; DEPTS.forEach(d => totals[d.id] = 0);
+  let monthTotals = Array(12).fill(0);
+
+  tbody.innerHTML = DEPTS.map(d => {
+    const vals = months.map(m => (m && m !== 'future' && m.depts) ? (m.depts[d.id]||0) : null);
+    const maxVal = Math.max(...vals.filter(v => v !== null), 1);
+    const total = vals.reduce((s,v) => s + (v||0), 0);
+    totals[d.id] = total;
+    vals.forEach((v,i) => { if(v) monthTotals[i] += v; });
+    const bestIdx = vals.indexOf(Math.max(...vals.filter(v => v !== null), 0));
+    const bestMonth = maxVal > 0 ? MONTHS_LABELS[bestIdx] : '—';
+
+    const cells = vals.map((v, i) => {
+      const isBest = v === maxVal && maxVal > 0;
+      const isFuture = months[i] === 'future';
+      const isPartial = months[i] && months[i] !== 'future' && months[i].status === 'partial';
+      if (isFuture) return `<td class="r month-cell muted" style="opacity:.3">·</td>`;
+      if (!v) return `<td class="r month-cell muted">—</td>`;
+      return `<td class="r month-cell${isBest?' best':''}" style="color:${isBest?d.color:'var(--text)'}">
+        ${fmtK(v)}${isPartial?'*':''}
+      </td>`;
+    }).join('');
+
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500">
+        <div class="brand-dot" style="background:${d.color}"></div>${d.name}
+      </div></td>
+      ${cells}
+      <td class="r" style="font-weight:600">${fmtK(total)}</td>
+      <td class="r muted" style="font-size:11px">${bestMonth}</td>
+    </tr>`;
+  }).join('');
+
+  // Total row
+  const totalCells = months.map((m,i) => {
+    if (m === 'future') return `<td class="r month-cell muted" style="opacity:.3">·</td>`;
+    return `<td class="r month-cell" style="font-weight:600">${monthTotals[i] ? fmtK(monthTotals[i]) : '—'}</td>`;
+  }).join('');
+  tbody.innerHTML += `<tr class="total-row"><td style="font-size:12px">Total</td>${totalCells}<td class="r">${fmtK(Object.values(totals).reduce((a,b)=>a+b,0))}</td><td class="r">—</td></tr>`;
+
+  // ── TOP 5 POR DEPARTAMENTO ────────────────────────────────────────
+  const grid = document.getElementById('dept-top-grid');
+  grid.innerHTML = DEPTS.map(d => {
+    const top = PRODUTOS.filter(p => p.dept === d.id).sort((a,b) => b.v - a.v).slice(0, 5);
+    if (!top.length) return '';
+    return `<div class="section" style="margin-bottom:0">
+      <div style="font-size:12px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <div class="brand-dot" style="background:${d.color};width:9px;height:9px"></div>${d.name}
+      </div>
+      ${top.map((p,i) => `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--surface2)">
+        <span style="font-size:10px;color:var(--muted);width:14px;flex-shrink:0">${i+1}</span>
+        <span style="flex:1;font-size:11px;line-height:1.3">${p.n}</span>
+        <span style="font-size:11px;color:var(--muted);white-space:nowrap">R$ ${(p.v/1000).toFixed(1)}k</span>
+        <button class="add-btn" id="add-btn-h-${p.r}" style="width:18px;height:18px;font-size:12px"
+          onclick="togglePriorityItem(${p.r})">${isInPriority(p.r)?'✓':'+'}</button>
+      </div>`).join('')}
+    </div>`;
+  }).filter(Boolean).join('');
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+renderProdutos();
+renderPriorities();
+initChartsWeekly();
+window._weeklyInited = true;
+</script>
+</body>
+</html>

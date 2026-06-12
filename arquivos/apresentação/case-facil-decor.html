@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case — Fácil Decor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Fácil Decor usa o accent da LT Shine — refinado, sofisticado */
+  --veio-preto: #2D2D2B;
+  --veio-preto-soft: #1F1F1E;
+  --veio-branco: #FFFFFF;
+  --veio-cinza: #EEEDEE;
+  --veio-cinza-2: #D9D9D9;
+  --veio-cinza-3: #B4B3B3;
+  --veio-amarelo: #FEBF13;
+  --veio-laranja: #FAA900;
+
+  --bg-page: var(--veio-branco);
+  --bg-soft: var(--veio-cinza);
+  --bg-dark: var(--veio-preto);
+  --fg-1: var(--veio-preto);
+  --fg-2: #4A4A48;
+  --fg-3: var(--veio-cinza-3);
+  --accent: var(--veio-amarelo);
+  --border-1: var(--veio-cinza-2);
+  --fg-on-dark: var(--veio-branco);
+
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  --text-xs: 12px; --text-sm: 14px; --text-base: 16px; --text-md: 18px;
+  --text-xl: 24px; --text-2xl: 32px; --text-3xl: 44px; --text-4xl: 60px;
+
+  --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
+  --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
+
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 999px;
+
+  --shadow-rest: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.04);
+  --shadow-hover: 0 2px 4px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.08);
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-normal: 180ms;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg-page); color: var(--fg-1); line-height: 1.6; }
+
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--space-32); height: 64px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-1);
+}
+.header__logo { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--veio-preto); letter-spacing: -0.02em; }
+.header__logo span { color: var(--veio-amarelo); }
+.header__nav { display: flex; gap: var(--space-32); }
+.header__nav a { font-size: var(--text-sm); font-weight: 500; color: var(--fg-2); text-decoration: none; transition: color var(--dur-normal); }
+.header__nav a:hover { color: var(--veio-preto); }
+.header__badge { font-size: var(--text-xs); font-weight: 600; background: var(--veio-cinza); padding: 6px 14px; border-radius: var(--radius-pill); color: var(--fg-2); }
+.header__badge strong { color: var(--veio-preto); }
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: var(--space-96) var(--space-32); }
+.eyebrow { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: var(--space-8); }
+.eyebrow--dark { color: var(--fg-3); }
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 32px); color: var(--fg-1); margin-bottom: var(--space-48); }
+.bg-soft { background: var(--bg-soft); }
+.placeholder { color: var(--veio-cinza-2); font-style: italic; opacity: .7; }
+
+.hero {
+  min-height: 88vh; background: var(--veio-preto); color: var(--fg-on-dark);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: var(--space-96) var(--space-32); position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; bottom: -200px; left: 50%;
+  transform: translateX(-50%); width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(254,191,19,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero__inner { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; }
+.hero__meta { display: flex; gap: var(--space-8); flex-wrap: wrap; margin-bottom: var(--space-32); }
+.hero__tag { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; border-radius: var(--radius-pill); background: rgba(255,255,255,.1); color: var(--veio-cinza-3); }
+.hero__tag--accent { background: var(--veio-amarelo); color: var(--veio-preto); }
+.hero h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 5vw, 60px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: var(--space-24); max-width: 800px; }
+.hi { color: var(--veio-amarelo); }
+.hero__sub { font-size: var(--text-md); color: var(--veio-cinza-3); max-width: 600px; margin-bottom: var(--space-48); line-height: 1.7; }
+.hero__mockup { width: 100%; max-width: 900px; aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center; color: var(--veio-cinza-3); font-size: var(--text-sm); margin-bottom: var(--space-48); }
+.hero__info { display: flex; gap: var(--space-48); flex-wrap: wrap; }
+.hero__info-item { font-size: var(--text-sm); color: var(--veio-cinza-3); }
+.hero__info-item strong { color: var(--fg-on-dark); font-weight: 600; display: block; margin-bottom: 2px; }
+
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); margin-bottom: var(--space-48); }
+.result-card { background: var(--veio-branco); border-radius: var(--radius-lg); padding: var(--space-32); border: 1px solid var(--border-1); }
+.result-card__num { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5vw, 52px); color: var(--veio-preto); letter-spacing: -0.02em; margin-bottom: var(--space-8); }
+.result-card__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; }
+.results-note { background: rgba(254,191,19,.08); border-left: 3px solid var(--veio-amarelo); padding: var(--space-16) var(--space-24); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: var(--text-sm); color: var(--fg-2); }
+
+.sobre-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-48); align-items: start; }
+.sobre-descricao { font-size: var(--text-md); color: var(--fg-2); border-left: 3px solid var(--veio-amarelo); padding-left: var(--space-24); margin-bottom: var(--space-32); line-height: 1.8; }
+.sobre-meta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.meta-item__label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3); font-weight: 600; margin-bottom: 4px; }
+.meta-item__value { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.desafio-card { background: var(--veio-preto); border-radius: var(--radius-xl); padding: var(--space-32); }
+.desafio-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--veio-amarelo); margin-bottom: var(--space-16); }
+.desafio-card p { font-size: var(--text-sm); color: var(--veio-cinza-3); margin-bottom: var(--space-16); line-height: 1.7; }
+.objetivo-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.objetivo-list li { font-size: var(--text-sm); color: var(--veio-cinza-3); padding-left: var(--space-24); position: relative; line-height: 1.6; }
+.objetivo-list li::before { content: '→'; position: absolute; left: 0; color: var(--veio-amarelo); font-weight: 700; }
+
+.processo-steps { display: flex; flex-direction: column; }
+.step { display: grid; grid-template-columns: 48px 1fr; gap: var(--space-24); }
+.step__num { width: 48px; height: 48px; background: var(--veio-amarelo); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm); color: var(--veio-preto); flex-shrink: 0; }
+.step__body { border-bottom: 1px solid var(--border-1); padding-bottom: var(--space-32); margin-bottom: var(--space-32); }
+.step:last-child .step__body { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.step__title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--fg-1); margin-bottom: var(--space-8); padding-top: 10px; }
+.step__desc { font-size: var(--text-base); color: var(--fg-2); line-height: 1.7; margin-bottom: var(--space-16); }
+.step__tags { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+.step__tag { font-size: var(--text-xs); font-weight: 500; background: var(--veio-branco); border: 1px solid var(--border-1); padding: 4px 12px; border-radius: var(--radius-pill); color: var(--fg-2); }
+
+.detalhes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
+.detalhe-card { background: var(--veio-branco); border: 1px solid var(--border-1); border-radius: var(--radius-xl); padding: var(--space-32); box-shadow: var(--shadow-rest); }
+.detalhe-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); color: var(--fg-1); margin-bottom: var(--space-24); }
+.ferramentas-list { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.ferramenta-chip { font-size: var(--text-sm); font-weight: 500; border: 1.5px solid var(--veio-preto); padding: 6px 16px; border-radius: var(--radius-pill); color: var(--veio-preto); background: transparent; }
+.cronograma-bars { display: flex; flex-direction: column; gap: var(--space-16); }
+.crono-item__label { font-size: var(--text-sm); color: var(--fg-2); font-weight: 500; margin-bottom: 6px; }
+.crono-item__bar { height: 8px; background: var(--veio-cinza-2); border-radius: var(--radius-pill); overflow: hidden; }
+.crono-item__fill { height: 100%; background: var(--veio-amarelo); border-radius: var(--radius-pill); }
+.agentes-grid { display: flex; flex-direction: column; gap: var(--space-12); }
+.agente-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-8) 0; border-bottom: 1px solid var(--veio-cinza); }
+.agente-row:last-child { border-bottom: none; }
+.agente-row__name { font-size: var(--text-sm); font-weight: 500; color: var(--fg-1); }
+.agente-row__role { font-size: var(--text-sm); color: var(--fg-3); text-align: right; max-width: 55%; }
+.desafio-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-12); }
+.desafio-list li { font-size: var(--text-sm); color: var(--fg-2); border-left: 2px solid var(--veio-cinza-2); padding-left: var(--space-16); line-height: 1.6; }
+
+.conclusao-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-24); }
+.conclusao-card { border-radius: var(--radius-xl); padding: var(--space-32); }
+.conclusao-card h3 { font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--space-16); }
+.conclusao-card p { font-size: var(--text-sm); line-height: 1.7; }
+.conclusao-card--reflexao { background: var(--veio-cinza); }
+.conclusao-card--reflexao h3 { color: var(--fg-2); }
+.conclusao-card--reflexao p { color: var(--fg-2); }
+.conclusao-card--impacto { background: var(--veio-preto); }
+.conclusao-card--impacto h3 { color: var(--veio-amarelo); }
+.conclusao-card--impacto p { color: var(--veio-cinza-3); }
+.conclusao-card--proximos { background: var(--veio-amarelo); }
+.conclusao-card--proximos h3 { color: var(--veio-preto); }
+.conclusao-card--proximos p { color: var(--veio-preto); opacity: .75; }
+
+.footer { background: var(--veio-preto); color: var(--veio-cinza-3); padding: var(--space-32); text-align: center; font-size: var(--text-sm); }
+.footer strong { color: var(--veio-branco); }
+
+@media (max-width: 900px) {
+  .results-grid, .conclusao-grid { grid-template-columns: 1fr; }
+  .sobre-layout, .detalhes-grid { grid-template-columns: 1fr; }
+  .header__nav { display: none; }
+  .wrap { padding: var(--space-64) var(--space-24); }
+}
+@media (max-width: 480px) { .sobre-meta { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header__logo">Fácil <span>Decor</span></span>
+  <nav class="header__nav">
+    <a href="#resultados">Resultados</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#processo">Processo</a>
+    <a href="#detalhes">Detalhes</a>
+    <a href="#conclusao">Conclusão</a>
+  </nav>
+  <div class="header__badge">Case <strong>Varejo & Franquia</strong></div>
+</header>
+
+<!-- 01 Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__meta">
+      <span class="hero__tag hero__tag--accent">Case de Portfólio</span>
+      <span class="hero__tag">Fácil Decor</span>
+      <span class="hero__tag">LT Shine</span>
+      <span class="hero__tag">IVA Química</span>
+      <span class="hero__tag">2024 – 2026</span>
+    </div>
+    <h1>Do Produto à <span class="hi">Experiência.</span></h1>
+    <p class="hero__sub">
+      De uma linha de acabamentos decorativos premium a um canal de varejo completo — loja física ativa, e-commerce em desenvolvimento e modelo de franquia OMS que fecha o ciclo do ecossistema.
+    </p>
+    <div class="hero__mockup">
+      [ Foto da loja física Fácil Decor — substituir por &lt;img&gt; ]
+    </div>
+    <div class="hero__info">
+      <div class="hero__info-item"><strong>Projeto</strong> Fácil Decor</div>
+      <div class="hero__info-item"><strong>Catálogo</strong> LT Shine (decoração e acabamento)</div>
+      <div class="hero__info-item"><strong>Modelo</strong> Loja física + E-commerce + Franquia OMS</div>
+      <div class="hero__info-item"><strong>Status</strong> Loja física ativa · E-commerce em desenvolvimento</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Resultados -->
+<section id="resultados" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Big Numbers</p>
+    <p class="section-title">Resultados</p>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-card__num">1</div>
+        <div class="result-card__label">Loja física ativa em operação</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">5</div>
+        <div class="result-card__label">Linhas LT Shine no catálogo do canal</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num">3</div>
+        <div class="result-card__label">Frentes de operação — loja física, e-commerce e franquia</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Franqueados ativos</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Ticket médio da loja física</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__num"><span class="placeholder">—</span></div>
+        <div class="result-card__label">Pedidos mensais (e-commerce)</div>
+      </div>
+    </div>
+    <div class="results-note">
+      <strong>Nota.</strong> Dados operacionais do e-commerce e da franquia serão preenchidos após os lançamentos respectivos. A loja física está em operação desde 2024.
+    </div>
+  </div>
+</section>
+
+<!-- 03 Sobre -->
+<section id="sobre">
+  <div class="wrap">
+    <p class="eyebrow">Contexto</p>
+    <p class="section-title">Sobre o projeto</p>
+    <div class="sobre-layout">
+      <div>
+        <p class="sobre-descricao">
+          O Fácil Decor é o canal especializado da IVA Química para o segmento de decoração e acabamento premium. Opera exclusivamente com o catálogo LT Shine — a marca de sofisticação e elegância do grupo — oferecendo ao cliente a experiência de ver, tocar e aplicar antes de comprar, com suporte técnico e consultivo.
+        </p>
+        <div class="sobre-meta">
+          <div class="meta-item">
+            <div class="meta-item__label">Objetivo</div>
+            <div class="meta-item__value">Canal especializado com experiência de compra presencial e digital</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Público-alvo</div>
+            <div class="meta-item__value">Consumidor final e arquitetos com foco em acabamento</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Tagline</div>
+            <div class="meta-item__value">"A Etiqueta da Sua Casa"</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-item__label">Link da loja</div>
+            <div class="meta-item__value placeholder">— a preencher —</div>
+          </div>
+        </div>
+      </div>
+      <div class="desafio-card">
+        <h3>O problema real</h3>
+        <p>A LT Shine é uma linha premium de acabamentos decorativos — produtos que o cliente precisa ver e tocar para entender o valor. Sem canal especializado, ela se perdia no catálogo amplo do e-commerce generalista.</p>
+        <ul class="objetivo-list">
+          <li>Produto premium de acabamento decorativo sem espaço para demonstração e experiência</li>
+          <li>Público de arquitetos e decoradores que exige consultoria — não apenas catálogo</li>
+          <li>Necessidade de criar demanda local via franqueados com incentivo real para vender</li>
+          <li>E-commerce generalista não valorizava o posicionamento sofisticado da LT Shine</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Processo -->
+<section id="processo" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Como foi feito</p>
+    <p class="section-title">Processo</p>
+    <div class="processo-steps">
+
+      <div class="step">
+        <div class="step__num">01</div>
+        <div class="step__body">
+          <div class="step__title">Conceito do canal especializado</div>
+          <div class="step__desc">
+            Decisão estratégica de criar um canal dedicado exclusivamente ao catálogo LT Shine, com identidade própria separada do Escuta o Véio!. A LT Shine cria o desejo — o Fácil Decor entrega a experiência. O nome "A Etiqueta da Sua Casa" posiciona o canal no universo de sofisticação acessível: não é luxo inacessível, é a marca pessoal do espaço.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Estratégia de canal</span>
+            <span class="step__tag">Posicionamento</span>
+            <span class="step__tag">LT Shine</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">02</div>
+        <div class="step__body">
+          <div class="step__title">Loja física — conceito e operação</div>
+          <div class="step__desc">
+            Abertura da loja física como ponto de demonstração das linhas LT Shine: Efeitos, Cimento Queimado, Marmorite, Pisos e Complementos. O espaço foi pensado para o cliente ver o acabamento aplicado em diferentes superfícies e receber orientação técnica presencial. A loja física é o modelo para o manual de franquia.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Varejo físico</span>
+            <span class="step__tag">Showroom</span>
+            <span class="step__tag">Atendimento consultivo</span>
+            <span class="step__tag">LT Shine</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">03</div>
+        <div class="step__body">
+          <div class="step__title">Modelo de franquia OMS</div>
+          <div class="step__desc">
+            Estruturação do modelo de franquia com sistema OMS (Order Management System) — o cliente pode comprar online e retirar na franquia mais próxima. O franqueado tem incentivo financeiro direto em cada venda do seu território, tornando-se embaixador da marca com interesse real no resultado. O modelo resolve o desafio de cobertura geográfica sem montar estrutura própria.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Franquia</span>
+            <span class="step__tag">OMS</span>
+            <span class="step__tag">Manual do franqueado</span>
+            <span class="step__tag">em andamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">04</div>
+        <div class="step__body">
+          <div class="step__title">E-commerce especializado LT Shine</div>
+          <div class="step__desc">
+            Desenvolvimento do e-commerce do Fácil Decor com foco no catálogo LT Shine e no público de arquitetos e consumidores finais em busca de acabamento sofisticado. Interface visual alinhada ao universo da marca — elegante, limpa, com ênfase em resultado e inspiração. Integração com o sistema de franquia para retirada em loja.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">E-commerce</span>
+            <span class="step__tag">UX decoração</span>
+            <span class="step__tag">Catálogo LT Shine</span>
+            <span class="step__tag">em andamento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step__num">05</div>
+        <div class="step__body">
+          <div class="step__title">Conteúdo e inspiração — "A Etiqueta da Sua Casa"</div>
+          <div class="step__desc">
+            Estratégia de conteúdo focada em inspiração e resultado — antes e depois de ambientes transformados com LT Shine. O público do Fácil Decor não compra produto: compra a visão do ambiente que quer ter. Conteúdo editorial com aplicações reais, combinações de acabamento e curadoria de projetos de arquitetura.
+          </div>
+          <div class="step__tags">
+            <span class="step__tag">Conteúdo editorial</span>
+            <span class="step__tag">Antes e depois</span>
+            <span class="step__tag">Inspiração</span>
+            <span class="step__tag">Arquitetura</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 05 Detalhes Técnicos -->
+<section id="detalhes">
+  <div class="wrap">
+    <p class="eyebrow">Técnico</p>
+    <p class="section-title">Detalhes do projeto</p>
+    <div class="detalhes-grid">
+
+      <div class="detalhe-card">
+        <h3>Ferramentas utilizadas</h3>
+        <div class="ferramentas-list">
+          <span class="ferramenta-chip">OMS</span>
+          <span class="ferramenta-chip">Notion</span>
+          <span class="ferramenta-chip">Claude Code</span>
+          <span class="ferramenta-chip">Meta Ads</span>
+          <span class="ferramenta-chip">WhatsApp Business</span>
+          <span class="ferramenta-chip">Instagram</span>
+          <span class="ferramenta-chip">Pinterest</span>
+          <span class="ferramenta-chip">Google Workspace</span>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Cronograma estimado</h3>
+        <div class="cronograma-bars">
+          <div class="crono-item">
+            <div class="crono-item__label">Conceito e posicionamento</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:100%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Loja física</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:100%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Manual de franquia</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:55%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">E-commerce LT Shine</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:35%"></div></div>
+          </div>
+          <div class="crono-item">
+            <div class="crono-item__label">Expansão de franquias</div>
+            <div class="crono-item__bar"><div class="crono-item__fill" style="width:15%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Arquitetura do canal</h3>
+        <div class="agentes-grid">
+          <div class="agente-row">
+            <span class="agente-row__name">Loja Física</span>
+            <span class="agente-row__role">Showroom + venda presencial</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">E-commerce</span>
+            <span class="agente-row__role">Catálogo LT Shine online</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">OMS + Franquia</span>
+            <span class="agente-row__role">Cobertura geográfica escalável</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">WhatsApp</span>
+            <span class="agente-row__role">Atendimento consultivo</span>
+          </div>
+          <div class="agente-row">
+            <span class="agente-row__name">Conteúdo</span>
+            <span class="agente-row__role">Inspiração — não produto</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detalhe-card">
+        <h3>Principais desafios</h3>
+        <ul class="desafio-list">
+          <li>Criar experiência de compra de produto decorativo premium sem a referência física do acabamento aplicado — o cliente precisa imaginar o resultado</li>
+          <li>Estruturar modelo de franquia que garanta qualidade de atendimento e consistência de marca sem controle direto de cada operação</li>
+          <li>Posicionar o Fácil Decor como canal sofisticado sem parecer exclusivo ou caro demais para o consumidor final</li>
+          <li>Integrar OMS com múltiplas franquias mantendo rastreabilidade e incentivo correto por território</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 06 Conclusão -->
+<section id="conclusao" class="bg-soft">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Encerramento</p>
+    <p class="section-title">Conclusão</p>
+    <div class="conclusao-grid">
+
+      <div class="conclusao-card conclusao-card--reflexao">
+        <h3>Aprendizados</h3>
+        <p>Produto decorativo de acabamento é vendido pela imaginação do cliente — ele compra o ambiente que quer ter, não o produto em si. O Fácil Decor entendeu isso antes de abrir a loja: o showroom existe para transformar imaginação em certeza. Sem experiência sensorial, produto premium vira commodity.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--impacto">
+        <h3>Impacto</h3>
+        <p>O Fácil Decor fecha o ciclo do ecossistema IVA para o segmento de decoração. A LT Shine cria o desejo via conteúdo e inspiração; o Fácil Decor entrega a experiência e a confiança presencial; o modelo de franquia OMS garante que o cliente encontra o produto onde quer que esteja.</p>
+      </div>
+
+      <div class="conclusao-card conclusao-card--proximos">
+        <h3>Próximos passos</h3>
+        <p>Lançar o e-commerce com integração OMS. Finalizar o manual do franqueado e abrir o processo de captação. Produzir conteúdo editorial de alta qualidade com projetos de arquitetura reais. Mapear praças prioritárias para expansão da franquia no primeiro ano.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>Fácil Decor</strong> — Case Varejo & Franquia · IVA Química · LT Shine
+</footer>
+
+</body>
+</html>

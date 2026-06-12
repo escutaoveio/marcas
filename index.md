@@ -12,9 +12,14 @@ CLAUDE.md                 → instruções e contexto para o Claude
 
 canais-de-vendas/         → operação dos canais de venda
 marketing/                → estratégia de marca e campanhas
+  marcas/                 → descrições HTML de produto por marca e linha
 base-de-dados/            → planilhas, dashboards e relatórios
 arquivos/                 → documentação, conhecimento e histórico
-.claude/                  → configuração do Claude (commands, workflows, agents)
+.claude/                  → configuração do Claude
+  commands/               → slash commands
+  workflows/              → roteiros de trabalho
+  agents/                 → agentes especializados
+  templates/              → templates HTML de produto
 ```
 
 ---
@@ -74,6 +79,7 @@ Leia antes de iniciar uma tarefa recorrente:
 
 - [Rotina Diária — E-commerce](.claude/workflows/rotina-diaria-ecommerce.md)
 - [Relatório Semanal](.claude/workflows/relatorio-semanal.md)
+- [Descrição HTML de Produto](.claude/workflows/workflow-descricao-html.md) — Notion → template → `marketing/marcas/`
 
 ---
 
