@@ -39,5 +39,14 @@ logs/
 *.tmp
 *.bak
 
+# Arquivos de design (fonte — não versionar)
+*.psd
+*.pdf
+*.aep
+*.ai
+*.indd
+*.xd
+*.fig
+
 # Wake Storefront — repositório Git próprio (gerenciado separadamente via fbits.net)
 canais-de-vendas/escuta-o-veio/loja-virtual/wake-commerce/storefront/
