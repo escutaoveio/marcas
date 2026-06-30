@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Rendimento — Cristal PU 75</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 520px;
+    }
+    .header { margin-bottom: 28px; }
+    .badge {
+      display: inline-block;
+      background: #7a5592;
+      color: #fff;
+      font-size: 0.625rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      padding: 3px 8px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 1.375rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 0.8125rem;
+      color: #6e6e6e;
+      line-height: 1.5;
+    }
+    .divider { height: 1px; background: #ebebeb; margin: 24px 0; }
+    .step-label {
+      font-size: 0.625rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a5592;
+      margin-bottom: 10px;
+    }
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4d4d4d;
+      margin-bottom: 6px;
+    }
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      margin-bottom: 14px;
+    }
+    .input-group { flex: 1; }
+    .input-group input {
+      width: 100%;
+      height: 44px;
+      border: 1.5px solid #d9d9d9;
+      border-radius: 10px;
+      padding: 0 14px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.15s;
+      -moz-appearance: textfield;
+    }
+    .input-group input::-webkit-outer-spin-button,
+    .input-group input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .input-group input:focus { border-color: #7a5592; }
+    .multiply-sign {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #b0b0b0;
+      padding-bottom: 10px;
+      flex-shrink: 0;
+    }
+    .or-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .or-line { flex: 1; height: 1px; background: #e8e8e8; }
+    .or-text { font-size: 0.6875rem; font-weight: 600; color: #adadad; }
+    .area-direct { margin-bottom: 0; }
+    .toggle-group {
+      display: flex;
+      gap: 8px;
+    }
+    .toggle-btn {
+      flex: 1;
+      height: 44px;
+      border: 1.5px solid #d9d9d9;
+      border-radius: 10px;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6e6e6e;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .toggle-btn.active {
+      border-color: #7a5592;
+      background: #7a5592;
+      color: #ffffff;
+    }
+    .calc-btn {
+      width: 100%;
+      height: 50px;
+      background: #7a5592;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .calc-btn:hover { background: #6a4a80; }
+    .calc-btn .material-symbols-outlined {
+      font-size: 20px;
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-flex;
+      white-space: nowrap;
+      -webkit-font-smoothing: antialiased;
+    }
+    .result-box {
+      display: none;
+      background: #f9f5fc;
+      border: 1.5px solid #d4bde8;
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-top: 20px;
+    }
+    .result-box.visible { display: block; }
+    .result-title {
+      font-size: 0.625rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a5592;
+      margin-bottom: 14px;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ecdff5;
+    }
+    .result-item:last-of-type { border-bottom: none; }
+    .result-item-label { font-size: 0.8125rem; color: #4d4d4d; font-weight: 500; }
+    .result-item-value { font-size: 1rem; font-weight: 800; color: #1a1a1a; }
+    .result-item-value span { font-size: 0.75rem; font-weight: 500; color: #6e6e6e; margin-left: 3px; }
+    .result-note {
+      font-size: 0.6875rem;
+      color: #8c8c8c;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+    .error-msg {
+      display: none;
+      background: #fff3f3;
+      border: 1.5px solid #f5c0c0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.8125rem;
+      color: #c0392b;
+      font-weight: 500;
+      margin-top: 14px;
+    }
+    .error-msg.visible { display: block; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="badge">Cristal Wood Wood</div>
+      <h1>Calculadora de Rendimento<br>PU 75</h1>
+      <p class="subtitle">Calcule quantos potes de 900 ml voc&ecirc; precisa para vitrificar seu piso.</p>
+    </div>
+
+    <div class="step-label">Passo 1 &mdash; &Aacute;rea a vitrificar</div>
+    <div class="input-row">
+      <div class="input-group">
+        <div class="field-label">Comprimento (m)</div>
+        <input type="number" id="comprimento" min="0" step="0.01" placeholder="ex: 5">
+      </div>
+      <div class="multiply-sign">&times;</div>
+      <div class="input-group">
+        <div class="field-label">Largura (m)</div>
+        <input type="number" id="largura" min="0" step="0.01" placeholder="ex: 4">
+      </div>
+    </div>
+
+    <div class="or-row">
+      <div class="or-line"></div>
+      <div class="or-text">ou informe diretamente</div>
+      <div class="or-line"></div>
+    </div>
+
+    <div class="input-group area-direct">
+      <div class="field-label">&Aacute;rea total (m&sup2;)</div>
+      <input type="number" id="area-direta" min="0" step="0.01" placeholder="ex: 20">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step-label">Passo 2 &mdash; N&uacute;mero de dem&atilde;os</div>
+    <div class="toggle-group">
+      <button class="toggle-btn active" data-demaos="2">2 dem&atilde;os</button>
+      <button class="toggle-btn" data-demaos="3">3 dem&atilde;os</button>
+    </div>
+
+    <button class="calc-btn" id="btn-calcular">
+      <span class="material-symbols-outlined">calculate</span>
+      Calcular
+    </button>
+
+    <div class="error-msg" id="error-msg">Informe a &aacute;rea (comprimento &times; largura) ou a &aacute;rea total para continuar.</div>
+
+    <div class="result-box" id="result-box">
+      <div class="result-title">Estimativa de consumo (com 10% de margem de segurança)</div>
+
+      <div class="result-item">
+        <span class="result-item-label">Potes de 900 ml (m&iacute;nimo)</span>
+        <span class="result-item-value" id="res-min">&mdash;<span>potes</span></span>
+      </div>
+      <div class="result-item">
+        <span class="result-item-label">Potes de 900 ml (m&aacute;ximo)</span>
+        <span class="result-item-value" id="res-max">&mdash;<span>potes</span></span>
+      </div>
+      <div class="result-item">
+        <span class="result-item-label">&Aacute;rea calculada</span>
+        <span class="result-item-value" id="res-area">&mdash;<span>m&sup2;</span></span>
+      </div>
+      <div class="result-item">
+        <span class="result-item-label">N&uacute;mero de dem&atilde;os</span>
+        <span class="result-item-value" id="res-demaos">&mdash;<span></span></span>
+      </div>
+
+      <p class="result-note">* O consumo do PU 75 varia entre 87 mL e 105,3 mL por m&sup2; por dem&atilde;o. A estimativa apresenta o intervalo m&iacute;nimo e m&aacute;ximo de potes necess&aacute;rios. O rendimento real pode variar conforme a porosidade e absor&ccedil;&atilde;o da base ou o m&eacute;todo de aplica&ccedil;&atilde;o.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var CONSUMO_MIN = 87;
+      var CONSUMO_MAX = 105.3;
+      var SAFETY = 1.10;
+      var VOL_900 = 900;
+
+      var demaosSel = 2;
+      var toggleBtns = document.querySelectorAll('.toggle-btn');
+
+      toggleBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          toggleBtns.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          demaosSel = parseInt(btn.getAttribute('data-demaos'), 10);
+        });
+      });
+
+      document.getElementById('btn-calcular').addEventListener('click', function () {
+        var comp = parseFloat(document.getElementById('comprimento').value);
+        var larg = parseFloat(document.getElementById('largura').value);
+        var direta = parseFloat(document.getElementById('area-direta').value);
+        var errorEl = document.getElementById('error-msg');
+        var resultEl = document.getElementById('result-box');
+
+        var area = 0;
+        if (!isNaN(direta) && direta > 0) {
+          area = direta;
+        } else if (!isNaN(comp) && comp > 0 && !isNaN(larg) && larg > 0) {
+          area = comp * larg;
+        }
+
+        if (area <= 0) {
+          errorEl.classList.add('visible');
+          resultEl.classList.remove('visible');
+          return;
+        }
+        errorEl.classList.remove('visible');
+
+        var totalMin = area * CONSUMO_MIN * demaosSel * SAFETY;
+        var totalMax = area * CONSUMO_MAX * demaosSel * SAFETY;
+        var potesMin = Math.ceil(totalMin / VOL_900);
+        var potesMax = Math.ceil(totalMax / VOL_900);
+
+        document.getElementById('res-min').innerHTML = potesMin + '<span> potes</span>';
+        document.getElementById('res-max').innerHTML = potesMax + '<span> potes</span>';
+        document.getElementById('res-area').innerHTML = area.toFixed(2) + '<span> m&sup2;</span>';
+        document.getElementById('res-demaos').innerHTML = demaosSel + '<span></span>';
+
+        resultEl.classList.add('visible');
+      });
+    })();
+  </script>
+</body>
+</html>
