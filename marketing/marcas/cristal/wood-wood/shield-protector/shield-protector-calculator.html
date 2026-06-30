@@ -1,0 +1,462 @@
+<div class="product-calc">
+<style type="text/css">@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+  .product-calc .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  .product-calc {
+    box-sizing: border-box;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    background: #ffffff;
+    padding: 32px 24px 40px;
+  }
+
+  .product-calc *, .product-calc *::before, .product-calc *::after { box-sizing: border-box; }
+
+  .calc-card { max-width: 800px; margin: 0 auto; }
+
+  .calc-panel {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(18, 18, 18, 0.04);
+    padding: 40px 32px;
+  }
+
+  .calc-header { text-align: center; margin-bottom: 4px; }
+  .calc-header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.1; color: #1a1a1a; }
+
+  .calc-subtitle { margin: 0 0 28px; font-size: 0.8125rem; color: #8c8c8c; text-align: center; }
+
+  .calc-divider { height: 1px; background: #e6e6e6; margin: 28px 0; }
+
+  .calc-layout { display: flex; gap: 0; }
+
+  .calc-col-left {
+    flex: 1;
+    min-width: 0;
+    padding-right: 28px;
+    border-right: 1px solid #f0f0f0;
+  }
+
+  .calc-col-right { flex: 1; min-width: 0; padding-left: 28px; }
+
+  .calc-step-group {
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .calc-step-group:first-child { padding-top: 0; }
+  .calc-step-group:last-child  { padding-bottom: 0; }
+
+  .calc-step-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .calc-step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #8c8c8c;
+    font-size: 0.625rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .calc-step-title { font-size: 0.875rem; font-weight: 600; color: #1a1a1a; }
+
+  .calc-toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .calc-toggle-group input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .calc-toggle-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e6e6e6;
+    background: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #4d4d4d;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    user-select: none;
+  }
+
+  .calc-toggle-group label:hover { border-color: #999999; background: #f0f0f0; color: #1a1a1a; }
+
+  .calc-toggle-group input[type="radio"]:checked + label { border-color: #4d4d4d; background: #f0f0f0; color: #1a1a1a; }
+
+  .calc-toggle-group--mode { flex-wrap: nowrap; width: 100%; }
+
+  .calc-toggle-group--mode label { flex: 1; justify-content: center; padding: 11px 12px; font-size: 0.875rem; }
+
+  .calc-input-area {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .calc-dim-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .calc-dim-field { display: flex; align-items: baseline; gap: 6px; }
+
+  .calc-dim-input {
+    width: 110px;
+    font-family: inherit;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    border: none;
+    border-bottom: 2px solid #e6e6e6;
+    border-radius: 0;
+    padding: 2px 0 6px;
+    background: transparent;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.15s ease;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .calc-dim-input::-webkit-outer-spin-button,
+  .calc-dim-input::-webkit-inner-spin-button { -webkit-appearance: none; appearance: none; }
+
+  .calc-dim-input::placeholder { color: #d9d9d9; }
+  .calc-dim-input:focus { border-bottom-color: #999999; }
+
+  .calc-dim-unit { font-size: 1.25rem; font-weight: 600; color: #8c8c8c; }
+  .calc-dim-sep { font-size: 2rem; font-weight: 300; color: #cccccc; line-height: 1; padding-bottom: 4px; }
+
+  .calc-area-total {
+    margin: 14px 0 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #cccccc;
+    text-align: center;
+    transition: color 0.2s ease;
+    min-height: 1.4em;
+  }
+
+  .calc-area-total.has-value { color: #4d4d4d; }
+
+  .calc-rend-note {
+    margin: 12px 0 0;
+    font-size: 0.6875rem;
+    color: #8c8c8c;
+    line-height: 1.5;
+    min-height: 1.2em;
+    text-align: center;
+    width: 100%;
+  }
+
+  .calc-result { display: none; }
+  .calc-result.is-visible { display: block; }
+
+  .calc-result-main {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 24px 22px;
+    text-align: center;
+  }
+
+  .calc-result-count { font-size: 1.5rem; font-weight: 700; color: #1a1a1a; line-height: 1.4; }
+  .calc-result-breakdown { font-size: 0.75rem; color: #8c8c8c; margin-top: 4px; line-height: 1.4; }
+
+  .calc-alerts { display: grid; gap: 10px; margin-top: 12px; }
+
+  .calc-alert {
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .calc-alert-info { background: #f5f5f5; border: 1px solid #e6e6e6; }
+
+  .calc-alert-icon { flex-shrink: 0; font-size: 18px; line-height: 1; margin-top: 1px; color: #8c8c8c; }
+
+  .calc-alert-body { flex: 1; min-width: 0; }
+
+  .calc-alert-title {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: #4d4d4d;
+    margin: 0 0 8px;
+  }
+
+  .calc-alert-items { list-style: none; padding: 0; margin: 0; display: grid; gap: 5px; }
+
+  .calc-alert-items li {
+    font-size: 0.8125rem;
+    color: #4d4d4d;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.4;
+  }
+
+  .calc-alert-items li::before { content: "•"; color: #8c8c8c; flex-shrink: 0; font-size: 0.75rem; margin-top: 2px; }
+
+  .calc-safety-note { margin: 12px 0 0; font-size: 0.6875rem; color: #8c8c8c; line-height: 1.5; text-align: center; }
+
+  @media (max-width: 640px) {
+    .product-calc { padding: 24px 16px 32px; }
+    .calc-panel { padding: 28px 20px; }
+    .calc-dim-input { width: 90px; font-size: 2.5rem; }
+    .calc-layout { flex-direction: column; }
+    .calc-col-left { padding-right: 0; border-right: none; padding-bottom: 24px; border-bottom: 1px solid #f0f0f0; width: 100%; }
+    .calc-col-right { padding-left: 0; padding-top: 24px; width: 100%; }
+  }
+</style>
+
+<div class="calc-card">
+  <div class="calc-panel">
+
+    <div class="calc-header">
+      <h2>Calculadora de Rendimento</h2>
+    </div>
+    <p class="calc-subtitle">Shield Protector &middot; 60 ml/m&sup2; por dem&atilde;o</p>
+
+    <div class="calc-divider">&nbsp;</div>
+
+    <form id="calc-shield-form" novalidate>
+      <div class="calc-layout">
+
+        <div class="calc-col-left">
+          <div class="calc-step-group">
+            <div class="calc-step-header">
+              <span class="calc-step-num" aria-hidden="true">1</span>
+              <span class="calc-step-title">&Aacute;rea a proteger</span>
+            </div>
+
+            <div class="calc-toggle-group calc-toggle-group--mode" role="radiogroup" aria-label="Modo de c&aacute;lculo">
+              <input checked id="shield-modo-ambiente" name="shield-modo" type="radio" value="ambiente">
+              <label for="shield-modo-ambiente">
+                <span class="material-symbols-outlined" style="font-size:16px;line-height:1" aria-hidden="true">straighten</span>
+                Tamanho do Ambiente
+              </label>
+              <input id="shield-modo-m2" name="shield-modo" type="radio" value="m2">
+              <label for="shield-modo-m2">
+                <span class="material-symbols-outlined" style="font-size:16px;line-height:1" aria-hidden="true">square_foot</span>
+                Metros Quadrados
+              </label>
+            </div>
+
+            <div class="calc-input-area" id="shield-field-dims">
+              <div class="calc-dim-row">
+                <div class="calc-dim-field">
+                  <input aria-label="Comprimento em metros" autocomplete="off" class="calc-dim-input" id="shield-comprimento" inputmode="decimal" min="0.1" placeholder="5" step="0.1" type="number">
+                  <span class="calc-dim-unit">m</span>
+                </div>
+                <span class="calc-dim-sep" aria-hidden="true">&times;</span>
+                <div class="calc-dim-field">
+                  <input aria-label="Largura em metros" autocomplete="off" class="calc-dim-input" id="shield-largura" inputmode="decimal" min="0.1" placeholder="3" step="0.1" type="number">
+                  <span class="calc-dim-unit">m</span>
+                </div>
+              </div>
+              <p aria-live="polite" class="calc-area-total" id="shield-area-display">= &mdash; m&sup2;</p>
+            </div>
+
+            <div class="calc-input-area" id="shield-field-m2" style="display:none;">
+              <div class="calc-dim-field">
+                <input aria-label="&Aacute;rea em metros quadrados" autocomplete="off" class="calc-dim-input" id="shield-m2-input" inputmode="decimal" min="0.1" placeholder="30" step="0.1" type="number">
+                <span class="calc-dim-unit">m&sup2;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-col-right">
+          <div class="calc-step-group">
+            <div class="calc-step-header">
+              <span class="calc-step-num" aria-hidden="true">2</span>
+              <span class="calc-step-title">N&uacute;mero de dem&atilde;os</span>
+            </div>
+
+            <div class="calc-toggle-group" role="radiogroup" aria-label="N&uacute;mero de dem&atilde;os">
+              <input checked id="shield-demao-2" name="shield-demao" type="radio" value="2">
+              <label for="shield-demao-2">2 dem&atilde;os</label>
+              <input id="shield-demao-3" name="shield-demao" type="radio" value="3">
+              <label for="shield-demao-3">3 dem&atilde;os</label>
+            </div>
+
+            <p aria-live="polite" class="calc-rend-note" id="shield-rend-note">&nbsp;</p>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+    <div aria-label="Resultado do c&aacute;lculo" aria-live="polite" class="calc-result" id="calc-shield-result">
+      <div class="calc-divider">&nbsp;</div>
+
+      <div class="calc-result-main">
+        <div class="calc-result-count" id="shield-result-count">&nbsp;</div>
+        <div class="calc-result-breakdown" id="shield-result-breakdown">&nbsp;</div>
+      </div>
+
+      <div class="calc-alerts">
+        <div class="calc-alert calc-alert-info">
+          <span class="material-symbols-outlined calc-alert-icon" aria-hidden="true">handyman</span>
+          <div class="calc-alert-body">
+            <p class="calc-alert-title">O que voc&ecirc; vai precisar para aplicar</p>
+            <ul class="calc-alert-items">
+              <li>Pincel, rolo ou pulverizador</li>
+              <li>Bandeja de pintura</li>
+              <li>EPI: luvas, &oacute;culos de prote&ccedil;&atilde;o e m&aacute;scara protetora</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <p class="calc-safety-note">* Margem de seguran&ccedil;a de 10% j&aacute; inclu&iacute;da no resultado. Rendimento pode variar conforme a porosidade da madeira e o m&eacute;todo de aplica&ccedil;&atilde;o.</p>
+    </div>
+
+    <p style="margin:20px 0 0;font-size:0.6875rem;color:#cccccc;text-align:center;">Vers&atilde;o 1.0 &middot; Shield Protector Wood Wood</p>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var CONSUMO_ML = 60;
+  var SAFETY = 1.10;
+  var VOL_900 = 900;
+  var VOL_18L = 18000;
+
+  var area = 0;
+  var demaosSel = 2;
+
+  var fieldDims     = document.getElementById('shield-field-dims');
+  var fieldM2       = document.getElementById('shield-field-m2');
+  var areaDisplay   = document.getElementById('shield-area-display');
+  var rendNote      = document.getElementById('shield-rend-note');
+  var resultEl      = document.getElementById('calc-shield-result');
+  var resultCount   = document.getElementById('shield-result-count');
+  var resultBreakdown = document.getElementById('shield-result-breakdown');
+
+  document.querySelectorAll('[name="shield-modo"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      if (this.value === 'ambiente') {
+        fieldDims.style.display = '';
+        fieldM2.style.display   = 'none';
+      } else {
+        fieldDims.style.display = 'none';
+        fieldM2.style.display   = '';
+      }
+      recalcArea();
+    });
+  });
+
+  ['shield-comprimento', 'shield-largura'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', recalcArea);
+  });
+  document.getElementById('shield-m2-input').addEventListener('input', recalcArea);
+
+  document.querySelectorAll('[name="shield-demao"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      demaosSel = parseInt(this.value, 10);
+      updateRendNote();
+      calcResult();
+    });
+  });
+
+  function recalcArea() {
+    var modo = document.querySelector('[name="shield-modo"]:checked').value;
+    if (modo === 'ambiente') {
+      var c = parseFloat(document.getElementById('shield-comprimento').value) || 0;
+      var l = parseFloat(document.getElementById('shield-largura').value) || 0;
+      area = c * l;
+      if (area > 0) {
+        areaDisplay.textContent = '= ' + area.toFixed(1).replace('.', ',') + ' m²';
+        areaDisplay.classList.add('has-value');
+      } else {
+        areaDisplay.textContent = '= — m²';
+        areaDisplay.classList.remove('has-value');
+      }
+    } else {
+      area = parseFloat(document.getElementById('shield-m2-input').value) || 0;
+    }
+    updateRendNote();
+    calcResult();
+  }
+
+  function updateRendNote() {
+    if (area <= 0) { rendNote.innerHTML = '&nbsp;'; return; }
+    var totalRaw = area * CONSUMO_ML * demaosSel;
+    rendNote.textContent = 'Volume estimado: ' + (totalRaw / 1000).toFixed(2).replace('.', ',') + ' L (sem margem de segurança)';
+  }
+
+  function calcResult() {
+    if (area <= 0) { resultEl.classList.remove('is-visible'); return; }
+    var totalRaw = area * CONSUMO_ML * demaosSel;
+    var totalCom = totalRaw * SAFETY;
+    var unid900  = Math.ceil(totalCom / VOL_900);
+    var unid18L  = Math.ceil(totalCom / VOL_18L);
+    resultCount.innerHTML =
+      unid900 + ' pote' + (unid900 !== 1 ? 's' : '') + ' de 900 ml' +
+      '<br><span style="font-size:0.875rem;font-weight:400;color:#8c8c8c;">ou</span><br>' +
+      unid18L + ' balde' + (unid18L !== 1 ? 's' : '') + ' de 18 L';
+    resultBreakdown.textContent =
+      area.toFixed(1).replace('.', ',') + ' m² × ' + demaosSel +
+      ' demão' + (demaosSel !== 1 ? 's' : '') +
+      ' × 60 ml/m² = ' + (totalRaw / 1000).toFixed(2).replace('.', ',') + ' L';
+    resultEl.classList.add('is-visible');
+  }
+}());
+</script>
+
+</div>
